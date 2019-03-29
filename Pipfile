@@ -11,6 +11,7 @@ tweepy = {editable = true,git = "https://github.com/tweepy/tweepy.git",ref = "2e
 django-crispy-forms = "*"
 djangorestframework = "*"
 django-cors-headers = "*"
+bootstrap4 = "*"
 
 [requires]
 python_version = "3.7"

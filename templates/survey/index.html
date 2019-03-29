@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="row" >
+    <br>
+</div>
+
+<div class="row align-items-center">
+    <h3>You interacted with the following post</h3>
+    <div class = row>
+        <!--<div class="col-5">-->
+        <img object-fit="contain" width = "40%" height = "40%" src = "https://i.ibb.co/xCzrdvY/Screen-Shot-2019-02-11-at-2-15-12-PM.png" />
+        <!--</div>-->
+        <!--<div class="col-7">-->
+        {% if latest_question_list %}
+        <ul>
+            {% for question in latest_question_list %}
+            <li>
+                <h5>{{ question.question_text }}</h5>
+                {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+                <form action="{% url 'surveyVote' question.id %}" method="post">
+                    {% csrf_token %}
+                    {% for choice in question.choice_set.all %}
+                    {% if forloop.parentloop.first %}
+                    <input type="text" name="choice" id="choice0" value="{{ choice.id }}">
+                    {% else %}
+                    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+                    {% endif %}
+                    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+                    {% endfor %}
+                </form>
+            </li>
+            <input type="submit" value="Submit">
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No questions are available.</p>
+        <!--</div>-->
+    </div>
+    {% endif %}
+</div>
+
+<div class="row" >
+    <br>
+</div>
+
+<div class="row align-items-center">
+    <h3>You interacted with the following post</h3>
+    <div class = row>
+        <!--<div class="col-5">-->
+        <img object-fit="contain" width = "40%" height = "40%" src = "https://i.ibb.co/GdGch56/Screen-Shot-2019-02-11-at-9-16-27-PM.png" />
+        <!--</div>-->
+        <!--<div class="col-7">-->
+        {% if latest_question_list %}
+        <ul>
+            {% for question in latest_question_list %}
+            <li>
+                <h5>{{ question.question_text }}</h5>
+                {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+                <form action="{% url 'surveyVote' question.id %}" method="post">
+                    {% csrf_token %}
+                    {% for choice in question.choice_set.all %}
+                    {% if forloop.parentloop.first %}
+                    <input type="text" name="choice" id="choice0" value="{{ choice.id }}">
+                    {% else %}
+                    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+                    {% endif %}
+                    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+                    {% endfor %}
+
+                </form>
+            </li>
+            <input type="submit" value="Submit">
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No questions are available.</p>
+        <!--</div>-->
+    </div>
+    {% endif %}
+</div>
+
+
+<div class="row align-items-center">
+    <h3>You interacted with the following post</h3>
+    <div class = row>
+        <!--<div class="col-5">-->
+        <img object-fit="contain" width = "40%" height = "40%" src = "https://i.ibb.co/q7VPLGq/Screen-Shot-2019-02-11-at-9-24-31-PM.png" />
+        <!--</div>-->
+        <!--<div class="col-7">-->
+        {% if latest_question_list %}
+        <ul>
+            {% for question in latest_question_list %}
+            <li>
+                <h5>{{ question.question_text }}</h5>
+                {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+                <form action="{% url 'surveyVote' question.id %}" method="post">
+                    {% csrf_token %}
+                    {% for choice in question.choice_set.all %}
+                    {% if forloop.parentloop.first %}
+                    <input type="text" name="choice" id="choice0" value="{{ choice.id }}">
+                    {% else %}
+                    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+                    {% endif %}
+                    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+
+                    {% endfor %}
+                </form>
+
+            </li>
+            <input type="submit" value="Submit">
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No questions are available.</p>
+        <!--</div>-->
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

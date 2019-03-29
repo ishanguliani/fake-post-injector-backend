@@ -1,0 +1,16 @@
+*.sqlite
+migrations
+migrations/
+*.pyc
+user_user
+user_use
+twitter_keys.py
+*.sqlite3
+.idea/
+*.class
+*.out
+*.java
+*.lock
+person_personn
+main.sqlite
+main

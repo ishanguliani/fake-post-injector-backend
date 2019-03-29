@@ -15,7 +15,7 @@ from .twitter_keys import *
 # NOTE: flush=True is just for running this script
 # with PythonAnywhere's always-on task.
 # More info: https://help.pythonanywhere.com/pages/AlwaysOnTasks/
-print('this is my twitter bot', flush=True)
+# print('this is my twitter bot', flush=True)
 
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
@@ -62,6 +62,6 @@ def reply_to_tweets():
             api.update_status(message, mention.id)
             print('tweet sent')
 
-while True:
-    reply_to_tweets()
-    time.sleep(30)
+# while True:
+#     reply_to_tweets()
+#     time.sleep(30)

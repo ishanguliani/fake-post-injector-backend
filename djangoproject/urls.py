@@ -15,18 +15,51 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from hello.views import myView
 from todo.views import todoView, addTodo, deleteTodo
 from twitter.views import twitterView
+from django.conf.urls.static import static
+from django.conf import settings
+from welcome.views import signupSuccess, signupFailed, showWelcomePage
+from form.views import showForm
+from welcome.views import showWelcomePage
+from user.views import createUser
+from django.views.generic.base import RedirectView
+# from survey.views import showSurveyView, surveyDetailView, surveyResultsView, surveyVote
+from survey.views import showSurvey, surveyDetail, surveyResults, surveyVote
+from link.views import saveOriginalLink
+
+admin.site.site_header = "Center For Cybersecurity"
+admin.site.site_title = "Center For Cybersecurity"
+admin.site.index_title = "You are viewing live data..."
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('sayHello/', myView),
     path('todo/', todoView),
     path('addTodo/', addTodo),
     path('deleteTodo/<int:todoId>/', deleteTodo),
     path('twitter/', twitterView),
     path('', twitterView, name='twitterView'),
-    path('form/', include('form.urls')),
+    path('form/', showForm, name='showForm'),
     path('person/', include('person.urls')),
+    path('addNewFacebookUser/', include('person.urls')),
+    path('survey/', showSurvey, name='showSurvey'),
+    path('survey/<int:question_id>/', surveyDetail, name='surveyDetail'),
+    path('survey/<int:question_id>/results/', surveyResults, name='surveyResults'),
+    path('survey/<int:question_id>/vote/', surveyVote, name='surveyVote'),
+    # path('survey/', showSurveyView, name='showSurveyView'),
+    # path('survey/<int:pk>/', surveyDetailView, name='surveyDetailView'),
+    # path('survey/<int:pk>/results/', surveyResultsView, name='surveyResultsView'),
+    # path('survey/<int:pk>/vote/', surveyVote, name='surveyVote'),
+    path('welcome/', showWelcomePage, name="showWelcomePage"),
+    path('signup/', createUser, name="createUser"),
+    path('signupSuccess/<int:id>', signupSuccess, name="signupSuccess"),
+    path('signupFailed/', signupFailed, name="signupFailed"),
+    path('redirect/', showWelcomePage, name="showWelcomePage"),
+    path('redirectToFacebook/',
+         RedirectView.as_view(url='https://facebook.com/')),
+path('link/saveOriginal/', saveOriginalLink, name="saveOriginalLink"),
 ]
+
+if settings.DEBUG:
+        urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+        urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
