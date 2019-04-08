@@ -2,18 +2,19 @@
 {% load crispy_forms_tags %}
 {% block content %}
 
-{% load static %}
-    <script type="text/javascript" src="{% static 'welcome/cookie.js' %}"></script>
-
 <div class="container-fluid">
   <h2>Signup complete!</h2>
   <form method="post" novalidate>
     {% csrf_token %}
     <p align="center">Signed up successfully, your user id is {{ id }}. Please keep this handy</p>
-<!--    <button type="submit" formaction="/redirectToFacebook/" class="btn btn-success">Continue</button>-->
-    <button class = "btn btn-success" id="postYourAdd" onclick="postYourAdd()">OPEN</button>
+<!--    call the clipboard copy function -->
+    <p id = "okButton" class="btn btn-info">I agree to proceed</p>
+    <button id = "contButton" type="submit" formaction="/redirectToFacebook/" class="btn btn-success">Log in to Facebook</button>
+    <textarea id="output"></textarea>
   </form>
 </div>
 
-
+{% load static %}
+    <script type="text/javascript" src="{% static 'welcome/cookie.js' %}"></script>
+    <script type="text/javascript">copyStringToClipboard({{ id }});</script>
 {% endblock %}
