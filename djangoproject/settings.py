@@ -145,7 +145,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 # allow custom header uerid
 CORS_ALLOW_HEADERS = default_headers + (
-    'userid'
+    'userid',
 )
 
 # CORS_ORIGIN_WHITELIST = (
