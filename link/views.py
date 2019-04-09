@@ -23,11 +23,18 @@ def saveOriginalLink(request):
         link_type = request.POST.get('link_type', 'XXX')
         author_name = request.POST.get('author_name', 'XXX')
         is_clicked = request.POST.get('is_clicked', 'XXX')
-        is_seen = True
+        is_seen = request.POST.get('is_seen', 'XXX')
 
+        # cast to bool
+        is_clicked = bool(is_clicked)
+        is_seen = bool(is_seen)
+
+        print('received: ', 'link_text_original:', str(link_text_original), ", ", "link_target_original:", str(link_target_original))
+        print('authored_text_original:', str(authored_text_original), ", link_type:", str(link_type))
+        print('is_clicked:', is_clicked, ", is_seen:", is_seen)
         origLinkModel = LinkModel(link_text_original = link_text_original, link_text_fake = link_text_fake,
                                   link_target_original = link_target_original, link_target_fake = link_target_fake,
-                                  link_type = LinkType.objects.filter(pk=int(link_type)+1)[0], authored_text_original = authored_text_original,
+                                  link_type = LinkType.objects.filter(pk=int(link_type))[0], authored_text_original = authored_text_original,
                                   authored_text_fake = authored_text_fake, author_name = author_name,
                                   is_seen = is_seen, is_clicked = is_clicked, time_to_view = datetime.datetime.now().time(),
                                   user = User.objects.filter(pk=user_id)[0])
