@@ -8,4 +8,4 @@ class LinkAdmin(admin.ModelAdmin):
 
 @admin.register(LinkType)
 class LinkTypeAdmin(admin.ModelAdmin):
-    list_display = ['type']
+    list_display = ['id', 'type']
