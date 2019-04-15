@@ -29,8 +29,8 @@ def saveOriginalLink(request):
         is_clicked = bool(is_clicked)
         is_seen = bool(is_seen)
 
-        print('received: ', 'link_text_original:', str(link_text_original), ", ", "link_target_original:", str(link_target_original))
-        print('authored_text_original:', str(authored_text_original), ", link_type:", str(link_type))
+        print('received: ', 'link_text_original:', str(link_text_original), ", ", "link_target_original:", str(link_target_original), end=", ")
+        print('authored_text_original:', str(authored_text_original), ", link_type:", str(link_type), end=", ")
         print('is_clicked:', is_clicked, ", is_seen:", is_seen)
         origLinkModel = LinkModel(link_text_original = link_text_original, link_text_fake = link_text_fake,
                                   link_target_original = link_target_original, link_target_fake = link_target_fake,
