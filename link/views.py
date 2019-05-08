@@ -22,16 +22,26 @@ def saveOriginalLink(request):
         authored_text_fake = request.POST.get('authored_text_fake', 'XXX')
         link_type = request.POST.get('link_type', 'XXX')
         author_name = request.POST.get('author_name', 'XXX')
-        is_clicked = request.POST.get('is_clicked', 'XXX')
-        is_seen = request.POST.get('is_seen', 'XXX')
-
-        # cast to bool
-        is_clicked = bool(is_clicked)
-        is_seen = bool(is_seen)
-
-        print('received: ', 'link_text_original:', str(link_text_original), ", ", "link_target_original:", str(link_target_original), end=", ")
-        print('authored_text_original:', str(authored_text_original), ", link_type:", str(link_type), end=", ")
+        is_clicked = request.POST.get('is_clicked', 'False')
+        is_seen = bool(request.POST.get('is_seen', 'XXX'))
+        print('received: ',
+              'link_text_original:', str(link_text_original), ", ",
+              'link_text_fake:', str(link_text_fake), ", ",
+              "link_target_original:", str(link_target_original), ", ",
+              "link_target_fake:", str(link_target_fake), ", ", end=", ")
+        print('authored_text_original:', str(authored_text_original),
+              ", link_type:", str(link_type), end=", ")
+        print('authored_text_fake:', str(authored_text_fake), end=", ")
+        print('author_name:', str(author_name), end=", ")
         print('is_clicked:', is_clicked, ", is_seen:", is_seen)
+        import re
+        if re.match("^[fF]", is_clicked):
+            print("is_clicked is false" )
+            is_clicked = False
+        else:
+            print("is_clicked is true")
+            is_clicked = True
+
         origLinkModel = LinkModel(link_text_original = link_text_original, link_text_fake = link_text_fake,
                                   link_target_original = link_target_original, link_target_fake = link_target_fake,
                                   link_type = LinkType.objects.filter(pk=int(link_type))[0], authored_text_original = authored_text_original,
