@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="row" >
+    <br>
+</div>
+
+<div class="row align-items-center">
+    <h3>You interacted with the following posts</h3>
+    <div class = row>
+        <!--<div class="col-5">-->
+        <img object-fit="contain" width = "40%" height = "40%" src = "https://i.ibb.co/xCzrdvY/Screen-Shot-2019-02-11-at-2-15-12-PM.png" />
+        <!--</div>-->
+        <!--<div class="col-7">-->
+        {% if allLinks %}
+        <ul>
+            {% for singleLink in allLinks %}
+            <li>
+                <h5>{{ singleLink.authored_text_original }}</h5>
+                <h5>{{ singleLink.author_name }}</h5>
+                <h5>{{ singleLink.link_text_original }}</h5>
+                <h5>{{ singleLink.authored_text_original }}</h5>
+
+                {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+                <form action="{% url 'surveyVote' singleLink.id %}" method="post">
+                    {% csrf_token %}
+                    {% for choice in singleLink.choice_set.all %}
+                    {% if forloop.parentloop.first %}
+                    <input type="text" name="choice" id="choice0" value="{{ choice.id }}">
+                    {% else %}
+                    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+                    {% endif %}
+                    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+                    {% endfor %}
+                </form>
+            </li>
+            <input type="submit" value="Submit">
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No links are available.</p>
+        <!--</div>-->
+    </div>
+    {% endif %}
+</div>
+
+<div class="row" >
+    <br>
+</div>
+{% endblock %}

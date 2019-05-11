@@ -25,7 +25,7 @@ from welcome.views import showWelcomePage
 from user.views import createUser
 from django.views.generic.base import RedirectView
 # from survey.views import showSurveyView, surveyDetailView, surveyResultsView, surveyVote
-from survey.views import showSurvey, surveyDetail, surveyResults, surveyVote
+from survey.views import showSurvey, showSurveyLinks, surveyDetail, surveyResults, surveyVote
 from link.views import saveOriginalLink
 
 admin.site.site_header = "Center For Cybersecurity"
@@ -43,6 +43,8 @@ urlpatterns = [
     path('person/', include('person.urls')),
     path('addNewFacebookUser/', include('person.urls')),
     path('survey/', showSurvey, name='showSurvey'),
+    path('surveyLinks/<int:id>', showSurveyLinks, name='showSurveyLinks'),
+    path('surveyLinks/', showSurveyLinks, name='showSurveyLinks'),
     path('survey/<int:question_id>/', surveyDetail, name='surveyDetail'),
     path('survey/<int:question_id>/results/', surveyResults, name='surveyResults'),
     path('survey/<int:question_id>/vote/', surveyVote, name='surveyVote'),
