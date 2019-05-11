@@ -7,4 +7,4 @@ class User(models.Model):
     attendance_id = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
-        return self.name
+        return 'id: ' + str(self.id) + ', name: ' + str(self.name) + ', email: ' + str(self.email)
