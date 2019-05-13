@@ -4,47 +4,67 @@
 <div class="row" >
     <br>
 </div>
-
-<div class="row align-items-center">
-    <h3>You interacted with the following posts</h3>
-    <div class = row>
-        <!--<div class="col-5">-->
-        <img object-fit="contain" width = "40%" height = "40%" src = "https://i.ibb.co/xCzrdvY/Screen-Shot-2019-02-11-at-2-15-12-PM.png" />
-        <!--</div>-->
-        <!--<div class="col-7">-->
-        {% if allLinks %}
-        <ul>
+        {% if allLinks  %}
             {% for singleLink in allLinks %}
-            <li>
-                <h5>{{ singleLink.authored_text_original }}</h5>
-                <h5>{{ singleLink.author_name }}</h5>
-                <h5>{{ singleLink.link_text_original }}</h5>
-                <h5>{{ singleLink.authored_text_original }}</h5>
+                <!--start the row-->
+                <div class="row align-items-center">
+                    <br>
+                    <div class = "row">
+                        <h4>You saw the following post</h4>
+                    </div>
+                    <div class = "row">
+                                <div class="col-sm-6">
+                                    Author: {{ singleLink.author_name }}<br>
+<!--                                    check if this singleLink was a genuine one or a fake one, show the image accordingly-->
+                                    {% if singleLink.link_type == 1 %}
+<!--                                        a genuine line since type == 1-->
+<!--                                        show the original image-->
+                                        <img object-fit="contain" width="80%" src = "{{ singleLink.link_image_src_original }}" /><br>
+<!--                                        show the original link text-->
+                                        {{ singleLink.link_text_original}}<br>
+<!--                                        show the original link href-->
+                                        <a href="{{ singleLink.link_target_fake}}">{{singleLink.link_target_original}}</a><br>
+                                    {% else %}
+                                        <!--                                        a genuine line since type == 1-->
+<!--                                        show the fake image-->
+                                        <img object-fit="contain" width="80%" src = "{{ singleLink.preview_image }}" /><br>
+<!--                                        show the original link text, since we are not faking any link texts anyway-->
+                                        {{ singleLink.link_text_fake}}<br>
+<!--                                        show the fake link href-->
+                                        <a href="{{ singleLink.link_target_fake}}">{{singleLink.link_target_fake}}</a><br>
+                                    {% endif %}
+                                </div>
 
-                {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-                <form action="{% url 'surveyVote' singleLink.id %}" method="post">
-                    {% csrf_token %}
-                    {% for choice in singleLink.choice_set.all %}
-                    {% if forloop.parentloop.first %}
-                    <input type="text" name="choice" id="choice0" value="{{ choice.id }}">
-                    {% else %}
-                    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
-                    {% endif %}
-                    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
-                    {% endfor %}
-                </form>
-            </li>
-            <input type="submit" value="Submit">
+                                <div class="col-sm-6">
+                                    <ul>
+                                        {% if latest_question_list %}
+                                            {% for question in latest_question_list %}
+                                                    <li>
+                                                        <h5>{{ question.question_text }}</h5>
+                                                        {% if error_message %}  <p><strong>{{ error_message }}</strong></p> {% endif %}
+                                                        <form action="{% url 'surveyVote' question.id %}" method="post">
+                                                            {% csrf_token %}
+                                                            {% for choice in question.choice_set.all %}
+                                                                {% if forloop.parentloop.first %}
+                                                                    <input type="text" name="choice" id="choice0" value="{{ choice.id }}">
+                                                                {% else %}
+                                                                    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+                                                                {% endif %}
+                                                            <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+                                                            {% endfor %}
+                                                        </form>
+                                                    </li>
+
+                                            {% endfor %}
+                                        </ul>
+                                    <input type="submit" value="Submit">
+                                        {% else %}  <p>No questions are available.</p>
+                                        {% endif %}
+                                    </div>
+                <!--end the row-->
+                    </div>
+                </div>
             {% endfor %}
-        </ul>
-        {% else %}
-        <p>No links are available.</p>
-        <!--</div>-->
-    </div>
-    {% endif %}
-</div>
-
-<div class="row" >
-    <br>
-</div>
+        {% else %}  <p>No links are available.</p>
+        {% endif %}
 {% endblock %}

@@ -1,6 +1,6 @@
 # Create your views here.
 from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, get_list_or_404, render
 from django.urls import reverse
 from .models import Question, Choice
 from user.models import User
@@ -33,7 +33,7 @@ def showSurveyLinks(request, id):
         print('showSurveyLinks(): user not found')
         return
 
-    print('showSurveyLinks(): success: user details: ', currentUser)
+    print('showSurveyLinks(): success: user details: ', str(currentUser))
 
     # get the link
     """
@@ -51,13 +51,15 @@ def showSurveyLinks(request, id):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     """
 
-    allLinks = LinkModel.objects.filter(user=currentUser)[0]
+    allLinks = get_list_or_404(LinkModel, user=currentUser)
     if not allLinks:
         print('showSurveyLinks(): allLinks not found!')
-        return
 
-    print('showSurveyLinks(): success: link details: ', allLinks)
-    return render(request, 'survey/indexLinks.html', {'allLinks': allLinks})
+    print('showSurveyLinks(): success: found ' + str(len(allLinks)) + ' links')
+
+    latest_question_list = Question.objects.order_by('-pub_date')[:5]
+
+    return render(request, 'survey/indexLinks.html', {'allLinks': allLinks, 'latest_question_list': latest_question_list})
 
 def surveyDetail(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
