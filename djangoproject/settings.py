@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'form',
     'survey',
     'link',
+    'linkPreview'
 ]
 
 MIDDLEWARE = [
