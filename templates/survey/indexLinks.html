@@ -4,67 +4,68 @@
 <div class="row" >
     <br>
 </div>
-        {% if allLinks  %}
-            {% for singleLink in allLinks %}
+        {% if questionPage  %}
                 <!--start the row-->
-                <div class="row align-items-center">
-                    <br>
-                    <div class = "row">
-                        <h4>You saw the following post</h4>
+                <div class="row align-items-center card">
+                <div class="card-body">
+                    <div class = "row card-title">
+                        You saw the following post by {{ questionPage.link_model.author_name }}
                     </div>
                     <div class = "row">
                                 <div class="col-sm-6">
-                                    Author: {{ singleLink.author_name }}<br>
-<!--                                    check if this singleLink was a genuine one or a fake one, show the image accordingly-->
-                                    {% if singleLink.link_type == 1 %}
+                                    Author: {{ questionPage.link_model.author_name}}<br>
+<!--                                    check if this questionPage.link_model was a genuine one or a fake one, show the image accordingly-->
+                                    {% if questionPage.link_model.link_type.id  == 1 %}
 <!--                                        a genuine line since type == 1-->
-<!--                                        show the original image-->
-                                        <img object-fit="contain" width="80%" src = "{{ singleLink.link_image_src_original }}" /><br>
+                                        <img class = "card-img-left"  object-fit="contain" width="80%" src = "{{ questionPage.link_model.link_image_src_original }}" /><br>
 <!--                                        show the original link text-->
-                                        {{ singleLink.link_text_original}}<br>
+                                        {{ questionPage.link_model.link_text_original}}<br>
 <!--                                        show the original link href-->
-                                        <a href="{{ singleLink.link_target_fake}}">{{singleLink.link_target_original}}</a><br>
+                                        <a href="{{ questionPage.link_model.link_target_fake}}">{{questionPage.link_model.link_target_original}}</a><br>
                                     {% else %}
-                                        <!--                                        a genuine line since type == 1-->
+                                    <p>hello</p>
 <!--                                        show the fake image-->
-                                        <img object-fit="contain" width="80%" src = "{{ singleLink.preview_image }}" /><br>
+                                        <img class = "card-img-left" object-fit="contain" width="80%" src = "{{ questionPage.link_model.preview_image }}" /><br>
 <!--                                        show the original link text, since we are not faking any link texts anyway-->
-                                        {{ singleLink.link_text_fake}}<br>
+                                        {{ questionPage.link_model.link_text_fake}}<br>
 <!--                                        show the fake link href-->
-                                        <a href="{{ singleLink.link_target_fake}}">{{singleLink.link_target_fake}}</a><br>
+                                        <a href="{{ questionPage.link_model.link_target_fake}}">{{questionPage.link_model.link_target_fake}}</a><br>
                                     {% endif %}
                                 </div>
 
-                                <div class="col-sm-6">
+
+                                <div class="col-sm-6 ">
                                     <ul>
-                                        {% if latest_question_list %}
-                                            {% for question in latest_question_list %}
+                                        {% if question_page.questionnew_set %}
+                                        showing the first question - {{question_page.questionnew_set.0}}
+                                            {% for question in question_page.questionnew_set.all %}
+                                                <form action="{% url 'surveyVoteNew' question_page.id %}" method="post">
                                                     <li>
                                                         <h5>{{ question.question_text }}</h5>
                                                         {% if error_message %}  <p><strong>{{ error_message }}</strong></p> {% endif %}
-                                                        <form action="{% url 'surveyVote' question.id %}" method="post">
                                                             {% csrf_token %}
-                                                            {% for choice in question.choice_set.all %}
-                                                                {% if forloop.parentloop.first %}
+                                                            {% for choice in question.choicenew_set.all %}
+                                                                <!-- if forloop.parentloop.first -->
+                                                                {% if question.question_type.question_type == 2 %}
                                                                     <input type="text" name="choice" id="choice0" value="{{ choice.id }}">
                                                                 {% else %}
                                                                     <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
                                                                 {% endif %}
                                                             <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
                                                             {% endfor %}
-                                                        </form>
                                                     </li>
-
+                                                    <input type="submit" value="Submit">
+                                                </form>
                                             {% endfor %}
-                                        </ul>
-                                    <input type="submit" value="Submit">
-                                        {% else %}  <p>No questions are available.</p>
+                                        {% else %}
+                                            <p>No questions are available.</p>
                                         {% endif %}
-                                    </div>
+                                    </ul>
+                                </div>
                 <!--end the row-->
                     </div>
                 </div>
-            {% endfor %}
+                </div>
         {% else %}  <p>No links are available.</p>
         {% endif %}
 {% endblock %}
