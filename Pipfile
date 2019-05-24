@@ -12,6 +12,7 @@ django-crispy-forms = "*"
 djangorestframework = "*"
 django-cors-headers = "*"
 bootstrap4 = "*"
+pillow = "*"
 
 [requires]
 python_version = "3.7"
