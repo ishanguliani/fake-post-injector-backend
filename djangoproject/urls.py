@@ -25,8 +25,10 @@ from welcome.views import showWelcomePage
 from user.views import createUser
 from django.views.generic.base import RedirectView
 # from survey.views import showSurveyView, surveyDetailView, surveyResultsView, surveyVote
-from survey.views import showSurvey, showSurveyLinks, surveyDetail, surveyResults, surveyVote
+from survey.views import showSurvey, showSurveyLinks, surveyDetail, surveyResults,surveyResultsNew, surveyVote, surveyVoteNew
+from survey.views import showSurveyLinksWithPage
 from link.views import saveOriginalLink
+from fakeLinkModel.views import getData
 
 admin.site.site_header = "Center For Cybersecurity"
 admin.site.site_title = "Center For Cybersecurity"
@@ -43,11 +45,14 @@ urlpatterns = [
     path('person/', include('person.urls')),
     path('addNewFacebookUser/', include('person.urls')),
     path('survey/', showSurvey, name='showSurvey'),
-    path('surveyLinks/<int:id>', showSurveyLinks, name='showSurveyLinks'),
+    path('surveyLinks/<int:id>/<int:id>/', showSurveyLinksWithPage, name='showSurveyLinksWithPage'),
+    path('surveyLinks/<int:id>/', showSurveyLinks, name='showSurveyLinks'),
     # path('surveyLinks/', showSurveyLinks, name='showSurveyLinks'),
     path('survey/<int:question_id>/', surveyDetail, name='surveyDetail'),
     path('survey/<int:question_id>/results/', surveyResults, name='surveyResults'),
-    path('survey/<int:question_id>/vote/', surveyVote, name='surveyVote'),
+    path('survey/<int:question_page_id>/results/', surveyResultsNew, name='surveyResultsNew'),
+    # path('survey/<int:question_id>/vote/', surveyVote, name='surveyVote'),
+    path('survey/<int:question_page_id>/vote/', surveyVoteNew, name='surveyVoteNew'),
     # path('survey/', showSurveyView, name='showSurveyView'),
     # path('survey/<int:pk>/', surveyDetailView, name='surveyDetailView'),
     # path('survey/<int:pk>/results/', surveyResultsView, name='surveyResultsView'),
@@ -59,7 +64,9 @@ urlpatterns = [
     path('redirect/', showWelcomePage, name="showWelcomePage"),
     path('redirectToFacebook/',
          RedirectView.as_view(url='https://facebook.com/')),
-path('link/saveOriginal/', saveOriginalLink, name="saveOriginalLink"),
+    path('link/saveOriginal/', saveOriginalLink, name="saveOriginalLink"),
+    # get fake links data
+    path('getFakeLinks/', getData, name="getFakeLinks"),
 ]
 
 if settings.DEBUG:

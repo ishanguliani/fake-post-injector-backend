@@ -1,6 +1,7 @@
 from django.db import models
 from user.models import User
 from django.template.defaultfilters import truncatechars
+
 class LinkType(models.Model):
     """
     What type will a link be ?
@@ -11,7 +12,7 @@ class LinkType(models.Model):
     type = models.CharField(max_length=30, blank = False, default = "genuine")
 
     def __str__(self):
-        return str(self.id) + ": " + self.type
+        return str(self.id) + ": " + str(self.type)
 
 # Create your models here.
 class LinkModel(models.Model):
@@ -30,7 +31,7 @@ class LinkModel(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     preview_title = models.CharField(max_length=1000, blank=True, default='')
     preview_description = models.CharField(max_length=2000, blank=True, default='')
-    preview_image = models.CharField(max_length=1000, blank=True, default='')
+    preview_image = models.CharField(max_length=1000, blank=True, default='https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Simple_Rectangle_-_Semi-Transparent.svg/1594px-Simple_Rectangle_-_Semi-Transparent.svg.png')
     preview_url = models.CharField(max_length=1000, blank=True, default='')
 
     @property
@@ -50,4 +51,5 @@ class LinkModel(models.Model):
         return truncatechars(self.link_image_src_original, 1000)
 
     def __str__(self):
-        return str(self.link_text_original[:25]) + '..' + ' by ' + str(self.user)
+        return "LinkModel{ " + str(self.link_text_original[:25]) + '..' + ' by ' + str(self.user.name) + " }"
+        # return str(self.link_text_original[:25]) + '..' + ' by ' + str(self.user)

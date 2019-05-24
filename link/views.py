@@ -5,6 +5,7 @@ from user.models import User
 import datetime
 from django.views.decorators.csrf import csrf_exempt
 from linkPreview.models import LinkPreviewModel, ParentLink
+from survey.models import QuestionPage, QuestionNew
 import requests, json
 # Create your views here.
 
@@ -81,18 +82,38 @@ def saveOriginalLink(request):
         print('preview_title:', newLinkPreviewModel.title, ", preview_description:", newLinkPreviewModel.description)
         print('preview_image:', newLinkPreviewModel.image, ", preview_url:", newLinkPreviewModel.url)
 
+        mUser = User.objects.filter(pk=user_id)[0]
+
         origLinkModel = LinkModel(link_text_original = link_text_original, link_text_fake = link_text_fake,
                                   link_target_original = link_target_original, link_target_fake = link_target_fake, link_image_src_original = link_image_src_original,
                                   link_type = LinkType.objects.filter(pk=int(link_type))[0], authored_text_original = authored_text_original,
                                   authored_text_fake = authored_text_fake, author_name = author_name,
                                   is_seen = is_seen, is_clicked = is_clicked, time_to_view = datetime.datetime.now().time(),
-                                  user = User.objects.filter(pk=user_id)[0],
+                                  user = mUser,
                                   preview_title  = newLinkPreviewModel.title,
                                   preview_description = newLinkPreviewModel.description,
                                   preview_image = newLinkPreviewModel.image,
                                   preview_url = newLinkPreviewModel.url)
         # save the model
         origLinkModel.save()
+
+        print("XXX: creating new page")
+        # also save a new question page
+        # create a new question page and add to question page list
+        newQuestionPage = QuestionPage(user=mUser, link_model=origLinkModel)
+        # save this question page
+        newQuestionPage.save()
+        print("XXX: created and saved new page: " + str(newQuestionPage))
+        # next task it to link questions with this newQuestionPage
+        # since Question model has a many to many relationship with QuestionPage,
+        # we can just add this page as a ManyToMany field to all the questions
+        for question in QuestionNew.objects.all():
+            print("XXX: adding new page to question: " + str(question))
+            question.question_page.add(newQuestionPage)
+            print("XXX: added successfully!")
+
+        print("XXX: created new page and linked question: " + str(newQuestionPage))
+
         return JsonResponse({'success': True, 'message': 'Link saved successfully'})
 
     # otherwise return False

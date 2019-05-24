@@ -36,12 +36,8 @@
                                 <div class="col-sm-6 ">
                                     <ul>
                                         {% if questionPage.questionnew_set %}
-<!--                                        showing the first question - {{questionPage.questionnew_set.first.question_text}}-->
-<!--                                        showing the first question - {{questionPage.questionnew_set|get_at_index:0}}-->
-<!--                                        showing the second question - {{questionPage.questionnew_set|get_at_index:1}}-->
-<!--                                        showing the third question - {{questionPage.questionnew_set|get_at_index:3}}-->
                                         <form action="{% url 'surveyVoteNew' questionPage.id %}" method="post">
-                                            {% for question in questionPage.questionnew_set.all %}
+                                            {% with question=questionPage.questionnew_set|get_at_index:0 %}
                                                     <li>
                                                         <h5>{{ question.question_text }}</h5>
                                                         {% if error_message %}  <p><strong>{{ error_message }}</strong></p> {% endif %}
@@ -49,19 +45,51 @@
                                                             {% for choice in question.choicenew_set.all %}
                                                                 <!-- if forloop.parentloop.first -->
                                                                 {% if question.question_type.question_type == 2 %}
-                                                                    <input type="text" name="choice_for_question_id_{{question.id}}" id="choice0" value="{{ choice.id }}">
+                                                                    <input type="text" name="choice" id="choice0" value="{{ choice.id }}">
                                                                 {% else %}
-                                                                    <input type="radio" name="choice_for_question_id_{{question.id}}" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+                                                                    <input type="radio" name="choice" id="choice{{forloop.counter}}" value="{{ choice.id }}">
                                                                 {% endif %}
                                                             <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
                                                             {% endfor %}
                                                     </li>
-                                            {% endfor %}
-                                            <input type="submit" value="Submit">
-                                            </form>
-                                        {% else %}
-                                            <p>No questions are available.</p>
-                                        {% endif %}
+                                            {% endwith %}
+                                            {% with question=questionPage.questionnew_set|get_at_index:1 %}
+                                                    <li>
+                                                        <h5>{{ question.question_text }}</h5>
+                                                        {% if error_message %}  <p><strong>{{ error_message }}</strong></p> {% endif %}
+                                                            {% csrf_token %}
+                                                            {% for choice in question.choicenew_set.all %}
+                                                                <!-- if forloop.parentloop.first -->
+                                                                {% if question.question_type.question_type == 2 %}
+                                                                    <input type="text" name="choice" id="choice1" value="{{ choice.id }}">
+                                                                {% else %}
+                                                                    <input type="radio" name="choice" id="choice{{forloop.counter }}" value="{{ choice.id }}">
+                                                                {% endif %}
+                                                            <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+                                                            {% endfor %}
+                                                    </li>
+                                            {% endwith %}
+                                            {% with question=questionPage.questionnew_set|get_at_index:2 %}
+                                                    <li>
+                                                        <h5>{{ question.question_text }}</h5>
+                                                        {% if error_message %}  <p><strong>{{ error_message }}</strong></p> {% endif %}
+                                                            {% csrf_token %}
+                                                            {% for choice in question.choicenew_set.all %}
+                                                                <!-- if forloop.parentloop.first -->
+                                                                {% if question.question_type.question_type == 2 %}
+                                                                    <input type="text" name="choice" id="choice2" value="{{ choice.id }}">
+                                                                {% else %}
+                                                                    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+                                                                {% endif %}
+                                                            <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+                                                            {% endfor %}
+                                                    </li>
+                                                    <input type="submit" value="Submit">
+                                            {% endwith %}
+                                                </form>
+                                    {% else %}
+                                        <p>No questions are available.</p>
+                                    {% endif %}
                                     </ul>
                                 </div>
                 <!--end the row-->

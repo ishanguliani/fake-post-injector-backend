@@ -18,7 +18,7 @@
             <li>
                 <h5>{{ question.question_text }}</h5>
                 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-                <form action="{% url 'surveyVote' question.id %}" method="post">
+                <form action="{% url 'surveyVoteNew' question.id %}" method="post">
                     {% csrf_token %}
                     {% for choice in question.choice_set.all %}
                     {% if forloop.parentloop.first %}
@@ -57,7 +57,7 @@
             <li>
                 <h5>{{ question.question_text }}</h5>
                 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-                <form action="{% url 'surveyVote' question.id %}" method="post">
+                <form action="{% url 'surveyVoteNew' question.id %}" method="post">
                     {% csrf_token %}
                     {% for choice in question.choice_set.all %}
                     {% if forloop.parentloop.first %}
@@ -94,7 +94,7 @@
             <li>
                 <h5>{{ question.question_text }}</h5>
                 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-                <form action="{% url 'surveyVote' question.id %}" method="post">
+                <form action="{% url 'surveyVoteNew' question.id %}" method="post">
                     {% csrf_token %}
                     {% for choice in question.choice_set.all %}
                     {% if forloop.parentloop.first %}

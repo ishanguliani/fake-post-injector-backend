@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'form',
     'survey',
     'link',
-    'linkPreview'
+    'linkPreview',
+    'fakeLinkModel',
 ]
 
 MIDDLEWARE = [
@@ -74,7 +75,12 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # 'survey.apptemplates.load_setting',
             ],
+
+            # 'libraries': {
+            #     'survey_filters': 'survey.templatetags.survey_filters',
+            # }
         },
     },
 ]
