@@ -1,9 +1,18 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
-  <form method="post" novalidate>
-    {% csrf_token %}
-      <p align="center">Sign up failed, retry</p>
-    <button type="submit" formaction="/redirect/" class="btn btn-success">Continue</button>
-  </form>
+
+<div class="container-fluid">
+    <div class = "card mt-3 p-3 text-white bg-danger mb-3 text-center">
+        <h5 class="card-header">Oops!</h5>
+        <div class="card-body">
+            <form method="post" novalidate class="card-text">
+                {% csrf_token %}
+                <h6>That did not go right! How about trying to sign up once again?</h6>
+                <!--    call the clipboard copy function -->
+                <button type="submit" formaction="/redirect/" class="btn btn-primary">Try again</button>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

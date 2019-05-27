@@ -3,15 +3,19 @@
 {% block content %}
 
 <div class="container-fluid">
-  <h2>Signup complete!</h2>
-  <form method="post" novalidate>
-    {% csrf_token %}
-    <p align="center">Signed up successfully, your user id is {{ id }}. Please keep this handy</p>
-<!--    call the clipboard copy function -->
-    <p id = "okButton" class="btn btn-info">I agree to proceed</p>
-    <button id = "contButton" type="submit" formaction="/redirectToFacebook/" class="btn btn-success">Log in to Facebook</button>
-    <textarea id="output" hidden></textarea>
-  </form>
+    <div class = "card mt-3 p-3 text-white bg-success mb-3 text-center">
+        <h5 class="card-header">Signup complete!</h5>
+        <div class="card-body">
+            <form method="post" novalidate class="card-text">
+                {% csrf_token %}
+                <h6>Signed up successfully, your user id is {{ id }}. Please keep this handy</h6>
+                <!--    call the clipboard copy function -->
+                <p id = "okButton" class="btn btn-primary p-3 mt-5">I agree to proceed</p>
+                <button id = "contButton" type="submit" formaction="/redirectToFacebook/" class="card-footer btn-secondary">Proceed to Facebook</button>
+                <textarea id="output" hidden></textarea>
+            </form>
+        </div>
+    </div>
 </div>
 
 {% load static %}
