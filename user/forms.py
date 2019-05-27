@@ -7,12 +7,15 @@ class UserModelForm(forms.ModelForm):
         fields = ['name', 'email', 'attendance_id']
 
         labels = {
-            'name': 'Your name',
-            'email': 'Your email',
-            'attendance_id': 'Attendance id provided by the survey incharge',
+            'name': 'What do we call you? (Name)',
+            'email': 'How do we reach you? (Email id)',
+            'attendance_id': 'Mention the attendance id provided to you today',
         }
         help_texts = {
-            'name': 'Your name',
-            'email': 'Your email',
-            'attendance_id': 'Attendance id provided by the survey incharge',
+            'name': 'Type your name',
+            'email': 'Type your email',
+            # 'attendance_id': 'Attendance id provided by the survey incharge',
         }
+
+
+
