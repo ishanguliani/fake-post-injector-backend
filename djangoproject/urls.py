@@ -25,41 +25,50 @@ from welcome.views import showWelcomePage
 from user.views import createUser
 from django.views.generic.base import RedirectView
 # from survey.views import showSurveyView, surveyDetailView, surveyResultsView, surveyVote
-from survey.views import showSurvey, showSurveyLinks, surveyDetail, surveyResults, surveyVote
+from survey.views import showSurveyLinks, surveyResults,surveyResultsNew, surveyVote, surveyVoteNew, surveyVoteNewBypass
+from survey.views import showSurveyLinksWithPage
 from link.views import saveOriginalLink
+from fakeLinkModel.views import getData
 
 admin.site.site_header = "Center For Cybersecurity"
 admin.site.site_title = "Center For Cybersecurity"
 admin.site.index_title = "You are viewing live data..."
 
 urlpatterns = [
+    path('welcome/', showWelcomePage, name="showWelcomePage"),
+    path('', showWelcomePage, name="showWelcomePage"),
     path('admin/', admin.site.urls),
     path('todo/', todoView),
     path('addTodo/', addTodo),
     path('deleteTodo/<int:todoId>/', deleteTodo),
     path('twitter/', twitterView),
-    path('', twitterView, name='twitterView'),
+    # path('', twitterView, name='twitterView'),
     path('form/', showForm, name='showForm'),
     path('person/', include('person.urls')),
     path('addNewFacebookUser/', include('person.urls')),
-    path('survey/', showSurvey, name='showSurvey'),
-    path('surveyLinks/<int:id>', showSurveyLinks, name='showSurveyLinks'),
+    # path('survey/', showSurvey, name='showSurvey'),
+    path('surveyLinks/<int:userId>/<int:pageNumber>/', showSurveyLinksWithPage, name='showSurveyLinksWithPage'),
+    path('surveyLinks/<int:id>/', showSurveyLinks, name='showSurveyLinks'),
     # path('surveyLinks/', showSurveyLinks, name='showSurveyLinks'),
-    path('survey/<int:question_id>/', surveyDetail, name='surveyDetail'),
+    # path('survey/<int:question_id>/', surveyDetail, name='surveyDetail'),
     path('survey/<int:question_id>/results/', surveyResults, name='surveyResults'),
-    path('survey/<int:question_id>/vote/', surveyVote, name='surveyVote'),
+    path('survey/<int:question_page_id>/results/', surveyResultsNew, name='surveyResultsNew'),
+    # path('survey/<int:question_id>/vote/', surveyVote, name='surveyVote'),
+    path('survey/<int:question_page_id>/<int:page_number>/', surveyVoteNew, name='surveyVoteNew'),
+    path('survey/<int:question_page_id>/<int:page_number>/<int:bypass>/', surveyVoteNewBypass, name='surveyVoteNewBypass'),
     # path('survey/', showSurveyView, name='showSurveyView'),
     # path('survey/<int:pk>/', surveyDetailView, name='surveyDetailView'),
     # path('survey/<int:pk>/results/', surveyResultsView, name='surveyResultsView'),
     # path('survey/<int:pk>/vote/', surveyVote, name='surveyVote'),
-    path('welcome/', showWelcomePage, name="showWelcomePage"),
     path('signup/', createUser, name="createUser"),
     path('signupSuccess/<int:id>', signupSuccess, name="signupSuccess"),
     path('signupFailed/', signupFailed, name="signupFailed"),
     path('redirect/', showWelcomePage, name="showWelcomePage"),
     path('redirectToFacebook/',
          RedirectView.as_view(url='https://facebook.com/')),
-path('link/saveOriginal/', saveOriginalLink, name="saveOriginalLink"),
+    path('link/saveOriginal/', saveOriginalLink, name="saveOriginalLink"),
+    # get fake links data
+    path('getFakeLinks/', getData, name="getFakeLinks"),
 ]
 
 if settings.DEBUG:

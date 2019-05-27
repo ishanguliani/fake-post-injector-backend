@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="row" >
+    <br>
+</div>
+        {% if allLinks  %}
+            {% for singleLink in allLinks %}
+                <!--start the row-->
+                <div class="row align-items-center card">
+                <div class="card-body">
+                    <div class = "row card-title">
+                        You saw the following post by {{ singleLink.author_name }}
+                    </div>
+                    <div class = "row card-body">
+                                <div class="col-sm-6">
+                                    Author: {{ singleLink.author_name}}<br>
+<!--                                    check if this singleLink was a genuine one or a fake one, show the image accordingly-->
+                                    {% if singleLink.link_type.id  == 1 %}
+<!--                                        a genuine line since type == 1-->
+                                        <img class = "card-img-left"  object-fit="contain" width="80%" src = "{{ singleLink.link_image_src_original }}" /><br>
+<!--                                        show the original link text-->
+                                        {{ singleLink.link_text_original}}<br>
+<!--                                        show the original link href-->
+                                        <a href="{{ singleLink.link_target_fake}}">{{singleLink.link_target_original}}</a><br>
+                                    {% else %}
+                                    <p>hello</p>
+<!--                                        show the fake image-->
+                                        <img class = "card-img-left" object-fit="contain" width="80%" src = "{{ singleLink.preview_image }}" /><br>
+<!--                                        show the original link text, since we are not faking any link texts anyway-->
+                                        {{ singleLink.link_text_fake}}<br>
+<!--                                        show the fake link href-->
+                                        <a href="{{ singleLink.link_target_fake}}">{{singleLink.link_target_fake}}</a><br>
+                                    {% endif %}
+                                </div>
+
+                                <div class="col-sm-6 ">
+                                    <ul>
+                                        {% if latest_question_list %}
+                                                {% for question in latest_question_list %}
+                                                    <form action="{% url 'surveyVoteNew' question.id %}" method="post">
+
+                                                        <li>
+                                                            <h5>{{ question.question_text }}</h5>
+                                                            {% if error_message %}  <p><strong>{{ error_message }}</strong></p> {% endif %}
+                                                                {% csrf_token %}
+                                                                {% for choice in question.choice_set.all %}
+                                                                    <!-- if forloop.parentloop.first -->
+                                                                    {% if question.question_type.question_type == 2 %}
+                                                                        <input type="text" name="choice" id="choice0" value="{{ choice.id }}">
+                                                                    {% else %}
+                                                                        <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+                                                                    {% endif %}
+                                                                <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+                                                                {% endfor %}
+                                                        </li>
+
+                                            <input type="submit" value="Submit">
+                                        </form>
+                                        {% endfor %}
+                                            {% else %}  <p>No questions are available.</p>
+                                            {% endif %}
+                                    </ul>
+                                </div>
+                <!--end the row-->
+                    </div>
+                </div>
+                </div>
+            {% endfor %}
+        {% else %}  <p>No links are available.</p>
+        {% endif %}
+{% endblock %}
