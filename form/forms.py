@@ -6,10 +6,10 @@ class ProductModelForm(forms.ModelForm):
         model = Product
         fields = ['title', 'description', ]
         labels = {
-            'title': 'Your name',
-            'descrption': 'Your email',
+            'title': 'What do we call you?',
+            'descrption': 'Type your name here',
         }
         help_texts = {
-            'title': 'Your name',
-            'description': 'Your email',
+            'title': 'How do we reach you?',
+            'description': 'Type your email here',
         }
