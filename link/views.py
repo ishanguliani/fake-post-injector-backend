@@ -1,11 +1,15 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+from link.QUESTIONS import questions
 from .models import LinkModel, LinkType
 from user.models import User
 import datetime
 from django.views.decorators.csrf import csrf_exempt
 from linkPreview.models import LinkPreviewModel, ParentLink
+from survey.models import QuestionPage, QuestionNew, QuestionType, ChoiceNew
 import requests, json
+from django.db import transaction, IntegrityError
+
 # Create your views here.
 
 PREVIEW_BASE_URL = "http://api.linkpreview.net/?key=5cd32a757565b4e17f2a258effb8ae350f8a8062d9a4c&q="
@@ -81,18 +85,142 @@ def saveOriginalLink(request):
         print('preview_title:', newLinkPreviewModel.title, ", preview_description:", newLinkPreviewModel.description)
         print('preview_image:', newLinkPreviewModel.image, ", preview_url:", newLinkPreviewModel.url)
 
+        mUser = User.objects.filter(pk=user_id)[0]
+
         origLinkModel = LinkModel(link_text_original = link_text_original, link_text_fake = link_text_fake,
                                   link_target_original = link_target_original, link_target_fake = link_target_fake, link_image_src_original = link_image_src_original,
                                   link_type = LinkType.objects.filter(pk=int(link_type))[0], authored_text_original = authored_text_original,
                                   authored_text_fake = authored_text_fake, author_name = author_name,
                                   is_seen = is_seen, is_clicked = is_clicked, time_to_view = datetime.datetime.now().time(),
-                                  user = User.objects.filter(pk=user_id)[0],
+                                  user = mUser,
                                   preview_title  = newLinkPreviewModel.title,
                                   preview_description = newLinkPreviewModel.description,
                                   preview_image = newLinkPreviewModel.image,
                                   preview_url = newLinkPreviewModel.url)
         # save the model
         origLinkModel.save()
+
+        print("XXX: creating new page")
+        # also save a new question page
+        # create a new question page and add to question page list
+        newQuestionPage = QuestionPage(user=mUser, link_model=origLinkModel)
+        # save this question page
+        newQuestionPage.save()
+        print("XXX: created and saved new page: " + str(newQuestionPage))
+        # next task it to link questions with this newQuestionPage
+        # since Question model has a many to many relationship with QuestionPage,
+        # we can just add this page as a ManyToMany field to all the questions
+
+        # XXX
+        # create and add new questions
+
+        # create and add new questions to this page
+        # newQuestion1 = QuestionNew(question_text=questions[0],
+        #                           question_type=QuestionType.objects.get(question_type=1),
+        #                           question_page=newQuestionPage)
+        #
+        # # newQuestion1.save()
+        # newQuestion2 = QuestionNew(question_text=questions[1],
+        #                            question_type=QuestionType.objects.get(question_type=1),
+        #                            question_page=newQuestionPage)
+        # # newQuestion2.save()
+        # newQuestion3 = QuestionNew(question_text=questions[2],
+        #                            question_type=QuestionType.objects.get(question_type=2),
+        #                            question_page=newQuestionPage)
+        # # newQuestion3.save()
+        # newQuestion4 = QuestionNew(question_text=questions[3],
+        #                            question_type=QuestionType.objects.get(question_type=1),
+        #                            question_page=newQuestionPage)
+        # newQuestion4.save()
+        # QuestionNew.objects.bulk_create([newQuestion1, newQuestion2, newQuestion3, newQuestion4])
+
+
+        # newQuestion1.save()
+        # newQuestion2.save()
+        # newQuestion3.save()
+        # newQuestion4.save()
+
+        # try:
+        #     with transaction.atomic():
+        #         newQuestion1.save()
+        #         newQuestion2.save()
+        #         newQuestion3.save()
+        #         newQuestion4.save()
+        # except IntegrityError:
+        #     print("FAILED1: there has been an error")
+
+        # print("XXX: saved questions[0]")
+        # newChoice11 = ChoiceNew(question=newQuestion1, choice_text="Entertainment")
+        # print("newChoice11 id: " + newChoice11.question.question_text)
+        # newChoice12 = ChoiceNew(question=newQuestion1, choice_text="News")
+        # newChoice13 = ChoiceNew(question=newQuestion1, choice_text="Sports")
+        # newChoice14 = ChoiceNew(question=newQuestion1, choice_text="Interactive")
+        # newChoice15 = ChoiceNew(question=newQuestion1, choice_text="Public page")
+        # # newChoice11.save()
+        # # newChoice12.save()
+        # # newChoice13.save()
+        # # newChoice14.save()
+        # # newChoice15.save()
+        # print("XXX: saved 5 choices")
+        #
+        #
+        # print("XXX: saved questions[1]")
+        # newChoice21 = ChoiceNew(question=newQuestion2, choice_text="Spouse, Boyfriend/Girlfriend")
+        # newChoice22 = ChoiceNew(question=newQuestion2, choice_text="Parents")
+        # newChoice23 = ChoiceNew(question=newQuestion2, choice_text="Acquaintance")
+        # newChoice24 = ChoiceNew(question=newQuestion2, choice_text="Close friends")
+        # # newChoice21.save()
+        # # newChoice22.save()
+        # # newChoice23.save()
+        # # newChoice24.save()
+        # print("XXX: saved 4 choices")
+        #
+        #
+        # print("XXX: saved questions[2]")
+        # newChoice31 = ChoiceNew(question=newQuestion3, choice_text="type reason here")
+        # # newChoice31.save()
+        # print("XXX: saved 1 choice")
+        #
+        # print("XXX: saved questions[3]")
+        # newChoice41 = ChoiceNew(question=newQuestion4, choice_text="Yes")
+        # newChoice42 = ChoiceNew(question=newQuestion4, choice_text="No")
+        # newChoice43 = ChoiceNew(question=newQuestion4, choice_text="Not sure")
+        # # newChoice41.save()
+        # # newChoice42.save()
+        # # newChoice43.save()
+        # print("XXX: saved 3 choices")
+        #
+        #
+        # # try:
+        # #     with transaction.atomic():
+        # # newChoice11.save()
+        #         # newChoice12.save()
+        #         # newChoice13.save()
+        #         # newChoice14.save()
+        #         # newChoice15.save()
+        #         # newChoice21.save()
+        #         # newChoice22.save()
+        #         # newChoice23.save()
+        #         # newChoice24.save()
+        #         # newChoice31.save()
+        #         # newChoice41.save()
+        #         # newChoice42.save()
+        #         # newChoice43.save()
+        # # except IntegrityError:
+        # #     print("FAILED2: there has been an error")
+        #
+        # # ChoiceNew.objects.bulk_create([newChoice11, newChoice12, newChoice13, newChoice14, newChoice15, newChoice21, newChoice22, newChoice23, newChoice24, newChoice31, newChoice41, newChoice42, newChoice43])
+        # # print("XXX: created and saved new page: " + str(newQuestionPage))
+        # # for question in QuestionNew.objects.all():
+        # #     print("XXX: adding new page to question: " + str(question))
+        # #     # XXX
+        # #     # question.question_page.add(newQuestionPage)
+        # #     question.question_page.add(newQuestionPage)
+
+        # print("XXX: added questionPage, questions and choices successfully!")
+        print("XXX: added new empty questionPage successfully!")
+        # print("XXX: created new page and linked question: " + str(newQuestionPage))
+
         return JsonResponse({'success': True, 'message': 'Link saved successfully'})
 
     # otherwise return False
