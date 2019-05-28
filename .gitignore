@@ -15,3 +15,5 @@ person_personn
 main.sqlite
 main
 *__init__.py
+static/
+media/
