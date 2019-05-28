@@ -177,7 +177,7 @@ def showSurveyLinksWithPage(request, userId, pageNumber):
             newChoice12 = ChoiceNew(question=newQuestion1, choice_text="News", votes=0, is_selected=False)
             newChoice13 = ChoiceNew(question=newQuestion1, choice_text="Sports", votes=0, is_selected=False)
             newChoice14 = ChoiceNew(question=newQuestion1, choice_text="Interactive", votes=0, is_selected=False)
-            newChoice15 = ChoiceNew(question=newQuestion1, choice_text="Public page", votes=0, is_selected=False)
+            # newChoice15 = ChoiceNew(question=newQuestion1, choice_text="Public page", votes=0, is_selected=False)
 
             try:
                 with transaction.atomic():
@@ -189,8 +189,8 @@ def showSurveyLinksWithPage(request, userId, pageNumber):
                     print("XXX: newChoice13.save() OK")
                     newChoice14.save()
                     print("XXX: newChoice14.save() OK")
-                    newChoice15.save()
-                    print("XXX: newChoice15.save() OK")
+                    # newChoice15.save()
+                    # print("XXX: newChoice15.save() OK")
             except IntegrityError:
                 print("FAILED1: there has been an error")
 
@@ -200,6 +200,7 @@ def showSurveyLinksWithPage(request, userId, pageNumber):
             newChoice22 = ChoiceNew(question=newQuestion2, choice_text="Parents", votes=0, is_selected=False)
             newChoice23 = ChoiceNew(question=newQuestion2, choice_text="Acquaintance", votes=0, is_selected=False)
             newChoice24 = ChoiceNew(question=newQuestion2, choice_text="Close friends", votes=0, is_selected=False)
+            newChoice25 = ChoiceNew(question=newQuestion1, choice_text="Public page", votes=0, is_selected=False)
 
             try:
                 with transaction.atomic():
@@ -211,6 +212,8 @@ def showSurveyLinksWithPage(request, userId, pageNumber):
                     print("XXX: newChoice23.save() OK")
                     newChoice24.save()
                     print("XXX: newChoice24.save() OK")
+                    newChoice25.save()
+                    print("XXX: newChoice25.save() OK")
             except IntegrityError:
                 print("FAILED2: there has been an error")
 
@@ -244,9 +247,9 @@ def showSurveyLinksWithPage(request, userId, pageNumber):
                 print("FAILED4: there has been an error")
 
     # if this question has already been answered then just go to the next page
-    # if currentQuestionPage.is_answered:
-    #     print("showSurveyLinksWithPage: redirecting: already answered")
-    #     return HttpResponseRedirect(reverse('showSurveyLinksWithPage', args=(userId, int(pageNumber) + 1)))
+    if currentQuestionPage.is_answered:
+        print("showSurveyLinksWithPage: redirecting: already answered")
+        return HttpResponseRedirect(reverse('showSurveyLinksWithPage', args=(userId, int(pageNumber) + 1)))
     # print("showSurveyLinksWithPage: currentPage : ", str(currentQuestionPage))
     print("showSurveyLinksWithPage: questions on this page : total : " + str(len(currentQuestionPage.questionnew_set.all())))
     return render(request, 'survey/indexLinks.html', {'questionPage': currentQuestionPage, 'pageNumber':pageNumber})
