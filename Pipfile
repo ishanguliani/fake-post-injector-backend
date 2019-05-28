@@ -13,6 +13,7 @@ djangorestframework = "*"
 django-cors-headers = "*"
 bootstrap4 = "*"
 pillow = "*"
+django-import-export = "*"
 
 [requires]
 python_version = "3.7"

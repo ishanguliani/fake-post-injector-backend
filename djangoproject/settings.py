@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'link',
     'linkPreview',
     'fakeLinkModel',
+    'import_export',
 ]
 
 MIDDLEWARE = [
