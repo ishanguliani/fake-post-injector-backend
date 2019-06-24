@@ -18,3 +18,9 @@ python3 manage.py migrate
 `python3 manage.py collectstatic`
 #### start the server
 `python3 manage.py runserver`
+
+#### the server should now be running on 
+```
+127.0.0.1 OR
+localhost://
+```
