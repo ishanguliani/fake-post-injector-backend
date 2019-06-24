@@ -1,4 +1,4 @@
-chrome extension that performs fake post injection in Facebook timeline
+backend for chrome extension that performs fake post injection in Facebook timeline
 
 To fire up the server have `python3` and `pipenv` installed.
 
