@@ -9,8 +9,11 @@ backend for chrome extension that performs fake post injection in Facebook timel
 #### install dependencies
 `pipenv install`
 #### set up database locally
-`python3 manage.py makemigrations`
-`python3 manage.py migrate`
+```
+python3 manage.py makemigrations 
+python3 manage.py migrate
+```
+
 #### set up static files locally
 `python3 manage.py collectstatic`
 #### start the server
