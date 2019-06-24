@@ -1,6 +1,7 @@
 backend for chrome extension that performs fake post injection in Facebook timeline
 
-To fire up the server have `python3` and `pipenv` installed.
+### REQUIREMENT
+#### To fire up the server have `python3` and `pipenv` installed.
 
 ### open terminal and cd to the project root directory 
 #### start virtual environment
