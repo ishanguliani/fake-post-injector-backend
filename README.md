@@ -1,4 +1,5 @@
-backend for chrome extension that performs fake post injection in Facebook timeline
+# What does this project do
+django, sqlite3 based backend system for a google chrome extension that performs fake post injection in Facebook timeline and then conducts a survey on user experience.
 
 # SCREENSHOTS 
 
