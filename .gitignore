@@ -1,6 +1,4 @@
 *.sqlite
-migrations
-migrations/
 *.pyc
 user_user
 user_use
