@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from todo.views import todoView, addTodo, deleteTodo
-from twitter.views import twitterView
+# from twitter.views import twitterView
 from django.conf.urls.static import static
 from django.conf import settings
 from welcome.views import signupSuccess, signupFailed, showWelcomePage
@@ -41,7 +41,7 @@ urlpatterns = [
     path('todo/', todoView),
     path('addTodo/', addTodo),
     path('deleteTodo/<int:todoId>/', deleteTodo),
-    path('twitter/', twitterView),
+    # path('twitter/', twitterView),
     # path('', twitterView, name='twitterView'),
     path('form/', showForm, name='showForm'),
     path('person/', include('person.urls')),
