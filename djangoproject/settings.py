@@ -26,7 +26,7 @@ SECRET_KEY = 'b#xnq=2+bm6v$89cc6w(50s%izvbc48e&py^)8br7lr@a$oc)e'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['34.67.64.196', 'seng-research.com']
 
 # Application definition
 
@@ -137,16 +137,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 # take care of static files
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 # adding media
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static")
-]
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, "static")
+# ]
 
 # allow cross origin resource access
 CORS_ORIGIN_ALLOW_ALL = True
@@ -157,7 +157,6 @@ CORS_ALLOW_HEADERS = default_headers + (
 )
 
 # CORS_ORIGIN_WHITELIST = (
-#     'http://localhost:8000',
-#     'http://127.0.0.1:8000',
+#          'seng-research.com'
 # )
 
