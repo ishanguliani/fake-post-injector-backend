@@ -17,4 +17,4 @@ class Configuration(models.Model):
     should_show_red_banner_for_injected_posts = models.BooleanField(default=False, blank=True)
 
     def __str__(self):
-        return "chances of cloning: " + str(self.chances_of_cloning) + ", show red banner: " + str(should_show_red_banner_for_injected_posts)
+        return "chances of cloning: " + str(self.chances_of_cloning) + ", show red banner: " + str(self.should_show_red_banner_for_injected_posts)
