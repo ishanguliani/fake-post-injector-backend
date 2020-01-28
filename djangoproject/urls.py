@@ -29,6 +29,7 @@ from survey.views import showSurveyLinks, surveyResults,surveyResultsNew, survey
 from survey.views import showSurveyLinksWithPage
 from link.views import saveOriginalLink
 from fakeLinkModel.views import getData
+from configuration.views import getConfiguration
 
 admin.site.site_header = "Center For Cybersecurity"
 admin.site.site_title = "Center For Cybersecurity"
@@ -69,6 +70,7 @@ urlpatterns = [
     path('link/saveOriginal/', saveOriginalLink, name="saveOriginalLink"),
     # get fake links data
     path('getFakeLinks/', getData, name="getFakeLinks"),
+    path('getConfiguration/', getConfiguration, name="getConfiguration"),
 ]
 
 if settings.DEBUG:
