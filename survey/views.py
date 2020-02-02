@@ -108,14 +108,14 @@ def showSurveyLinks(request, id):
 
     # return render(request, 'survey/indexLinks.html', {'allLinks': allLinks, 'latest_question_list': latest_question_list})
 
-def showSurveyLinksWithPage(request, userId, pageNumber):
+def showSurveyLinksWithPage(request, userId, pageNumber, showAlert = 0):
     """
     :param request:
     :param userId: the user id which is currently taking the survey
     :param pageNumber:  page numbers are 0 indexed
     :return:
     """
-    print('entered showSurveyLinksWithPage() with id:', str(userId), "and pageNumber:", str(pageNumber))
+    print('entered showSurveyLinksWithPage() with id:', str(userId), "and pageNumber:", str(pageNumber), ", and showAlert: " + str(showAlert))
     if not userId:
         print('showSurveyLinksWithPage(): no id received')
         return
@@ -249,10 +249,10 @@ def showSurveyLinksWithPage(request, userId, pageNumber):
     # if this question has already been answered then just go to the next page
     if currentQuestionPage.is_answered:
         print("showSurveyLinksWithPage: redirecting: already answered")
-        return HttpResponseRedirect(reverse('showSurveyLinksWithPage', args=(userId, int(pageNumber) + 1)))
+        return HttpResponseRedirect(reverse('showSurveyLinksWithPage', args=(userId, int(pageNumber) + 1, 0)))
     # print("showSurveyLinksWithPage: currentPage : ", str(currentQuestionPage))
     print("showSurveyLinksWithPage: questions on this page : total : " + str(len(currentQuestionPage.questionnew_set.all())))
-    return render(request, 'survey/indexLinks.html', {'questionPage': currentQuestionPage, 'pageNumber':pageNumber})
+    return render(request, 'survey/indexLinks.html', {'questionPage': currentQuestionPage, 'pageNumber':pageNumber, 'showAlert': showAlert})
 
 # def surveyDetail(request, question_id):
 #     # XXX
@@ -351,7 +351,7 @@ def surveyVoteNew(request, question_page_id, page_number):
         #     'question': questionPage,
         #     'error_message': "You didn't select a choice.",
         # })
-        return HttpResponseRedirect(reverse('showSurveyLinksWithPage', args=(currentUserId, int(page_number))))
+        return HttpResponseRedirect(reverse('showSurveyLinksWithPage', args=(currentUserId, int(page_number), 1)))
     else:
 
         # time to save this QuestionPage with all the answered questions
@@ -395,11 +395,11 @@ def surveyVoteNew(request, question_page_id, page_number):
         # return HttpResponseRedirect(reverse('surveyResultsNew', args=(questionPage.id,)))
         # pass the next page
         # return HttpResponseRedirect(reverse('showSurveyLinksWithPage', args=(questionPage.id, int(pageNumber)+1)))
-        return HttpResponseRedirect(reverse('showSurveyLinksWithPage', args=(currentUserId, int(page_number) + 1)))
+        return HttpResponseRedirect(reverse('showSurveyLinksWithPage', args=(currentUserId, int(page_number) + 1, 0)))
 
 def surveyVoteNewBypass(request, question_page_id, page_number, bypass):
     print('surveyVoteNew(): entered with question_page_id: ' + str(question_page_id) + ", pageNumber: " + str(page_number))
     print(request.POST)
     questionPage = get_object_or_404(QuestionPage, pk=question_page_id)
     currentUserId = questionPage.user.id
-    return HttpResponseRedirect(reverse('showSurveyLinksWithPage', args=(currentUserId, int(page_number) + 1)))
+    return HttpResponseRedirect(reverse('showSurveyLinksWithPage', args=(currentUserId, int(page_number) + 1, 0)))

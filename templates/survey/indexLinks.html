@@ -88,4 +88,11 @@
         {% else %}  <p>No links are available.</p>
         {% endif %}
 {% endif %}
+
+{% if showAlert == 1 %}
+<script>alert("Please answer all required questions!")</script>
+<script>console.log("inside showAlert")</script>
+{% endif %}
+
+
 {% endblock %}

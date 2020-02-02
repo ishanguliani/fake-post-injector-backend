@@ -49,6 +49,7 @@ urlpatterns = [
     path('addNewFacebookUser/', include('person.urls')),
     # path('survey/', showSurvey, name='showSurvey'),
     path('surveyLinks/<int:userId>/<int:pageNumber>/', showSurveyLinksWithPage, name='showSurveyLinksWithPage'),
+    path('surveyLinks/<int:userId>/<int:pageNumber>/<int:showAlert>/', showSurveyLinksWithPage, name='showSurveyLinksWithPage'),
     path('surveyLinks/<int:id>/', showSurveyLinks, name='showSurveyLinks'),
     # path('surveyLinks/', showSurveyLinks, name='showSurveyLinks'),
     # path('survey/<int:question_id>/', surveyDetail, name='surveyDetail'),
