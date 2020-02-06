@@ -24,7 +24,6 @@ from django.views.generic.detail import DetailView
 #     latest_question_list = QuestionNew.objects.order_by('-pub_date')[:5]
 #     context = {'latest_question_list': latest_question_list}
 #     return render(request, 'survey/index.html', context)
-
 def showSurveyLinks(request, id):
     print('entered showSurveyLinks()')
     if not id:
@@ -108,6 +107,9 @@ def showSurveyLinks(request, id):
 
     # return render(request, 'survey/indexLinks.html', {'allLinks': allLinks, 'latest_question_list': latest_question_list})
 
+"""
+Called to load a new survey question page
+"""
 def showSurveyLinksWithPage(request, userId, pageNumber, showAlert = 0):
     """
     :param request:
@@ -151,10 +153,26 @@ def showSurveyLinksWithPage(request, userId, pageNumber, showAlert = 0):
                                    question_page=currentQuestionPage)
 
         newQuestion3 = QuestionNew(question_text=questions[2],
-                                   question_type=QuestionType.objects.get(question_type=2),
+                                   question_type=QuestionType.objects.get(question_type=1),
                                    question_page=currentQuestionPage)
 
         newQuestion4 = QuestionNew(question_text=questions[3],
+                                   question_type=QuestionType.objects.get(question_type=1),
+                                   question_page=currentQuestionPage)
+
+        newQuestion5 = QuestionNew(question_text=questions[4],
+                                   question_type=QuestionType.objects.get(question_type=1),
+                                   question_page=currentQuestionPage)
+
+        newQuestion6 = QuestionNew(question_text=questions[5],
+                                   question_type=QuestionType.objects.get(question_type=1),
+                                   question_page=currentQuestionPage)
+
+        newQuestion7 = QuestionNew(question_text=questions[6],
+                                   question_type=QuestionType.objects.get(question_type=1),
+                                   question_page=currentQuestionPage)
+
+        newQuestion8 = QuestionNew(question_text=questions[7],
                                    question_type=QuestionType.objects.get(question_type=1),
                                    question_page=currentQuestionPage)
 
@@ -168,16 +186,22 @@ def showSurveyLinksWithPage(request, userId, pageNumber, showAlert = 0):
                 print("XXX: newQuestion3.save() OK")
                 newQuestion4.save()
                 print("XXX: newQuestion4.save() OK")
+                newQuestion5.save()
+                print("XXX: newQuestion5.save() OK")
+                newQuestion6.save()
+                print("XXX: newQuestion6.save() OK")
+                newQuestion7.save()
+                print("XXX: newQuestion7.save() OK")
+                newQuestion8.save()
+                print("XXX: newQuestion8.save() OK")
         except IntegrityError:
             print("FAILED1: there has been an error")
 
         # proceed adding choices to question 1 if not already done
         if len(newQuestion1.choicenew_set.all()) <= 0:
-            newChoice11 = ChoiceNew(question=newQuestion1, choice_text="Entertainment", votes=0, is_selected=False)
-            newChoice12 = ChoiceNew(question=newQuestion1, choice_text="News", votes=0, is_selected=False)
-            newChoice13 = ChoiceNew(question=newQuestion1, choice_text="Sports", votes=0, is_selected=False)
-            newChoice14 = ChoiceNew(question=newQuestion1, choice_text="Interactive", votes=0, is_selected=False)
-            # newChoice15 = ChoiceNew(question=newQuestion1, choice_text="Public page", votes=0, is_selected=False)
+            newChoice11 = ChoiceNew(question=newQuestion1, choice_text="Yes", votes=0, is_selected=False)
+            newChoice12 = ChoiceNew(question=newQuestion1, choice_text="No", votes=0, is_selected=False)
+            newChoice13 = ChoiceNew(question=newQuestion1, choice_text="I am not sure", votes=0, is_selected=False)
 
             try:
                 with transaction.atomic():
@@ -187,20 +211,14 @@ def showSurveyLinksWithPage(request, userId, pageNumber, showAlert = 0):
                     print("XXX: newChoice12.save() OK")
                     newChoice13.save()
                     print("XXX: newChoice13.save() OK")
-                    newChoice14.save()
-                    print("XXX: newChoice14.save() OK")
-                    # newChoice15.save()
-                    # print("XXX: newChoice15.save() OK")
             except IntegrityError:
                 print("FAILED1: there has been an error")
 
         # proceed to add choices to question 2 if not already done
         if len(newQuestion2.choicenew_set.all()) <= 0:
-            newChoice21 = ChoiceNew(question=newQuestion2, choice_text="Spouse, Boyfriend/Girlfriend", votes=0, is_selected=False)
-            newChoice22 = ChoiceNew(question=newQuestion2, choice_text="Parents", votes=0, is_selected=False)
-            newChoice23 = ChoiceNew(question=newQuestion2, choice_text="Acquaintance", votes=0, is_selected=False)
-            newChoice24 = ChoiceNew(question=newQuestion2, choice_text="Close friends", votes=0, is_selected=False)
-            newChoice25 = ChoiceNew(question=newQuestion1, choice_text="Public page", votes=0, is_selected=False)
+            newChoice21 = ChoiceNew(question=newQuestion2, choice_text="Yes", votes=0, is_selected=False)
+            newChoice22 = ChoiceNew(question=newQuestion2, choice_text="No", votes=0, is_selected=False)
+            newChoice23 = ChoiceNew(question=newQuestion2, choice_text="I am not sure", votes=0, is_selected=False)
 
             try:
                 with transaction.atomic():
@@ -210,30 +228,37 @@ def showSurveyLinksWithPage(request, userId, pageNumber, showAlert = 0):
                     print("XXX: newChoice22.save() OK")
                     newChoice23.save()
                     print("XXX: newChoice23.save() OK")
-                    newChoice24.save()
-                    print("XXX: newChoice24.save() OK")
-                    newChoice25.save()
-                    print("XXX: newChoice25.save() OK")
             except IntegrityError:
                 print("FAILED2: there has been an error")
 
         # proceed to add choices to question 3 if not already done
         if len(newQuestion3.choicenew_set.all()) <= 0:
-            newChoice31 = ChoiceNew(question=newQuestion3, choice_text="  ", votes=0, is_selected=False)
+            newChoice31 = ChoiceNew(question=newQuestion3, choice_text="The topic is interesting", votes=0, is_selected=False)
+            newChoice32 = ChoiceNew(question=newQuestion3, choice_text="I would like to discuss with the post author about the link later", votes=0, is_selected=False)
+            newChoice33 = ChoiceNew(question=newQuestion3, choice_text="Other", votes=0, is_selected=False)
+            # newChoice31 = ChoiceNew(question=newQuestion3, choice_text="  ", votes=0, is_selected=False)
 
             try:
                 with transaction.atomic():
                     newChoice31.save()
                     print("XXX: newChoice31.save() OK")
+                    newChoice32.save()
+                    print("XXX: newChoice32.save() OK")
+                    newChoice33.save()
+                    print("XXX: newChoice33.save() OK")
             except IntegrityError:
                 print("FAILED3: there has been an error")
 
         # proceed to add choices to question 4 if not already done
         if len(newQuestion4.choicenew_set.all()) <= 0:
-            newChoice41 = ChoiceNew(question=newQuestion4, choice_text="Yes", votes=0,
-                                    is_selected=False)
-            newChoice42 = ChoiceNew(question=newQuestion4, choice_text="No", votes=0, is_selected=False)
-            newChoice43 = ChoiceNew(question=newQuestion4, choice_text="Not really sure", votes=0, is_selected=False)
+            newChoice41 = ChoiceNew(question=newQuestion4, choice_text="Spouse/Partner/Boyfriend/Girlfriend", votes=0, is_selected=False)
+            newChoice42 = ChoiceNew(question=newQuestion4, choice_text="Close friend", votes=0, is_selected=False)
+            newChoice43 = ChoiceNew(question=newQuestion4, choice_text="Acquaintance", votes=0, is_selected=False)
+            newChoice44 = ChoiceNew(question=newQuestion4, choice_text="Public page", votes=0, is_selected=False)
+            newChoice45 = ChoiceNew(question=newQuestion4, choice_text="Other(please specify):", votes=0, is_selected=False)
+            # newChoice41 = ChoiceNew(question=newQuestion4, choice_text="Yes", votes=0, is_selected=False)
+            # newChoice42 = ChoiceNew(question=newQuestion4, choice_text="No", votes=0, is_selected=False)
+            # newChoice43 = ChoiceNew(question=newQuestion4, choice_text="Not really sure", votes=0, is_selected=False)
 
             try:
                 with transaction.atomic():
@@ -243,8 +268,98 @@ def showSurveyLinksWithPage(request, userId, pageNumber, showAlert = 0):
                     print("XXX: newChoice42.save() OK")
                     newChoice43.save()
                     print("XXX: newChoice43.save() OK")
+                    newChoice44.save()
+                    print("XXX: newChoice44.save() OK")
+                    newChoice45.save()
+                    print("XXX: newChoice45.save() OK")
             except IntegrityError:
                 print("FAILED4: there has been an error")
+
+        # proceed to add choices to question 5 if not already done
+        if len(newQuestion5.choicenew_set.all()) <= 0:
+            newChoice51 = ChoiceNew(question=newQuestion5, choice_text="Sales-oriented", votes=0, is_selected=False)
+            newChoice52 = ChoiceNew(question=newQuestion5, choice_text="Media", votes=0, is_selected=False)
+            newChoice53 = ChoiceNew(question=newQuestion5, choice_text="Interactives", votes=0, is_selected=False)
+            newChoice54 = ChoiceNew(question=newQuestion5, choice_text="Other(please specify):", votes=0, is_selected=False)
+
+            try:
+                with transaction.atomic():
+                    newChoice51.save()
+                    print("XXX: newChoice51.save() OK")
+                    newChoice52.save()
+                    print("XXX: newChoice52.save() OK")
+                    newChoice53.save()
+                    print("XXX: newChoice53.save() OK")
+                    newChoice54.save()
+                    print("XXX: newChoice54.save() OK")
+            except IntegrityError:
+                print("FAILED5: there has been an error")
+
+        # proceed to add choices to question 6 if not already done
+        if len(newQuestion6.choicenew_set.all()) <= 0:
+            newChoice61 = ChoiceNew(question=newQuestion6, choice_text="Multiple times a day", votes=0, is_selected=False)
+            newChoice62 = ChoiceNew(question=newQuestion6, choice_text="At least once a day", votes=0, is_selected=False)
+            newChoice63 = ChoiceNew(question=newQuestion6, choice_text="At least once a week", votes=0, is_selected=False)
+            newChoice64 = ChoiceNew(question=newQuestion6, choice_text="At least once a month", votes=0, is_selected=False)
+            newChoice65 = ChoiceNew(question=newQuestion6, choice_text="Less than once a month", votes=0, is_selected=False)
+
+        try:
+            with transaction.atomic():
+                newChoice61.save()
+                print("XXX: newChoice61.save() OK")
+                newChoice62.save()
+                print("XXX: newChoice62.save() OK")
+                newChoice63.save()
+                print("XXX: newChoice63.save() OK")
+                newChoice64.save()
+                print("XXX: newChoice64.save() OK")
+                newChoice65.save()
+                print("XXX: newChoice65.save() OK")
+        except IntegrityError:
+            print("FAILED6: there has been an error")
+
+        # proceed to add choices to question 6 if not already done
+        if len(newQuestion7.choicenew_set.all()) <= 0:
+            newChoice71 = ChoiceNew(question=newQuestion7, choice_text="Sales-oriented", votes=0, is_selected=False)
+            newChoice72 = ChoiceNew(question=newQuestion7, choice_text="Media", votes=0, is_selected=False)
+            newChoice73 = ChoiceNew(question=newQuestion7, choice_text="Interactives", votes=0, is_selected=False)
+            newChoice74 = ChoiceNew(question=newQuestion7, choice_text="Other(please specify):", votes=0, is_selected=False)
+
+        try:
+            with transaction.atomic():
+                newChoice71.save()
+                print("XXX: newChoice71.save() OK")
+                newChoice72.save()
+                print("XXX: newChoice72.save() OK")
+                newChoice73.save()
+                print("XXX: newChoice73.save() OK")
+                newChoice74.save()
+                print("XXX: newChoice74.save() OK")
+        except IntegrityError:
+            print("FAILED7: there has been an error")
+
+        # proceed to add choices to question 6 if not already done
+        if len(newQuestion8.choicenew_set.all()) <= 0:
+            newChoice81 = ChoiceNew(question=newQuestion8, choice_text="Multiple times a day", votes=0, is_selected=False)
+            newChoice82 = ChoiceNew(question=newQuestion8, choice_text="At least once a day", votes=0, is_selected=False)
+            newChoice83 = ChoiceNew(question=newQuestion8, choice_text="At least once a week", votes=0, is_selected=False)
+            newChoice84 = ChoiceNew(question=newQuestion8, choice_text="At least once a month", votes=0, is_selected=False)
+            newChoice85 = ChoiceNew(question=newQuestion8, choice_text="Less than once a month", votes=0, is_selected=False)
+
+        try:
+            with transaction.atomic():
+                newChoice81.save()
+                print("XXX: newChoice81.save() OK")
+                newChoice82.save()
+                print("XXX: newChoice82.save() OK")
+                newChoice83.save()
+                print("XXX: newChoice83.save() OK")
+                newChoice84.save()
+                print("XXX: newChoice84.save() OK")
+                newChoice85.save()
+                print("XXX: newChoice85.save() OK")
+        except IntegrityError:
+            print("FAILED6: there has been an error")
 
     # if this question has already been answered then just go to the next page
     if currentQuestionPage.is_answered:
@@ -309,6 +424,10 @@ def surveyVote(request, question_id):
         # user hits the Back button.
         return HttpResponseRedirect(reverse('surveyResults', args=(question.id,)))
 
+
+"""
+Called when the user submits answers to a question page
+"""
 def surveyVoteNew(request, question_page_id, page_number):
     print('surveyVoteNew(): entered with question_page_id: ' + str(question_page_id) + ", pageNumber: " + str(page_number))
     print(request.POST)
@@ -317,7 +436,6 @@ def surveyVoteNew(request, question_page_id, page_number):
     print('surveyVoteNew(): extracted user id: ' + str(currentUserId))
     try:
         # extract answer to question 1
-        # TODO
         selected_question = questionPage.questionnew_set.get(question_text=questions[0])
         print("surveyVoteNew(): Question1: ", selected_question)
         selected_choice1 = selected_question.choicenew_set.get(pk=request.POST['choice_for_question_text_' + questions[0]])
