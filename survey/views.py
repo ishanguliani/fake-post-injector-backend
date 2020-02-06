@@ -428,6 +428,32 @@ def surveyVote(request, question_id):
 """
 Called when the user submits answers to a question page
 """
+
+
+"""
+For each question from the question page, get 
+the choice selected by the user and log it 
+"""
+def extractAndLogAnswers(request, questionPage, i):
+    selected_question = questionPage.questionnew_set.get(question_text=questions[i])
+    print("surveyVoteNew(): extractAndLogAnswers(): Question", str(i+1), ": ", selected_question)
+    selected_choice = selected_question.choicenew_set.get(pk=request.POST['choice_for_question_text_' + questions[i]])
+    print("surveyVoteNew(): extractAndLogAnswers(): Choice", str(i+1), ": ", selected_choice)
+
+    selected_choice.is_selected = True
+    selected_choice.votes += 1
+    selected_choice.save()
+    print("surveyVoteNew(): extractAndLogAnswers(): success: saved choice: ", str(i+1))
+
+    if i == 0:
+        #  if the user selected YES to the question "Did you click on this link ?"
+        #  then mark the corresponding link model is_clicked field to True
+        if selected_choice.choice_text.lower().strip() == "yes".strip():
+            print("surveyVoteNew(): extractAndLogAnswers(): This is a YES")
+            questionPage.link_model.is_clicked = True
+            # save this change
+            questionPage.link_model.save()
+
 def surveyVoteNew(request, question_page_id, page_number):
     print('surveyVoteNew(): entered with question_page_id: ' + str(question_page_id) + ", pageNumber: " + str(page_number))
     print(request.POST)
@@ -435,31 +461,38 @@ def surveyVoteNew(request, question_page_id, page_number):
     currentUserId = questionPage.user.id
     print('surveyVoteNew(): extracted user id: ' + str(currentUserId))
     try:
+
+        for i in range(0, len(questions)):
+            extractAndLogAnswers(request, questionPage, i)
+
         # extract answer to question 1
-        selected_question = questionPage.questionnew_set.get(question_text=questions[0])
-        print("surveyVoteNew(): Question1: ", selected_question)
-        selected_choice1 = selected_question.choicenew_set.get(pk=request.POST['choice_for_question_text_' + questions[0]])
-        print("surveyVoteNew(): Choice1: ", selected_choice1)
-
-        # extract answer to question 2
-        selected_question = questionPage.questionnew_set.get(question_text=questions[1])
-        print("surveyVoteNew(): Question2: ", selected_question)
-        selected_choice2 = selected_question.choicenew_set.get(pk=request.POST['choice_for_question_text_' + questions[1]])
-        print("surveyVoteNew(): Choice2: ", selected_choice2)
-
-        # extract answer to question 3 - this is an input box
-        selected_question = questionPage.questionnew_set.get(question_text=questions[2])
-        print("surveyVoteNew(): Question3: ", selected_question)
-        selected_choice3 = selected_question.choicenew_set.all()[0]
-        selected_choice3_text = request.POST['choice_for_question_text_' + questions[2]]
-        print("surveyVoteNew(): Choice3: ", selected_choice3)
-        print("surveyVoteNew(): Choice3Text: ", selected_choice3_text)
-
-        # extract answer to question 4
-        selected_question = questionPage.questionnew_set.get(question_text=questions[3])
-        print("surveyVoteNew(): Question4: ", selected_question)
-        selected_choice4 = selected_question.choicenew_set.get(pk=request.POST['choice_for_question_text_' + questions[3]])
-        print("surveyVoteNew(): Choice4: ", selected_choice4)
+        #
+        # # extract answer to question 2
+        # selected_question = questionPage.questionnew_set.get(question_text=questions[1])
+        # print("surveyVoteNew(): Question2: ", selected_question)
+        # selected_choice2 = selected_question.choicenew_set.get(pk=request.POST['choice_for_question_text_' + questions[1]])
+        # print("surveyVoteNew(): Choice2: ", selected_choice2)
+        #
+        # # # extract answer to question 3 - this is an input box
+        # # selected_question = questionPage.questionnew_set.get(question_text=questions[2])
+        # # print("surveyVoteNew(): Question3: ", selected_question)
+        # # selected_choice3 = selected_question.choicenew_set.all()[0]
+        # # selected_choice3_text = request.POST['choice_for_question_text_' + questions[2]]
+        # # print("surveyVoteNew(): Choice3: ", selected_choice3)
+        # # print("surveyVoteNew(): Choice3Text: ", selected_choice3_text)
+        #
+        # # extract answer to question 3
+        # selected_question = questionPage.questionnew_set.get(question_text=questions[2])
+        # print("surveyVoteNew(): Question3: ", selected_question)
+        # selected_choice3 = selected_question.choicenew_set.get(pk=request.POST['choice_for_question_text_' + questions[2]])
+        # print("surveyVoteNew(): Choice3: ", selected_choice3)
+        #
+        #
+        # # extract answer to question 4
+        # selected_question = questionPage.questionnew_set.get(question_text=questions[3])
+        # print("surveyVoteNew(): Question4: ", selected_question)
+        # selected_choice4 = selected_question.choicenew_set.get(pk=request.POST['choice_for_question_text_' + questions[3]])
+        # print("surveyVoteNew(): Choice4: ", selected_choice4)
 
     except (KeyError, ChoiceNew.DoesNotExist):
         # Redisplay the questionPage voting form.
@@ -471,41 +504,38 @@ def surveyVoteNew(request, question_page_id, page_number):
         # })
         return HttpResponseRedirect(reverse('showSurveyLinksWithPage', args=(currentUserId, int(page_number), 1)))
     else:
-
-        # time to save this QuestionPage with all the answered questions
-        selected_choice1.is_selected = True
-        selected_choice1.votes += 1
-        selected_choice1.save()
-        print("surveyVoteNew(): success: saved choice 1")
-
-        selected_choice2.is_selected = True
-        selected_choice2.votes += 1
-        selected_choice2.save()
-        print("surveyVoteNew(): success: saved choice 2")
-
-        selected_choice3.choice_text = selected_choice3_text
-        selected_choice3.is_selected = True
-        selected_choice3.votes += 1
-        selected_choice3.save()
-        print("surveyVoteNew(): success: saved choice 3")
-
-        selected_choice4.is_selected = True
-        selected_choice4.votes += 1
-        selected_choice4.save()
+        # XXX
+        # # time to save this QuestionPage with all the answered questions
+        # selected_choice1.is_selected = True
+        # selected_choice1.votes += 1
+        # selected_choice1.save()
+        # print("surveyVoteNew(): success: saved choice 1")
+        #
+        # selected_choice2.is_selected = True
+        # selected_choice2.votes += 1
+        # selected_choice2.save()
+        # print("surveyVoteNew(): success: saved choice 2")
+        #
+        # selected_choice3.choice_text = selected_choice3_text
+        # selected_choice3.is_selected = True
+        # selected_choice3.votes += 1
+        # selected_choice3.save()
+        # print("surveyVoteNew(): success: saved choice 3")
+        #
+        # selected_choice4.is_selected = True
+        # selected_choice4.votes += 1
+        # selected_choice4.save()
 
         # if the user selected YES to the question "Did you click on this link ?"
         # then mark the corresponding link model is_clicked field to True
-        if selected_choice4.choice_text.lower().strip() == "yes".strip():
-            print("surveyVoteNew(): This is a YES")
-            questionPage.link_model.is_clicked = True
-            # save this change
-            questionPage.link_model.save()
-
-        print("surveyVoteNew(): success: saved choice 4")
-
+        # if selected_choice4.choice_text.lower().strip() == "yes".strip():
+        #     print("surveyVoteNew(): This is a YES")
+        #     questionPage.link_model.is_clicked = True
+        #     # save this change
+        #     questionPage.link_model.save()
         questionPage.is_answered = True
         questionPage.save()
-        print("surveyVoteNew(): success: saved question page")
+        print("surveyVoteNew(): success!: saved question page")
 
         # Always return an HttpResponseRedirect after successfully dealing
         # with POST data. This prevents data from being posted twice if a
