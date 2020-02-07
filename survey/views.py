@@ -434,15 +434,14 @@ Called when the user submits answers to a question page
 For each question from the question page, get 
 the choice selected by the user and log it 
 """
-def extractAndLogAnswers(request, questionPage, i):
+def extractAndMarkAnswersFromRequest(request, questionPage, i):
     selected_question = questionPage.questionnew_set.get(question_text=questions[i])
-    print("surveyVoteNew(): extractAndLogAnswers(): Question", str(i+1), ": ", selected_question)
     selected_choice = selected_question.choicenew_set.get(pk=request.POST['choice_for_question_text_' + questions[i]])
-    print("surveyVoteNew(): extractAndLogAnswers(): Choice", str(i+1), ": ", selected_choice)
-
     selected_choice.is_selected = True
     selected_choice.votes += 1
     selected_choice.save()
+    print("surveyVoteNew(): extractAndLogAnswers(): Question", str(i + 1), ": ", selected_question)
+    print("surveyVoteNew(): extractAndLogAnswers(): Choice", str(i+1), ": ", selected_choice)
     print("surveyVoteNew(): extractAndLogAnswers(): success: saved choice: ", str(i+1))
 
     if i == 0:
@@ -463,7 +462,7 @@ def surveyVoteNew(request, question_page_id, page_number):
     try:
 
         for i in range(0, len(questions)):
-            extractAndLogAnswers(request, questionPage, i)
+            extractAndMarkAnswersFromRequest(request, questionPage, i)
 
         # extract answer to question 1
         #
