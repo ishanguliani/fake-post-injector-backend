@@ -439,10 +439,10 @@ def extractAndMarkAnswersFromRequest(request, questionPage, i):
     selected_choice = selected_question.choicenew_set.get(pk=request.POST['choice_for_question_text_' + questions[i]])
     selected_choice.is_selected = True
     selected_choice.votes += 1
-    selected_choice.save()
     print("surveyVoteNew(): extractAndLogAnswers(): Question", str(i + 1), ": ", selected_question)
     print("surveyVoteNew(): extractAndLogAnswers(): Choice", str(i+1), ": ", selected_choice)
     print("surveyVoteNew(): extractAndLogAnswers(): success: saved choice: ", str(i+1))
+    selected_choice.save()
 
     if i == 0:
         #  if the user selected YES to the question "Did you click on this link ?"
