@@ -434,15 +434,15 @@ Called when the user submits answers to a question page
 For each question from the question page, get 
 the choice selected by the user and log it 
 """
-def extractAndMarkAnswersFromRequest(request, questionPage, i):
+def extractAndMarkAnswersFromRequest(request, questionPage, i, validChoices):
     selected_question = questionPage.questionnew_set.get(question_text=questions[i])
     selected_choice = selected_question.choicenew_set.get(pk=request.POST['choice_for_question_text_' + questions[i]])
     selected_choice.is_selected = True
     selected_choice.votes += 1
     print("surveyVoteNew(): extractAndLogAnswers(): Question", str(i + 1), ": ", selected_question)
     print("surveyVoteNew(): extractAndLogAnswers(): Choice", str(i+1), ": ", selected_choice)
-    print("surveyVoteNew(): extractAndLogAnswers(): success: saved choice: ", str(i+1))
-    selected_choice.save()
+    validChoices.append(selected_choice)
+    print("surveyVoteNew(): extractAndLogAnswers(): appended as valid choice!")
 
     if i == 0:
         #  if the user selected YES to the question "Did you click on this link ?"
@@ -460,9 +460,13 @@ def surveyVoteNew(request, question_page_id, page_number):
     currentUserId = questionPage.user.id
     print('surveyVoteNew(): extracted user id: ' + str(currentUserId))
     try:
-
+        validChoices = []
         for i in range(0, len(questions)):
-            extractAndMarkAnswersFromRequest(request, questionPage, i)
+            extractAndMarkAnswersFromRequest(request, questionPage, i, validChoices)
+        # save all requests to db since none of them caused an error
+        for i, selected_choice in enumerate(validChoices):
+            selected_choice.save()
+            print("surveyVoteNew(): success: saved choice: ", str(i + 1), ': ', str())
 
         # extract answer to question 1
         #
