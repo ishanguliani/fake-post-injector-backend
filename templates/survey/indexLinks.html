@@ -64,7 +64,7 @@
                                                             {% for choice in question.choicenew_set.all %}
                                                                 <!-- if forloop.parentloop.first -->
                                                                 {% if question.question_type.question_type == 2 %}
-                                                        <textarea type="text" rows="5" cols="50" name="choice_for_question_text_{{question.question_text}}" id="choice0" value=""></textarea>
+                                                        <textarea type="text" rows="10" cols="60" name="choice_for_question_text_{{question.question_text}}" id="choice0" value=""></textarea>
                                                                 {% else %}
                                                                     <input type="radio" name="choice_for_question_text_{{question.question_text}}" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
                                                                 {% endif %}
