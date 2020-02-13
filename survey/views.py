@@ -514,7 +514,7 @@ def extractAndMarkAnswersFromRequest(request, questionPage, q, validChoices, oth
     selected_choice.is_selected = True
     selected_choice.votes += 1
     print("surveyVoteNew(): extractAndLogAnswers(): Question", str(q + 1), ": ", selected_question)
-    print("surveyVoteNew(): extractAndLogAnswers(): len(selected_question.choicenew_set)", str(q + 1), ": ", len(selected_question.choicenew_set))
+    print("surveyVoteNew(): extractAndLogAnswers(): len(selected_question.choicenew_set)", str(q + 1), ": ", len(selected_question.choicenew_set.all()))
     print("surveyVoteNew(): extractAndLogAnswers(): Choice", str(q + 1), ": ", selected_choice)
     validChoices.append(selected_choice)
     print("surveyVoteNew(): extractAndLogAnswers(): appended as valid choice!")
