@@ -437,6 +437,9 @@ def showSurveyLinksWithPage(request, userId, pageNumber, showAlert = 0):
         return HttpResponseRedirect(reverse('showSurveyLinksWithPage', args=(userId, int(pageNumber) + 1, 0)))
     # print("showSurveyLinksWithPage: currentPage : ", str(currentQuestionPage))
     print("showSurveyLinksWithPage: questions on this page : total : " + str(len(currentQuestionPage.questionnew_set.all())))
+    print('showSurveyLinksWithPage: currentQuestionPage.questionnew_set.all()')
+    for s in currentQuestionPage.questionnew_set.all():
+        print(s)
     return render(request, 'survey/indexLinks.html', {'questionPage': currentQuestionPage, 'pageNumber':pageNumber, 'showAlert': showAlert})
 
 # def surveyDetail(request, question_id):

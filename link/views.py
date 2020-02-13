@@ -64,6 +64,7 @@ def saveOriginalLink(request):
             # add this parent link to database
             newParentLink.save()
             print("saveOriginalLink(): newParentLink saved: success: ", newParentLink)
+
             # get the API data for this parent link
             requestUrl = PREVIEW_BASE_URL + link_target_fake
             print("saveOriginalLink(): requestUrl: ", requestUrl)
