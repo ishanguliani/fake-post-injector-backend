@@ -530,7 +530,7 @@ def extractAndMarkAnswersFromRequest(request, questionPage, q, validChoices, oth
 def surveyVoteNew(request, question_page_id, page_number):
     print('surveyVoteNew(): entered with question_page_id: ' + str(question_page_id) + ", pageNumber: " + str(page_number))
     for querySet in request.POST:
-        print(querySet)
+        print(querySet, ':', request.POST[querySet])
     questionPage = get_object_or_404(QuestionPage, pk=question_page_id)
     currentUserId = questionPage.user.id
     print('surveyVoteNew(): extracted user id: ' + str(currentUserId))
