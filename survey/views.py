@@ -542,8 +542,8 @@ def surveyVoteNew(request, question_page_id, page_number):
     try:
         validChoices = []
         otherChoicesMap = defaultdict(bool)
-        for q in questions:
-            extractAndMarkAnswersFromRequest(request, questionPage, q, validChoices, otherChoicesMap)
+        for sno in questions:
+            extractAndMarkAnswersFromRequest(request, questionPage, sno, validChoices, otherChoicesMap)
         print("surveyVoteNew(): otherChoiceMap: " + str(otherChoicesMap))
         # extract the specified text from the input box of the following question of each question
         # where the user selected the @{CHOICE_TEXT}(Other(please specify...)) as the answer
@@ -553,21 +553,21 @@ def surveyVoteNew(request, question_page_id, page_number):
             selectedChoiceForQuestionWithTextForOtherOption = questionWithTextForOtherOption.choicenew_set.all()[0]
             choiceText = request.POST['choice_for_question_text_' + questions[questionKeyWhichContainsTextForOtherOption]]
             if not choiceText.strip():
-                raise KeyError('surveyVoteNew(): otherOption: no text specified for question: ' + str(questions[questionKeyWhichContainsTextForOtherOption]))
+                raise KeyError('surveyVoteNew(): otherChoiceOption: no text specified for question: ' + str(questions[questionKeyWhichContainsTextForOtherOption]))
             # at this point if the above key is not found in the request then this means that the user did select the Other option
             # for the question but did not type in any text against it. This will throw a KeyError and we will not proceed with saving these choices
-            print("surveyVoteNew(): otherOption: Question:", str(questionWithTextForOtherOption))
-            print("surveyVoteNew(): otherOption: SelectedChoice:", str(selectedChoiceForQuestionWithTextForOtherOption))
-            print("surveyVoteNew(): otherOption: ChoiceText:", choiceText)
+            print("surveyVoteNew(): otherChoiceOption: Question:", str(questionWithTextForOtherOption))
+            print("surveyVoteNew(): otherChoiceOption: SelectedChoice:", str(selectedChoiceForQuestionWithTextForOtherOption))
+            print("surveyVoteNew(): otherChoiceOption: ChoiceText:", choiceText)
             selectedChoiceForQuestionWithTextForOtherOption.choice_text = choiceText
             selectedChoiceForQuestionWithTextForOtherOption.is_selected = True
             selectedChoiceForQuestionWithTextForOtherOption.votes += 1
             validChoices.append(selectedChoiceForQuestionWithTextForOtherOption)
 
         # save all requests to db since none of them caused an error
-        for q, selected_choice in enumerate(validChoices):
+        for sno, selected_choice in enumerate(validChoices):
             selected_choice.save()
-            print("surveyVoteNew(): success: saved choice: ", str(q + 1), ': ', str())
+            print("surveyVoteNew(): success: saved choice: ", selected_choice, ': ')
 
         # extract answer to question 1
         #
