@@ -15,18 +15,12 @@ questions = {0: 'Did you click on this link?' # Question 1
     , 7: 'How frequently do you click on a post shared by this person?' # Question 8
     }
 
+# the following questions will be exclude from choice extraction process
+INPUT_TEXT_TYPE_QUESTION_SET = set()
+INPUT_TEXT_TYPE_QUESTION_SET.add(21)
+INPUT_TEXT_TYPE_QUESTION_SET.add(31)
+INPUT_TEXT_TYPE_QUESTION_SET.add(41)
+INPUT_TEXT_TYPE_QUESTION_SET.add(61)
 
 CHOICE_TEXT = 'Other(please specify):'
-
-def doSomething(i, mMap):
-    mMap[i] = chr(65 + i)
-
-def doSomethingWithList(i, l):
-    l.append(i+1)
-
-from collections import defaultdict
-
-d = defaultdict(bool);
-for i in range(5):
-    print(d[i])
 

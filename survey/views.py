@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, get_list_or_404, render
 from django.urls import reverse
 from .models import Question, QuestionNew, ChoiceNew, QuestionPage, QuestionType
 from user.models import User
-from link.QUESTIONS import questions, CHOICE_TEXT
+from link.QUESTIONS import questions, CHOICE_TEXT, INPUT_TEXT_TYPE_QUESTION_SET
 from django.db import transaction, IntegrityError
 from collections import defaultdict
 from link.models import LinkModel
@@ -502,9 +502,13 @@ Called when the user submits answers to a question page
 
 """
 For each question from the question page, get 
-the choice selected by the user and log it 
+the choice selected by the user and log it.
+
+Here we exclude questions which are answers to Others(please specify) preceeding question types
 """
 def extractAndMarkAnswersFromRequest(request, questionPage, q, validChoices, otherChoicesMap):
+    if q in INPUT_TEXT_TYPE_QUESTION_SET:
+        return
     selected_question = questionPage.questionnew_set.get(question_text=questions[q])
     selected_choice = selected_question.choicenew_set.get(pk=request.POST['choice_for_question_text_' + questions[q]])
     if CHOICE_TEXT in selected_choice.choice_text:
