@@ -514,6 +514,7 @@ def extractAndMarkAnswersFromRequest(request, questionPage, q, validChoices, oth
     selected_choice.is_selected = True
     selected_choice.votes += 1
     print("surveyVoteNew(): extractAndLogAnswers(): Question", str(q + 1), ": ", selected_question)
+    print("surveyVoteNew(): extractAndLogAnswers(): len(selected_question.choicenew_set)", str(q + 1), ": ", len(selected_question.choicenew_set.all()))
     print("surveyVoteNew(): extractAndLogAnswers(): Choice", str(q + 1), ": ", selected_choice)
     validChoices.append(selected_choice)
     print("surveyVoteNew(): extractAndLogAnswers(): appended as valid choice!")
@@ -536,13 +537,13 @@ def surveyVoteNew(request, question_page_id, page_number):
     print('surveyVoteNew(): extracted user id: ' + str(currentUserId))
     try:
         validChoices = []
-        otherChoiceMap = defaultdict(bool)
+        otherChoicesMap = defaultdict(bool)
         for q in questions:
-            extractAndMarkAnswersFromRequest(request, questionPage, q, validChoices, otherChoiceMap)
-        print("surveyVoteNew(): otherChoiceMap: " + str(otherChoiceMap))
+            extractAndMarkAnswersFromRequest(request, questionPage, q, validChoices, otherChoicesMap)
+        print("surveyVoteNew(): otherChoiceMap: " + str(otherChoicesMap))
         # extract the specified text from the input box of the following question of each question
         # where the user selected the @{CHOICE_TEXT}(Other(please specify...)) as the answer
-        for questionWithOtherOptionSelected in otherChoiceMap:
+        for questionWithOtherOptionSelected in otherChoicesMap:
             questionKeyWhichContainsTextForOtherOption = questionWithOtherOptionSelected * 10 + 1  # 2 -> 2*10 + 1 = 21, 3 -> 3*10 + 1 = 31, 6 = 6*10 + 1 = 61
             questionWithTextForOtherOption = questionPage.questionnew_set.get(question_text=questions[questionKeyWhichContainsTextForOtherOption])
             selectedChoiceForQuestionWithTextForOtherOption = questionWithTextForOtherOption.choicenew_set.all()[0]
