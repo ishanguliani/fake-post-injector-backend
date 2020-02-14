@@ -9,9 +9,11 @@ def createUser(request):
         newUser = UserModelForm(request.POST or None)
         if newUser.is_valid():
             # form is valid, save it
-            data = newUser.save()
-            print("XXX: passing id: ", data.id)
-            return HttpResponseRedirect(reverse('signupSuccess', args=(data.id, )))
+            newUser.setUuid()
+            newUser = newUser.save()
+            uuid = newUser.uuid
+            print("XXX: passing uuid: ", uuid)
+            return HttpResponseRedirect(reverse('signupSuccess', args=(uuid, )))
             # return redirect('/signup-success/', theId=data.id)
         else:
             return redirect('/signupFailed/')

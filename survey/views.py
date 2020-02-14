@@ -32,7 +32,7 @@ def showSurveyLinks(request, id):
         return
 
     # get the link object based on user id
-    currentUser = User.objects.filter(pk=id)[0]
+    currentUser = User.objects.filter(uuid=id)[0]
     if not currentUser:
         print('showSurveyLinks(): user not found')
         return
@@ -123,7 +123,7 @@ def showSurveyLinksWithPage(request, userId, pageNumber, showAlert = 0):
         print('showSurveyLinksWithPage(): no id received')
         return
     # get the current user
-    currentUser = User.objects.filter(pk=userId)[0]
+    currentUser = User.objects.filter(uuid=userId)[0]
     if not currentUser:
         print('showSurveyLinksWithPage(): user not found')
         return

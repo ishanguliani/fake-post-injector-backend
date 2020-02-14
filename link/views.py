@@ -86,7 +86,7 @@ def saveOriginalLink(request):
         print('preview_title:', newLinkPreviewModel.title, ", preview_description:", newLinkPreviewModel.description)
         print('preview_image:', newLinkPreviewModel.image, ", preview_url:", newLinkPreviewModel.url)
 
-        mUser = User.objects.filter(pk=user_id)[0]
+        mUser = User.objects.filter(uuid=user_id)[0]
 
         origLinkModel = LinkModel(link_text_original = link_text_original, link_text_fake = link_text_fake,
                                   link_target_original = link_target_original, link_target_fake = link_target_fake, link_image_src_original = link_image_src_original,
