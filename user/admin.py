@@ -14,10 +14,10 @@ class UserResource(resources.ModelResource):
     """
     class Meta:
         model = User
-        fields = ('id', 'name', 'email', 'attendance_id')
         export_order = ('id', 'name', 'email', 'attendance_id')
+        fields = ('id', 'name', 'email', 'attendance_id')
 
 class UserAdmin(ImportExportModelAdmin):
     resource_class = UserResource
-
+    readonly_fields = ('id', 'name', 'email', 'attendance_id', 'uuid',)
 admin.site.register(User, UserAdmin)
