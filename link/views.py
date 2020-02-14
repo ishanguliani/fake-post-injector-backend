@@ -86,7 +86,11 @@ def saveOriginalLink(request):
         print('preview_title:', newLinkPreviewModel.title, ", preview_description:", newLinkPreviewModel.description)
         print('preview_image:', newLinkPreviewModel.image, ", preview_url:", newLinkPreviewModel.url)
 
-        mUser = User.objects.filter(uuid=user_id)[0]
+        matchingUsers = User.objects.filter(uuid=user_id)
+        if not matchingUsers:
+            # backwards compatibility check: new system only compares users based on uuid while older system used pk(id)
+            matchingUsers = User.objects.filter(pk=user_id)
+        mUser = matchingUsers[0]
 
         origLinkModel = LinkModel(link_text_original = link_text_original, link_text_fake = link_text_fake,
                                   link_target_original = link_target_original, link_target_fake = link_target_fake, link_image_src_original = link_image_src_original,
