@@ -9,8 +9,8 @@ def createUser(request):
         newUser = UserModelForm(request.POST or None)
         if newUser.is_valid():
             # form is valid, save it
-            newUser.setUuid()
             newUser = newUser.save()
+            newUser.setUuid()
             uuid = newUser.uuid
             print("XXX: passing uuid: ", uuid)
             return HttpResponseRedirect(reverse('signupSuccess', args=(uuid, )))

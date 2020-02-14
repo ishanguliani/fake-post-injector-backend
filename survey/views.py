@@ -32,11 +32,15 @@ def showSurveyLinks(request, id):
         return
 
     # get the link object based on user id
-    currentUser = User.objects.filter(uuid=id)[0]
-    if not currentUser:
+    matchingUsers = User.objects.filter(uuid=id)
+    if not matchingUsers:
+        # backwards compatibility check: new system only compares users based on uuid while older system used pk(id)
+        matchingUsers = User.objects.filter(pk=id)
+    try:
+        currentUser = matchingUsers[0]
+    except IndexError:
         print('showSurveyLinks(): user not found')
         return
-
     print('showSurveyLinks(): success: user details: ', str(currentUser))
 
     # get the link
@@ -122,11 +126,14 @@ def showSurveyLinksWithPage(request, userId, pageNumber, showAlert = 0):
     if not userId:
         print('showSurveyLinksWithPage(): no id received')
         return
+
     # get the current user
-    currentUser = User.objects.filter(uuid=userId)[0]
-    if not currentUser:
-        print('showSurveyLinksWithPage(): user not found')
-        return
+    matchingUsers = User.objects.filter(uuid=userId)
+    if not matchingUsers:
+        # backwards compatibility check: new system only compares users based on uuid while older system used pk(id)
+        matchingUsers = User.objects.filter(pk=userId)
+    currentUser = matchingUsers[0]
+
     print('showSurveyLinksWithPage(): success: user details: ', str(currentUser))
     # get all the question pages associated with the current user
     allQuestionPages = get_list_or_404(QuestionPage, user=currentUser)

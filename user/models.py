@@ -12,6 +12,7 @@ class User(models.Model):
         newUuid = str(abs(hash(str(self.name) + str(self.email) + str(self.attendance_id)))%100000000)
         self.uuid = newUuid
         print('changed success!', str(self.uuid))
+        self.save()
 
     def __str__(self):
         return  "User{ " + 'id: ' + str(self.id) + ', name: ' + str(self.name) + ', email: ' + str(self.email) + ", uuid: " + str(self.uuid)[:10] + " }"
