@@ -9,7 +9,7 @@ class UserModelForm(forms.ModelForm):
         labels = {
             'name': 'What do we call you? (Name)',
             'email': 'How do we reach you? (Email id)',
-            'attendance_id': 'Mention the attendance id provided to you today',
+            'attendance_id': 'Enter the attendance id provided to you today',
         }
         help_texts = {
             'name': 'Type your name',
