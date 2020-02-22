@@ -2,91 +2,105 @@
 {% load crispy_forms_tags %}
 {% block content %}
 
-<div class="row" >
+<div class="row">
     <br>
 </div>
 
 {% if error %}
 <p> Something doesn't look right</p>
 {% else %}
-        {% if questionPage  %}
+{% if questionPage  %}
 <!--                <p>page number : {{pageNumber}}</p>-->
-                <!--start the row-->
-                <div class="row card p-4 border-info mb-2 text-white bg-info mb-3">
-                    <div class = "row card-header bg-info">
-                        <h5>You saw the following post by {{ questionPage.link_model.author_name }}</h5>
-                    </div>
-                <div class="card-body">
-                    <div class = "row">
-                                <div class="col-sm-6">
-<!--                                    <h6 class="mt-3">{{ questionPage.link_model.author_name}}</h6>-->
-<!--                                    check if this questionPage.link_model was a genuine one or a fake one, show the image accordingly-->
-                                    {% if questionPage.link_model.link_type.id  == 1 %}
-<!--                                        a genuine line since type == 1-->
-                                    {%  if  questionPage.link_model.link_image_src_original == "" %}
-                                        <p class="text-black">Looks like this post by {{ questionPage.link_model.author_name}} was missing a valid image, please answer the questions to the best of your ability</p>
-                                        <a class="text-warning" href="{% url 'surveyVoteNew' question_page_id=questionPage.id page_number=pageNumber %}">Or click here to move on to the next page</a>
-                                    {% else %}
-                                        <img class = "card-img-left"  object-fit="contain" width="80%" src = "{{ questionPage.link_model.link_image_src_original }}" /><br>
-                                    {%endif%}
-<!--                                        show the original link text-->
-                                    <h6 class="mt-3">{{ questionPage.link_model.link_text_original}}</h6>
+<!--start the row-->
+<div class="row card p-4 border-info mb-2 text-white bg-info mb-3">
+    <div class="row card-header bg-info">
+        <h5>You saw the following post by {{ questionPage.link_model.author_name }}</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-6">
+                <!--                                    <h6 class="mt-3">{{ questionPage.link_model.author_name}}</h6>-->
+                <!--                                    check if this questionPage.link_model was a genuine one or a fake one, show the image accordingly-->
+                {% if questionPage.link_model.link_type.id == 1 %}
+                <!--                                        a genuine line since type == 1-->
+                {% if questionPage.link_model.link_image_src_original == "" %}
+                <p class="text-black">Looks like this post by {{ questionPage.link_model.author_name}} was missing a
+                    valid image, please answer the questions to the best of your ability</p>
+                <a class="text-warning"
+                   href="{% url 'surveyVoteNew' question_page_id=questionPage.id page_number=pageNumber %}">Or click
+                    here to move on to the next page</a>
+                {% else %}
+                <img class="card-img-left" object-fit="contain" width="80%"
+                     src="{{ questionPage.link_model.link_image_src_original }}"/><br>
+                {%endif%}
+                <!--                                        show the original link text-->
+                <h6 class="mt-3">{{ questionPage.link_model.link_text_original}}</h6>
 
-<!--                                        show the original link href-->
-                                    <a class="mt-2 text-white" href="{{ questionPage.link_model.link_target_original}}" target="_blank"><u>Link to the website</u></a><br>
-                                    {% else %}
+                <!--                                        show the original link href-->
+                <a class="mt-2 text-white" href="{{ questionPage.link_model.link_target_original}}" target="_blank"><u>Link
+                    to the website</u></a><br>
+                {% else %}
 
-                                    {%  if  questionPage.link_model.preview_image == "" %}
-                                        <p class="text-black">Looks like this post by {{ questionPage.link_model.author_name}} was missing a valid image, please answer the questions to the best of your ability</p>
-                                    <a class="text-warning" href="{% url 'surveyVoteNewBypass' question_page_id=questionPage.id page_number=pageNumber bypass=1%}">Or click here to move on to the next page</a>
-                                    {% else %}
-<!--                                        show the fake image-->
-                                        <img class = "card-img-left" object-fit="contain" width="80%" src = "{{ questionPage.link_model.preview_image }}" /><br>
-                                    {%endif%}
-<!--                                        show the original link text, since we are not faking any link texts anyway-->
-                                        <h6 class="mt-3">{{ questionPage.link_model.link_text_fake}}</h6>
-<!--                                        show the fake link href-->
-                                    <a class="mt-2 text-white" href="{{ questionPage.link_model.link_target_fake}}" target="_blank"><u>Link to the website</u></a><br>
+                {% if questionPage.link_model.preview_image == "" %}
+                <p class="text-black">Looks like this post by {{ questionPage.link_model.author_name}} was missing a
+                    valid image, please answer the questions to the best of your ability</p>
+                <a class="text-warning"
+                   href="{% url 'surveyVoteNewBypass' question_page_id=questionPage.id page_number=pageNumber bypass=1%}">Or
+                    click here to move on to the next page</a>
+                {% else %}
+                <!--                                        show the fake image-->
+                <img class="card-img-left" object-fit="contain" width="80%"
+                     src="{{ questionPage.link_model.preview_image }}"/><br>
+                {%endif%}
+                <!--                                        show the original link text, since we are not faking any link texts anyway-->
+                <h6 class="mt-3">{{ questionPage.link_model.link_text_fake}}</h6>
+                <!--                                        show the fake link href-->
+                <a class="mt-2 text-white" href="{{ questionPage.link_model.link_target_fake}}" target="_blank"><u>Link
+                    to the website</u></a><br>
 
-                                    {% endif %}
-                                </div>
+                {% endif %}
+            </div>
 
-                        {% load survey_filters %}
-                                <div class="col-sm-6 ">
-                                    <ul>
-                                        {% if questionPage.questionnew_set %}
-                                        <form action="{% url 'surveyVoteNew' question_page_id=questionPage.id page_number=pageNumber %}" method="post">
-                                            {% for question in questionPage.questionnew_set.all %}
-                                                    <li>
-                                                        <h5 class="mt-1">{{ question.question_text }}</h5>
-                                                        {% if error_message %}  <p><strong>{{ error_message }}</strong></p> {% endif %}
-                                                            {% csrf_token %}
-                                                            {% for choice in question.choicenew_set.all %}
-                                                                <!-- if forloop.parentloop.first -->
-                                                                {% if question.question_type.question_type == 2 %}
-                                                        <textarea type="text" rows="5" cols="30" name="choice_for_question_text_{{question.question_text}}" id="choice{{ forloop.counter }}" value=""></textarea>
-                                                                {% else %}
-                                                                    <input type="radio" name="choice_for_question_text_{{question.question_text}}" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
-                                                                {% endif %}
-                                                            <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
-                                                            {% endfor %}
-                                                    </li>
-                                            {% endfor %}
-                                            <div class="text-center">
-                                                <input type="submit"  class="btn btn-primary pl-4 pr-4" value="Submit">
-                                            </div>
-                                            </form>
-                                        {% else %}
-                                            <p>No questions are available.</p>
-                                        {% endif %}
-                                    </ul>
-                                </div>
-                <!--end the row-->
-                    </div>
-                </div>
-                </div>
-        {% else %}  <p>No links are available.</p>
-        {% endif %}
+            {% load survey_filters %}
+            <div class="col-sm-6 ">
+                <ul>
+                    {% if questionPage.questionnew_set %}
+                    <form action="{% url 'surveyVoteNew' question_page_id=questionPage.id page_number=pageNumber %}"
+                          method="post">
+                        {% for question in questionPage.questionnew_set.all %}
+                        <li>
+                            <h5 class="mt-1">{{ question.question_text }}</h5>
+                            {% if error_message %} <p><strong>{{ error_message }}</strong></p> {% endif %}
+                            {% csrf_token %}
+                            {% for choice in question.choicenew_set.all %}
+                            <!-- if forloop.parentloop.first -->
+                            {% if question.question_type.question_type == 2 %}
+                            <textarea type="text" rows="5" cols="30"
+                                      name="choice_for_question_text_{{question.question_text}}"
+                                      id="choice{{ forloop.counter }}" value=""></textarea>
+                            {% else %}
+                            <input type="radio" name="choice_for_question_text_{{question.question_text}}"
+                                   id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+                            {% endif %}
+                            <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+                            {% endfor %}
+                        </li>
+                        {% endfor %}
+                        <div class="text-center">
+                            <input type="submit" class="btn btn-primary pl-4 pr-4" value="Submit">
+                        </div>
+                    </form>
+                    {% else %}
+                    <p>No questions are available.</p>
+                    {% endif %}
+                </ul>
+            </div>
+            <!--end the row-->
+        </div>
+    </div>
+</div>
+{% else %}  <p>No links are available.</p>
+{% endif %}
 {% endif %}
 
 {% if showAlert == 1 %}
