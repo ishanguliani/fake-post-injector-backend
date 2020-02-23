@@ -543,6 +543,11 @@ def surveyVoteNew(request, question_page_id, page_number):
             selectedChoice = questionObject.choicenew_set.all()[0]
             for key in request.POST:
                 print("looking into key: ", str(key))
+                # hack: there was some problem while directly extracting results from the incoming POST request by using
+                # request.POST['choice_for_question_text_' + questions[questionNumberWithInputText]] as the key. It seems to be that this happens
+                # because the question at that index is actually a long string with some special characters and utf-8 messes things up somewhere
+                # the current solution is to only match the most relevant part of the first line of the question over matchihng the
+                # whole question string.
                 if regexPattern in key:
                     choiceText = str(request.POST[key])
                     if not choiceText.strip():
