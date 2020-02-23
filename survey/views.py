@@ -474,7 +474,7 @@ def extractAndMarkAnswersFromRequest(request, questionPage, q, validChoices, oth
     For each question from the question page, get the choice selected by the user and log it.
     Here we exclude questions which are answers to Others(please specify) preceding question types
     """
-    if q in [OTHER_OPTION_CHOICE_QUESTION_SET, INPUT_TEXT_MULTIPLE_CHOICE_QUESTION_SET]:
+    if q in OTHER_OPTION_CHOICE_QUESTION_SET or q in INPUT_TEXT_MULTIPLE_CHOICE_QUESTION_SET:
         return
     selected_question = questionPage.questionnew_set.get(question_text=questions[q])
     selected_choice = selected_question.choicenew_set.get(pk=request.POST['choice_for_question_text_' + questions[q]])
@@ -540,6 +540,7 @@ def surveyVoteNew(request, question_page_id, page_number):
         for questionNumberWithInputText in INPUT_TEXT_MULTIPLE_CHOICE_QUESTION_SET:
             questionObject = questionPage.questionnew_set.get(question_text=questions[questionNumberWithInputText])
             selectedChoice = questionObject.choicenew_set.all()[0]
+            print("questionNumberWithInputText: ", str(questionNumberWithInputText),  "value: ", str(questions[questionNumberWithInputText]))
             choiceText = str(request.POST['choice_for_question_text_' + questions[questionNumberWithInputText]])
             if not choiceText.strip():
                 raise KeyError('surveyVoteNew(): questionStringWithInputText: no text specified for question: ' + str(questions[questionNumberWithInputText]))
@@ -593,13 +594,11 @@ def surveyVoteNew(request, question_page_id, page_number):
         # print("surveyVoteNew(): Choice4: ", selected_choice4)
 
     except (KeyError, ChoiceNew.DoesNotExist):
-        # Redisplay the questionPage voting form.
-        # return render(request, 'survey/detail.html', {
+        import traceback
+        #print stack trace
         print("surveyVoteNew(): failure: something went wrong in selecting choice")
-        # return render(request, 'survey/index.html', {
-        #     'question': questionPage,
-        #     'error_message': "You didn't select a choice.",
-        # })
+        print(traceback.format_exc())
+        # render the current question page in the survey again
         return HttpResponseRedirect(reverse('showSurveyLinksWithPage', args=(currentUserId, int(page_number), 1)))
     else:
         # XXX
