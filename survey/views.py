@@ -475,7 +475,7 @@ def extractAndMarkAnswersFromRequest(request, questionPage, q, validChoices, oth
     For each question from the question page, get the choice selected by the user and log it.
     Here we exclude questions which are answers to Others(please specify) preceding question types
     """
-    if q in OTHER_OPTION_CHOICE_QUESTION_SET or q in INPUT_TEXT_MULTIPLE_CHOICE_QUESTION_SET:
+    if q in OTHER_OPTION_CHOICE_QUESTION_SET or q in list(map( lambda x: x[0], INPUT_TEXT_MULTIPLE_CHOICE_QUESTION_SET)):
         return
     selected_question = questionPage.questionnew_set.get(question_text=questions[q])
     selected_choice = selected_question.choicenew_set.get(pk=request.POST['choice_for_question_text_' + questions[q]])
