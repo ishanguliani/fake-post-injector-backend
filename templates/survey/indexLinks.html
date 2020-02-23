@@ -22,41 +22,32 @@
                 <!--                                    <h6 class="mt-3">{{ questionPage.link_model.author_name}}</h6>-->
                 <!--                                    check if this questionPage.link_model was a genuine one or a fake one, show the image accordingly-->
                 {% if questionPage.link_model.link_type.id == 1 %}
-                <!--                                        a genuine line since type == 1-->
-                {% if questionPage.link_model.link_image_src_original == "" %}
-                <p class="text-black">Looks like this post by {{ questionPage.link_model.author_name}} was missing a
-                    valid image, please answer the questions to the best of your ability</p>
-                <a class="text-warning"
-                   href="{% url 'surveyVoteNew' question_page_id=questionPage.id page_number=pageNumber %}">Or click
-                    here to move on to the next page</a>
+                    <!--                                        a genuine line since type == 1-->
+                    {% if questionPage.link_model.link_image_src_original == "" %}
+                        <p class="text-black">Looks like this post by {{ questionPage.link_model.author_name}} was missing a valid image, please answer the questions to the best of your ability</p>
+                        <a class="text-warning" href="{% url 'surveyVoteNew' question_page_id=questionPage.id page_number=pageNumber %}">Or click here to move on to the next page</a>
+                    {% else %}
+                        <img class="card-img-left" object-fit="contain" width="80%" src="{{ questionPage.link_model.link_image_src_original }}"/><br>
+                    {%endif%}
+                    <!--                                        show the original link text-->
+                    <h6 class="mt-3">{{ questionPage.link_model.link_text_original}}</h6>
+                    <!--                                        show the original link href-->
+                    <a class="mt-2 text-white" href="{{ questionPage.link_model.link_target_original}}" target="_blank"><u>Link
+                        to the website</u></a><br>
                 {% else %}
-                <img class="card-img-left" object-fit="contain" width="80%"
-                     src="{{ questionPage.link_model.link_image_src_original }}"/><br>
-                {%endif%}
-                <!--                                        show the original link text-->
-                <h6 class="mt-3">{{ questionPage.link_model.link_text_original}}</h6>
-
-                <!--                                        show the original link href-->
-                <a class="mt-2 text-white" href="{{ questionPage.link_model.link_target_original}}" target="_blank"><u>Link
-                    to the website</u></a><br>
-                {% else %}
-
-                {% if questionPage.link_model.preview_image == "" %}
-                <p class="text-black">Looks like this post by {{ questionPage.link_model.author_name}} was missing a
-                    valid image, please answer the questions to the best of your ability</p>
-                <a class="text-warning"
-                   href="{% url 'surveyVoteNewBypass' question_page_id=questionPage.id page_number=pageNumber bypass=1%}">Or
-                    click here to move on to the next page</a>
-                {% else %}
-                <!--                                        show the fake image-->
-                <img class="card-img-left" object-fit="contain" width="80%"
-                     src="{{ questionPage.link_model.preview_image }}"/><br>
-                {%endif%}
-                <!--                                        show the original link text, since we are not faking any link texts anyway-->
-                <h6 class="mt-3">{{ questionPage.link_model.link_text_fake}}</h6>
-                <!--                                        show the fake link href-->
-                <a class="mt-2 text-white" href="{{ questionPage.link_model.link_target_fake}}" target="_blank"><u>Link
-                    to the website</u></a><br>
+                    <!--at this point we know that the link type is not genuine, so it must be fake                -->
+                    {% if questionPage.link_model.preview_image == "" %}
+                        <p class="text-black">Looks like this post by {{ questionPage.link_model.author_name}} was missing a valid image, please answer the questions to the best of your ability</p>
+                        <a class="text-warning" href="{% url 'surveyVoteNewBypass' question_page_id=questionPage.id page_number=pageNumber bypass=1%}">Or click here to move on to the next page</a>
+                    {% else %}
+                        <!--                                        show the fake image-->
+                        <img class="card-img-left" object-fit="contain" width="80%" src="{{ questionPage.link_model.preview_image }}"/><br>
+                    {%endif%}
+                    <!--                                        show the original link text, since we are not faking any link texts anyway-->
+                    <h6 class="mt-3">{{ questionPage.link_model.link_text_fake}}</h6>
+                    <!--                                        show the fake link href-->
+                    <a class="mt-2 text-white" href="{{ questionPage.link_model.link_target_fake}}" target="_blank"><u>Link
+                        to the website</u></a><br>
 
                 {% endif %}
             </div>
