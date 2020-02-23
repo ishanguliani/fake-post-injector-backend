@@ -475,7 +475,7 @@ def extractAndMarkAnswersFromRequest(request, questionPage, q, validChoices, oth
     For each question from the question page, get the choice selected by the user and log it.
     Here we exclude questions which are answers to Others(please specify) preceding question types
     """
-    if q in [OTHER_OPTION_CHOICE_QUESTION_SET, INPUT_TEXT_MULTIPLE_CHOICE_QUESTION_SET]:
+    if q in OTHER_OPTION_CHOICE_QUESTION_SET or q in list(map( lambda x: x[0], INPUT_TEXT_MULTIPLE_CHOICE_QUESTION_SET)):
         return
     selected_question = questionPage.questionnew_set.get(question_text=questions[q])
     selected_choice = selected_question.choicenew_set.get(pk=request.POST['choice_for_question_text_' + questions[q]])
@@ -547,8 +547,7 @@ def surveyVoteNew(request, question_page_id, page_number):
                     choiceText = str(request.POST[key])
                     if not choiceText.strip():
                         raise KeyError('surveyVoteNew(): questionStringWithInputText: no text specified for question: ' + str(questions[questionNumberWithInputText]))
-                # choiceText = str(request.POST['choice_for_question_text_' + questions[questionNumberWithInputText]])
-
+                    # choiceText = str(request.POST['choice_for_question_text_' + questions[questionNumberWithInputText]])
                     # parse comma separated choices to remove white spaces
                     # parse input choices to remove starting and trailing white spaces
                     # for example for input "1, 2, 3  , this is my selected option   " we should remove the starting and trailing white space for each selection
@@ -599,10 +598,13 @@ def surveyVoteNew(request, question_page_id, page_number):
         # print("surveyVoteNew(): Choice4: ", selected_choice4)
 
     except (KeyError, ChoiceNew.DoesNotExist):
-        # Redisplay the current questionPage survey form
+        # Redisplay the questionPage voting form.
         # return render(request, 'survey/detail.html', {
-        # print stack trace
         print("surveyVoteNew(): failure: something went wrong in selecting choice")
+        # return render(request, 'survey/index.html', {
+        #     'question': questionPage,
+        #     'error_message': "You didn't select a choice.",
+        # })
         return HttpResponseRedirect(reverse('showSurveyLinksWithPage', args=(currentUserId, int(page_number), 1)))
     else:
         # XXX
