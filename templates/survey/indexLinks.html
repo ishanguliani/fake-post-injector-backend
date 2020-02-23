@@ -13,7 +13,7 @@
 <!--                <p>page number : {{pageNumber}}</p>-->
 <!--start the row-->
 <div class="row card p-4 border-info mb-2 text-white bg-info mb-3">
-    <div class="row card-header bg-info">
+    <div class="row card-header bg-primary">
         <h5>You saw the following post by {{ questionPage.link_model.author_name }}</h5>
     </div>
     <div class="card-body">
@@ -59,8 +59,8 @@
                     <form action="{% url 'surveyVoteNew' question_page_id=questionPage.id page_number=pageNumber %}"
                           method="post">
                         {% for question in questionPage.questionnew_set.all %}
-                        <li>
-                            <h5 class="mt-1">{{ question.question_text }}</h5>
+			<li>
+			<h5 class="mt-1">{{ question.question_text|linebreaks }}</h5>
                             {% if error_message %} <p><strong>{{ error_message }}</strong></p> {% endif %}
                             {% csrf_token %}
                             {% for choice in question.choicenew_set.all %}
