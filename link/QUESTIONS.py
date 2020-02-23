@@ -39,9 +39,9 @@ OTHER_OPTION_CHOICE_QUESTION_SET.add(41)
 # the following questions are of input type and hence will have their choice
 # directly extracted from the incoming POST request
 INPUT_TEXT_MULTIPLE_CHOICE_QUESTION_SET = set()
-INPUT_TEXT_MULTIPLE_CHOICE_QUESTION_SET.add(21)
-INPUT_TEXT_MULTIPLE_CHOICE_QUESTION_SET.add(22)
-INPUT_TEXT_MULTIPLE_CHOICE_QUESTION_SET.add(6)
+INPUT_TEXT_MULTIPLE_CHOICE_QUESTION_SET.add((21, "Why did you click on this link?"))
+INPUT_TEXT_MULTIPLE_CHOICE_QUESTION_SET.add((22, "Why did you not click on this link?"))
+INPUT_TEXT_MULTIPLE_CHOICE_QUESTION_SET.add((6, "What types of posts does this person generally share"))
 
 CHOICE_TEXT = 'Other(please specify):'
 

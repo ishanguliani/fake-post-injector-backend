@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Create your views here.
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, get_list_or_404, render
@@ -537,26 +538,31 @@ def surveyVoteNew(request, question_page_id, page_number):
             selectedChoice.votes += 1
             validChoices.append(selectedChoice)
 
-        for questionNumberWithInputText in INPUT_TEXT_MULTIPLE_CHOICE_QUESTION_SET:
+        for questionNumberWithInputText, regexPattern in INPUT_TEXT_MULTIPLE_CHOICE_QUESTION_SET:
             questionObject = questionPage.questionnew_set.get(question_text=questions[questionNumberWithInputText])
             selectedChoice = questionObject.choicenew_set.all()[0]
-            choiceText = str(request.POST['choice_for_question_text_' + questions[questionNumberWithInputText]])
-            if not choiceText.strip():
-                raise KeyError('surveyVoteNew(): questionStringWithInputText: no text specified for question: ' + str(questions[questionNumberWithInputText]))
-            # parse comma separated choices to remove white spaces
-            # parse input choices to remove starting and trailing white spaces
-            # for example for input "1, 2, 3  , this is my selected option   " we should remove the starting and trailing white space for each selection
-            # this will become: "1,2,3,this is my selected option"
-            parsedChoiceText = ""
-            for choice in choiceText.strip().split(","):
-                parsedChoiceText += choice.strip() + ','
-            print("surveyVoteNew(): questionStringWithInputText: Question:", str(questionNumberWithInputText))
-            print("surveyVoteNew(): questionStringWithInputText: SelectedChoice:", str(selectedChoice))
-            print("surveyVoteNew(): questionStringWithInputText: ChoiceText:", parsedChoiceText)
-            selectedChoice.choice_text = parsedChoiceText
-            selectedChoice.is_selected = True
-            selectedChoice.votes += 1
-            validChoices.append(selectedChoice)
+            for key in request.POST:
+                print("looking into key: ", str(key))
+                if regexPattern in key:
+                    choiceText = str(request.POST[key])
+                    if not choiceText.strip():
+                        raise KeyError('surveyVoteNew(): questionStringWithInputText: no text specified for question: ' + str(questions[questionNumberWithInputText]))
+                # choiceText = str(request.POST['choice_for_question_text_' + questions[questionNumberWithInputText]])
+
+                    # parse comma separated choices to remove white spaces
+                    # parse input choices to remove starting and trailing white spaces
+                    # for example for input "1, 2, 3  , this is my selected option   " we should remove the starting and trailing white space for each selection
+                    # this will become: "1,2,3,this is my selected option"
+                    parsedChoiceText = ""
+                    for choice in choiceText.strip().split(","):
+                        parsedChoiceText += choice.strip() + ','
+                    print("surveyVoteNew(): questionStringWithInputText: Question:", str(questions[questionNumberWithInputText]))
+                    print("surveyVoteNew(): questionStringWithInputText: SelectedChoice:", str(selectedChoice))
+                    print("surveyVoteNew(): questionStringWithInputText: ChoiceText:", parsedChoiceText)
+                    selectedChoice.choice_text = parsedChoiceText
+                    selectedChoice.is_selected = True
+                    selectedChoice.votes += 1
+                    validChoices.append(selectedChoice)
 
         # save all requests to db since none of them caused an error
         for sno, selected_choice in enumerate(validChoices):
@@ -593,13 +599,10 @@ def surveyVoteNew(request, question_page_id, page_number):
         # print("surveyVoteNew(): Choice4: ", selected_choice4)
 
     except (KeyError, ChoiceNew.DoesNotExist):
-        # Redisplay the questionPage voting form.
+        # Redisplay the current questionPage survey form
         # return render(request, 'survey/detail.html', {
+        # print stack trace
         print("surveyVoteNew(): failure: something went wrong in selecting choice")
-        # return render(request, 'survey/index.html', {
-        #     'question': questionPage,
-        #     'error_message': "You didn't select a choice.",
-        # })
         return HttpResponseRedirect(reverse('showSurveyLinksWithPage', args=(currentUserId, int(page_number), 1)))
     else:
         # XXX
