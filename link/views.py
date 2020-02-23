@@ -52,7 +52,14 @@ def saveOriginalLink(request):
             print("is_clicked is true")
             is_clicked = True
 
-        # now check if the preview data for this particular link_target_fake is available in the database
+        # a LinkPreviewModel is the model data for the post related to only fake posts
+        # this model data (title, image, link) will be shown to the user during the study
+        # to help them recollect what fake post they saw
+        # Each LinkPreviewModel is binded to one unique ParentLink which is the actual fake
+        # link that uniquely identifies that LinkPreviewModel
+
+        # check if the preview data for this particular link_target_fake is available in the database
+        # we try to keep it cached in the db to avoid frequent creation
         parentLink = ParentLink.objects.filter(parent_link=link_target_fake)
         newLinkPreviewModel = None
         if not parentLink:
