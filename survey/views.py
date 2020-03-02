@@ -550,9 +550,11 @@ def surveyVoteNew(request, question_page_id, page_number):
                 # the current solution is to only match the most relevant part of the first line of the question over matchihng the
                 # whole question string.
                 if regexPattern in key:
-                    choiceText = str(request.POST[key])
-                    if not choiceText.strip():
-                        raise KeyError('surveyVoteNew(): questionStringWithInputText: no text specified for question: ' + str(questions[questionNumberWithInputText]))
+                    choiceText = "NA"
+                    try:
+                        choiceText = str(request.POST[key])
+                    except:
+                        pass
                     # choiceText = str(request.POST['choice_for_question_text_' + questions[questionNumberWithInputText]])
                     # parse comma separated choices to remove white spaces
                     # parse input choices to remove starting and trailing white spaces
