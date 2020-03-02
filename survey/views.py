@@ -511,8 +511,9 @@ def surveyVoteNew(request, question_page_id, page_number):
     for querySet in request.POST:
         print(querySet, ':', request.POST[querySet])
     questionPage = get_object_or_404(QuestionPage, pk=question_page_id)
-    currentUserId = questionPage.user.id
-    print('surveyVoteNew(): extracted user id: ' + str(currentUserId))
+
+    currentUserUuId = questionPage.user.uuid
+    print('surveyVoteNew(): extracted user uuid: ' + str(currentUserUuId))
     try:
         validChoices = []
         otherChoicesMap = defaultdict(bool)
@@ -610,7 +611,7 @@ def surveyVoteNew(request, question_page_id, page_number):
         #     'question': questionPage,
         #     'error_message': "You didn't select a choice.",
         # })
-        return HttpResponseRedirect(reverse('showSurveyLinksWithPage', args=(currentUserId, int(page_number), 1)))
+        return HttpResponseRedirect(reverse('showSurveyLinksWithPage', args=(currentUserUuId, int(page_number), 1)))
     else:
         # XXX
         # # time to save this QuestionPage with all the answered questions
@@ -651,11 +652,11 @@ def surveyVoteNew(request, question_page_id, page_number):
         # return HttpResponseRedirect(reverse('surveyResultsNew', args=(questionPage.id,)))
         # pass the next page
         # return HttpResponseRedirect(reverse('showSurveyLinksWithPage', args=(questionPage.id, int(pageNumber)+1)))
-        return HttpResponseRedirect(reverse('showSurveyLinksWithPage', args=(currentUserId, int(page_number) + 1, 0)))
+        return HttpResponseRedirect(reverse('showSurveyLinksWithPage', args=(currentUserUuId, int(page_number) + 1, 0)))
 
 def surveyVoteNewBypass(request, question_page_id, page_number, bypass):
     print('surveyVoteNew(): entered with question_page_id: ' + str(question_page_id) + ", pageNumber: " + str(page_number))
     print(request.POST)
     questionPage = get_object_or_404(QuestionPage, pk=question_page_id)
-    currentUserId = questionPage.user.id
+    currentUserId = questionPage.user.uuid
     return HttpResponseRedirect(reverse('showSurveyLinksWithPage', args=(currentUserId, int(page_number) + 1, 0)))
