@@ -316,9 +316,9 @@ def showSurveyLinksWithPage(request, userId, pageNumber, showAlert = 0):
 
         # proceed to add choices to question 5 if not already done
         if len(newQuestion5.choicenew_set.all()) <= 0:
-            newChoice51 = ChoiceNew(question=newQuestion5, choice_text="Sales-oriented", votes=0, is_selected=False)
-            newChoice52 = ChoiceNew(question=newQuestion5, choice_text="Media", votes=0, is_selected=False)
-            newChoice53 = ChoiceNew(question=newQuestion5, choice_text="Interactives", votes=0, is_selected=False)
+            newChoice51 = ChoiceNew(question=newQuestion5, choice_text="Sales-oriented (e.g. clothes sales, modeling opportunities)", votes=0, is_selected=False)
+            newChoice52 = ChoiceNew(question=newQuestion5, choice_text="Media (e.g. videos, pictures)", votes=0, is_selected=False)
+            newChoice53 = ChoiceNew(question=newQuestion5, choice_text="Interactives (e.g. quizzes, games)", votes=0, is_selected=False)
             newChoice54 = ChoiceNew(question=newQuestion5, choice_text=CHOICE_TEXT, votes=0, is_selected=False)
 
             try:
