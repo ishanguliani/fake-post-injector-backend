@@ -18,7 +18,7 @@
     </div>
     <div class="card-body">
         <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-12">
                 <!--                                    <h6 class="mt-3">{{ questionPage.link_model.author_name}}</h6>-->
                 <!--                                    check if this questionPage.link_model was a genuine one or a fake one, show the image accordingly-->
                 {% if questionPage.link_model.link_type.id == 1 %}
@@ -30,7 +30,7 @@
                         <img class="card-img-left" object-fit="contain" width="80%" src="{{ questionPage.link_model.link_image_src_original }}"/><br>
                     {%endif%}
                     <!--                                        show the original link text-->
-                    <h6 class="mt-3">{{ questionPage.link_model.link_text_original}}</h6>
+                    <h6 class="mt-3 text-justify">{{ questionPage.link_model.link_text_original}}</h6>
                     <!--                                        show the original link href-->
                     <a class="mt-2 text-white" href="{{ questionPage.link_model.link_target_original}}" target="_blank"><u>Link
                         to the website</u></a><br>
@@ -53,20 +53,22 @@
             </div>
 
             {% load survey_filters %}
-            <div class="col-sm-6 ">
-                <ul>
+            <div class="col-12 ">
+		    </br>
+                <ol>
                     {% if questionPage.questionnew_set %}
                     <form action="{% url 'surveyVoteNew' question_page_id=questionPage.id page_number=pageNumber %}"
                           method="post">
                         {% for question in questionPage.questionnew_set.all %}
 			<li>
-			<h5 class="mt-1">{{ question.question_text|linebreaks }}</h5>
+			<h5 class="mt-4" style="FONT-SIZE:17px; COLOR:#fff; LINE-HEIGHT:25px; FONT-FAMILY:Arial,Helvetica,sans-serif">
+				{{ question.question_text|linebreaks }}</h5>
                             {% if error_message %} <p><strong>{{ error_message }}</strong></p> {% endif %}
                             {% csrf_token %}
                             {% for choice in question.choicenew_set.all %}
                             <!-- if forloop.parentloop.first -->
                             {% if question.question_type.question_type == 2 %}
-                            <textarea type="text" rows="5" cols="30"
+                            <textarea type="text" rows="2" cols="25"
                                       name="choice_for_question_text_{{question.question_text}}"
                                       id="choice{{ forloop.counter }}" value=""></textarea>
                             {% else %}
