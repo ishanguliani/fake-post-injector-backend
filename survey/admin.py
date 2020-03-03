@@ -49,7 +49,7 @@ class ChoiceResource(resources.ModelResource):
     """
     class Meta:
         model = ChoiceNew
-        fields = ('id', 'question__id', 'choice_text', 'is_selected')
+        fields = ('id', 'choice_text', 'is_selected', 'question__id', 'question__question_text', 'question__question_type__question_type', 'question__question_type__question_tag')
         export_order = ('id', 'question__id', 'choice_text', 'is_selected')
 
 class ChoiceAdmin(ImportExportModelAdmin):
