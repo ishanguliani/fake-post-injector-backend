@@ -3,11 +3,6 @@ from .models import ChoiceNew, QuestionType, QuestionNew, QuestionPage
 from import_export.admin import ImportExportModelAdmin
 from import_export import resources
 
-# @admin.register(QuestionType)
-# # class QuestionTypeAdmin(admin.ModelAdmin):
-# class QuestionTypeAdmin(resources.ModelResource):
-#     list_display = ['question_type', 'question_tag']
-
 class QuestionTypeResource(resources.ModelResource):
     """
     Add import export feature to QuestionType model
