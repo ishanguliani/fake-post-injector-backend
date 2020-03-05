@@ -19,22 +19,23 @@ class ParentLinkResource(resources.ModelResource):
 
 class ParentLinkAdmin(ImportExportModelAdmin):
     resource_class = ParentLinkResource
+    list_display = ['id', 'parent_link']
 
 
 # @admin.register(LinkPreviewModel)
 # class LinkPreviewModelAdmin(admin.ModelAdmin):
 #     list_display = ['title', 'description', 'image', 'url', 'get_parent_link']
 #
-#     def get_parent_link(self, obj):
-#         """
-#         Return the parent_link associated with this particular LinkPreviewModel
-#         :param obj:
-#         :return:
-#         """
-#         return obj.parent_link.parent_link
-#
-#     get_parent_link.admin_order_field = 'parent_link'
-#     get_parent_link.short_description = 'Parent Link'
+    # def get_parent_link(self, obj):
+    #     """
+    #     Return the parent_link associated with this particular LinkPreviewModel
+    #     :param obj:
+    #     :return:
+    #     """
+    #     return obj.parent_link.parent_link
+    #
+    # get_parent_link.admin_order_field = 'parent_link'
+    # get_parent_link.short_description = 'Parent Link'
 
 class LinkPreviewResource(resources.ModelResource):
     """
@@ -47,6 +48,18 @@ class LinkPreviewResource(resources.ModelResource):
 
 class LinkPreviewAdmin(ImportExportModelAdmin):
     resource_class = LinkPreviewResource
+    list_display = ['title', 'description', 'image', 'url', 'get_parent_link']
+
+    def get_parent_link(self, obj):
+        """
+        Return the parent_link associated with this particular LinkPreviewModel
+        :param obj:
+        :return:
+        """
+        return obj.parent_link.parent_link
+
+    get_parent_link.admin_order_field = 'parent_link'
+    get_parent_link.short_description = 'Parent Link'
 
 admin.site.register(ParentLink, ParentLinkAdmin)
 admin.site.register(LinkPreviewModel, LinkPreviewAdmin)
