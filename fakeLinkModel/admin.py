@@ -18,5 +18,6 @@ class FakeLinkModelResource(resources.ModelResource):
 
 class FakeLinkModelAdmin(ImportExportModelAdmin):
     resource_class = FakeLinkModelResource
+    list_display = ['id', 'fake_picture', 'fake_link_topic', 'fake_link_text', 'fake_link_description', 'fake_link', 'fake_link_header']
 
 admin.site.register(FakeLinkModel, FakeLinkModelAdmin)
