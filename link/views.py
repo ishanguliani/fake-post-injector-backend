@@ -125,11 +125,20 @@ def saveOriginalLink(request):
         # previously we only showed one question page per un-faked(link_type==1) and fake link (link_type==3).
         # Now we plan to add one more question page for the faked links.
         if (int(link_type) == 3):
-            linkModelForOriginalLinkOfFakedPosts = origLinkModel
-            print("XXX2: creating an additional question page")
-            # override the link_type to be genuine
+            # add a link model with the same contents as the fake link model but with link_type==1(genuine)
             genuineLinkTypeId = 1
-            linkModelForOriginalLinkOfFakedPosts.link_type = LinkType.objects.filter(pk=genuineLinkTypeId)[0]
+            genuineLinkTypeObject = LinkType.objects.filter(pk=genuineLinkTypeId)[0]
+            linkModelForOriginalLinkOfFakedPosts = LinkModel(link_text_original = link_text_original, link_text_fake = link_text_fake,
+                                  link_target_original = link_target_original, link_target_fake = link_target_fake, link_image_src_original = link_image_src_original,
+                                  link_type = genuineLinkTypeObject, authored_text_original = authored_text_original,
+                                  authored_text_fake = authored_text_fake, author_name = author_name,
+                                  is_seen = is_seen, is_clicked = is_clicked, time_to_view = datetime.datetime.now().time(),
+                                  user = mUser,
+                                  preview_title  = newLinkPreviewModel.title,
+                                  preview_description = newLinkPreviewModel.description,
+                                  preview_image = newLinkPreviewModel.image,
+                                  preview_url = newLinkPreviewModel.url)
+            print("XXX2: creating an additional question page")
             linkModelForOriginalLinkOfFakedPosts.save()
             print("XXX2: saved new genuine link model", linkModelForOriginalLinkOfFakedPosts)
             # save a new question page
