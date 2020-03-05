@@ -13,6 +13,7 @@ class QuestionTypeResource(resources.ModelResource):
 
 class QuestionTypeAdmin(ImportExportModelAdmin):
     resource_class = QuestionTypeResource
+    list_display = ['question_type', 'question_tag']
 
 class QuestionPageResource(resources.ModelResource):
     """
@@ -25,6 +26,7 @@ class QuestionPageResource(resources.ModelResource):
 
 class QuestionPageAdmin(ImportExportModelAdmin):
     resource_class = QuestionPageResource
+    list_display = ['id', 'user__id', 'link_model__id', 'is_answered']
 
 class QuestionResource(resources.ModelResource):
     """
@@ -37,6 +39,7 @@ class QuestionResource(resources.ModelResource):
 
 class QuestionAdmin(ImportExportModelAdmin):
     resource_class = QuestionResource
+    list_display = ['id', 'question_text', 'question_type__question_type', 'question_page__id']
 
 class ChoiceResource(resources.ModelResource):
     """
@@ -49,6 +52,8 @@ class ChoiceResource(resources.ModelResource):
 
 class ChoiceAdmin(ImportExportModelAdmin):
     resource_class = ChoiceResource
+    list_display = ['id', 'choice_text', 'is_selected', 'question__id', 'question__question_text']
+
 
 admin.site.register(QuestionType, QuestionTypeAdmin)
 # admin.site.register(QuestionNew)
