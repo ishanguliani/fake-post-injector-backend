@@ -20,4 +20,5 @@ class UserResource(resources.ModelResource):
 class UserAdmin(ImportExportModelAdmin):
     resource_class = UserResource
     readonly_fields = ('id', 'name', 'email', 'attendance_id', 'uuid',)
+    list_display = ['id', 'name', 'email', 'attendance_id']
 admin.site.register(User, UserAdmin)
