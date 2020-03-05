@@ -52,8 +52,7 @@ class ChoiceResource(resources.ModelResource):
 
 class ChoiceAdmin(ImportExportModelAdmin):
     resource_class = ChoiceResource
-    list_display = ['id', 'choice_text', 'is_selected', 'question__id', 'question__question_text']
-
+    list_display = ['id', 'choice_text', 'is_selected']
 
 admin.site.register(QuestionType, QuestionTypeAdmin)
 # admin.site.register(QuestionNew)
