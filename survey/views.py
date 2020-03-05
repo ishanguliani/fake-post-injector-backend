@@ -8,24 +8,7 @@ from user.models import User
 from link.QUESTIONS import questions, CHOICE_TEXT, OTHER_OPTION_CHOICE_QUESTION_SET, INPUT_TEXT_MULTIPLE_CHOICE_QUESTION_SET
 from django.db import transaction, IntegrityError
 from collections import defaultdict
-from link.models import LinkModel
-from django.views.generic.list import ListView
-from django.views.generic.detail import DetailView
 
-#
-# def showSurveyView(ListView):
-#     template_name = 'survey/index.html'
-#     context_object_name = 'latest_question_list'
-#     def get_queryset(self):
-#         return Question.objects.all()
-
-# def showSurvey(request):
-#     # return render(request, "survey/surveyForm.html", {'form': SurveyModelForm()})
-#     # XXX
-#     # latest_question_list = Question.objects.order_by('-pub_date')[:5]
-#     latest_question_list = QuestionNew.objects.order_by('-pub_date')[:5]
-#     context = {'latest_question_list': latest_question_list}
-#     return render(request, 'survey/index.html', context)
 def showSurveyLinks(request, id):
     print('entered showSurveyLinks()')
     if not id:
@@ -60,58 +43,15 @@ def showSurveyLinks(request, id):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     """
 
-    # allLinks = get_list_or_404(LinkModel, user=currentUser)
-    # if not allLinks:
-    #     print('showSurveyLinks(): allLinks not found!')
-    # print('showSurveyLinks(): success: found ' + str(len(allLinks)) + ' links')
-
     allQuestionPages = get_list_or_404(QuestionPage, user=currentUser)
     if not allQuestionPages:
         print('showSurveyLinks(): allQuestionPages not found!')
 
     print('showSurveyLinks(): success: found ' + str(len(allQuestionPages)) + ' links')
-
-    # XXX
-    # latest_question_list = Question.objects.order_by('-pub_date')[:5]
-    # latest_question_list = QuestionNew.objects.order_by('-pub_date')[:5]
-
-    # XXX adding all the links one by one to QuestionPage model
-    # questionPageList = []
-    # for link in allLinks:
-    #     # create a new question page and add to question page list
-    #     newQuestionPage = QuestionPage(user=currentUser, link_model=link)
-    #     # save this question page
-    #     newQuestionPage.save()
-    #     print("XXX: created new page: " + str(newQuestionPage))
-    #     questionPageList.append(newQuestionPage)
-
-    # print("XXX: total ", str(len(questionPageList)))
-    # questionList = []
-    # print('questionList: length: ', len(questionList))
-    # for link in allLinks:
-    #     questionSet = []
-    #     for question in latest_question_list:
-    #         # bind each question to the single link
-    #         question.link_model = link
-    #         # bind each question to a particular user
-    #         question.user = currentUser
-    #         questionSet.append(question)
-    #     print('questionList: questionSet: appended question: length: ', len(questionSet))
-    #     questionList.append(questionSet)
-    #     print('questionList: appended questionSet, length: ', len(questionList))
-    #
-    # latest_question_list = questionList
-
-    # return render(request, 'survey/indexLinks.html',
-    #               {'allLinks': allLinks, 'latest_question_list': latest_question_list})
     print("showSurveyLinks: XXX: currentPage : ", str(allQuestionPages[0]))
     print("showSurveyLinks: XXX: questions on this page : total : " + str(len(allQuestionPages[0].questionnew_set.all())))
-    # for i, choice in enumerate(allQuestionPages[0].questionnew_set.objects.all()):
-    #     print("XXX: choice", i, ": ", choice)
 
     return render(request, 'survey/indexLinks.html', {'questionPage': allQuestionPages[0]})
-
-    # return render(request, 'survey/indexLinks.html', {'allLinks': allLinks, 'latest_question_list': latest_question_list})
 
 def showSurveyLinksWithPage(request, userId, pageNumber, showAlert = 0):
     """
@@ -140,7 +80,7 @@ def showSurveyLinksWithPage(request, userId, pageNumber, showAlert = 0):
         return
     print('showSurveyLinksWithPage(): success: found ' + str(len(allQuestionPages)) + ' pages')
     # check if the page number is a valid one
-    if  int(pageNumber) < 0 or int(pageNumber) >= len(allQuestionPages):
+    if int(pageNumber) < 0 or int(pageNumber) >= len(allQuestionPages):
         print("showSurveyLinksWithPage(): failure: page number is invalid")
         return render(request, 'survey/resultLinks.html')
 
@@ -410,46 +350,19 @@ def showSurveyLinksWithPage(request, userId, pageNumber, showAlert = 0):
     print("showSurveyLinksWithPage: questions on this page : total : " + str(len(currentQuestionPage.questionnew_set.all())))
     return render(request, 'survey/indexLinks.html', {'questionPage': currentQuestionPage, 'pageNumber':pageNumber, 'showAlert': showAlert})
 
-# def surveyDetail(request, question_id):
-#     # XXX
-#     # question = get_object_or_404(Question, pk=question_id)
-#     question = get_object_or_404(QuestionNew, pk=question_id)
-#     return render(request, 'survey/detail.html', {'question': question})
-#
-# # def surveyDetailView(DetailView):
-# #     model = Question
-# #     template_name = 'survey/detail.html'
-# # #
 def surveyResults(request, question_id):
-    # XXX
-    # question = get_object_or_404(Question, pk=question_id)
     question = get_object_or_404(QuestionNew, pk=question_id)
     return render(request, 'survey/results.html', {'question': question})
 
-# def surveyResultsView(DetailView):
-#     model = Question
-#     template_name = 'survey/results.html'
-
-
 def surveyResultsNew(request, question_page_id):
-    # XXX
-    # question = get_object_or_404(Question, pk=question_id)
     questionPage = get_object_or_404(QuestionPage, pk=question_page_id)
     return render(request, 'survey/resultsLinks.html', {'question_page': questionPage})
 
-# def surveyResultsView(DetailView):
-#     model = Question
-#     template_name = 'survey/results.html'
-
 def surveyVote(request, question_id):
     print('entered: surveyVote')
-    # XXX
-    # question = get_object_or_404(Question, pk=question_id)
     question = get_object_or_404(QuestionNew, pk=question_id)
     try:
         selected_choice = question.choice_set.get(pk=request.POST['choice'])
-    # XXX
-    # except (KeyError, Choice.DoesNotExist):
     except (KeyError, ChoiceNew.DoesNotExist):
         # Redisplay the question voting form.
         # return render(request, 'survey/detail.html', {
@@ -576,67 +489,12 @@ def surveyVoteNew(request, question_page_id, page_number):
             selected_choice.save()
             print("surveyVoteNew(): success: saved choice: ", selected_choice, ': ')
 
-        # extract answer to question 1
-        #
-        # # extract answer to question 2
-        # selected_question = questionPage.questionnew_set.get(question_text=questions[1])
-        # print("surveyVoteNew(): Question2: ", selected_question)
-        # selected_choice2 = selected_question.choicenew_set.get(pk=request.POST['choice_for_question_text_' + questions[1]])
-        # print("surveyVoteNew(): Choice2: ", selected_choice2)
-        #
-        # # # extract answer to question 3 - this is an input box
-        # # selected_question = questionPage.questionnew_set.get(question_text=questions[2])
-        # # print("surveyVoteNew(): Question3: ", selected_question)
-        # # selected_choice3 = selected_question.choicenew_set.all()[0]
-        # # selected_choice3_text = request.POST['choice_for_question_text_' + questions[2]]
-        # # print("surveyVoteNew(): Choice3: ", selected_choice3)
-        # # print("surveyVoteNew(): Choice3Text: ", selected_choice3_text)
-        #
-        # # extract answer to question 3
-        # selected_question = questionPage.questionnew_set.get(question_text=questions[2])
-        # print("surveyVoteNew(): Question3: ", selected_question)
-        # selected_choice3 = selected_question.choicenew_set.get(pk=request.POST['choice_for_question_text_' + questions[2]])
-        # print("surveyVoteNew(): Choice3: ", selected_choice3)
-        #
-        #
-        # # extract answer to question 4
-        # selected_question = questionPage.questionnew_set.get(question_text=questions[3])
-        # print("surveyVoteNew(): Question4: ", selected_question)
-        # selected_choice4 = selected_question.choicenew_set.get(pk=request.POST['choice_for_question_text_' + questions[3]])
-        # print("surveyVoteNew(): Choice4: ", selected_choice4)
-
     except (KeyError, ChoiceNew.DoesNotExist):
         # Redisplay the questionPage voting form.
-        # return render(request, 'survey/detail.html', {
         print("surveyVoteNew(): failure: something went wrong in selecting choice")
-        # return render(request, 'survey/index.html', {
-        #     'question': questionPage,
-        #     'error_message': "You didn't select a choice.",
-        # })
         return HttpResponseRedirect(reverse('showSurveyLinksWithPage', args=(currentUserUuId, int(page_number), 1)))
     else:
-        # XXX
-        # # time to save this QuestionPage with all the answered questions
-        # selected_choice1.is_selected = True
-        # selected_choice1.votes += 1
-        # selected_choice1.save()
-        # print("surveyVoteNew(): success: saved choice 1")
-        #
-        # selected_choice2.is_selected = True
-        # selected_choice2.votes += 1
-        # selected_choice2.save()
-        # print("surveyVoteNew(): success: saved choice 2")
-        #
-        # selected_choice3.choice_text = selected_choice3_text
-        # selected_choice3.is_selected = True
-        # selected_choice3.votes += 1
-        # selected_choice3.save()
-        # print("surveyVoteNew(): success: saved choice 3")
-        #
-        # selected_choice4.is_selected = True
-        # selected_choice4.votes += 1
-        # selected_choice4.save()
-
+        # time to save this QuestionPage with all the answered questions
         # if the user selected YES to the question "Did you click on this link ?"
         # then mark the corresponding link model is_clicked field to True
         # if selected_choice4.choice_text.lower().strip() == "yes".strip():
