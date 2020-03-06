@@ -67,20 +67,13 @@
                             {% if error_message %} <p><strong>{{ error_message }}</strong></p> {% endif %}
                             {% csrf_token %}
                             {% for choice in question.choicenew_set.all %}
-                            <div class="input-group" >
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text bg-info">
-                                    <!-- if forloop.parentloop.first -->
-                                    {% if question.question_type.question_type == 2 %}
-                                    <textarea type="text" rows="2" cols="25" name="choice_for_question_text_{{question.question_text}}" id="choice{{ forloop.counter }}" value=""></textarea>
-                                    {% else %}
-                                    <input type="radio" name="choice_for_question_text_{{question.question_text}}" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
-                                    {% endif %}
-                                    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
-                                    </div>
-                                </div>
-
-                            </div>
+                                <!-- if forloop.parentloop.first -->
+                                {% if question.question_type.question_type == 2 %}
+                                <textarea type="text" rows="2" cols="25" name="choice_for_question_text_{{question.question_text}}" id="choice{{ forloop.counter }}" value=""></textarea>
+                                {% else %}
+                                <input type="radio" name="choice_for_question_text_{{question.question_text}}" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+                                {% endif %}
+                                <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
                             {% endfor %}
                         </li>
                         {% endfor %}
