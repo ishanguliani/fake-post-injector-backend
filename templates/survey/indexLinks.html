@@ -67,7 +67,7 @@
                             {% if error_message %} <p><strong>{{ error_message }}</strong></p> {% endif %}
                             {% csrf_token %}
                             {% for choice in question.choicenew_set.all %}
-                            <div class="input-group">
+                            <div class="input-group bg-info" >
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">
                                     <!-- if forloop.parentloop.first -->
