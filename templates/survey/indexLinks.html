@@ -77,8 +77,8 @@
                                     <input type="radio" name="choice_for_question_text_{{question.question_text}}" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
                                     {% endif %}
                                     </div>
+                                    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
                                 </div>
-                                <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
                             </div>
                             {% endfor %}
                         </li>
