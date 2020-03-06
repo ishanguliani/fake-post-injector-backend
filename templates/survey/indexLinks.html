@@ -71,10 +71,11 @@
                                 {% if question.question_type.question_type == 2 %}
                                 <textarea type="text" rows="2" cols="25" name="choice_for_question_text_{{question.question_text}}" id="choice{{ forloop.counter }}" value=""></textarea>
                                 {% else %}
+                <br>
                             <label>
                             <input type="radio" name="choice_for_question_text_{{question.question_text}}" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
                                             {% endif %}
-                                            {{ choice.choice_text }}<br>
+                            {{ choice.choice_text }}
                             </label>
                             {% endfor %}
                         </li>
