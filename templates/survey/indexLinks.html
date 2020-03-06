@@ -74,15 +74,6 @@
                             {% else %}
                             <input type="radio" name="choice_for_question_text_{{question.question_text}}"
                                    id="choice{{ forloop.counter }}" value="{{ choice.id }}">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">
-                                        <input type="radio" name="choice_for_question_text_{{question.question_text}}"
-                                   id="choice{{ forloop.counter }}" value="{{ choice.id }}">
-                                    </div>
-                                </div>
-                                <input type="text" class="form-control" aria-label="Text input with radio button">
-                            </div>
                             {% endif %}
                             <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
                             {% endfor %}
