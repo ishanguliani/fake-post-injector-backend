@@ -62,7 +62,8 @@
                         {% for question in questionPage.questionnew_set.all %}
 			<li>
 			<h5 class="mt-4" style="FONT-SIZE:17px; COLOR:#fff; LINE-HEIGHT:25px; FONT-FAMILY:Arial,Helvetica,sans-serif">
-				{{ question.question_text|linebreaks }}</h5>
+                {{ question.question_text|linebreaks }}
+            </h5>
                             {% if error_message %} <p><strong>{{ error_message }}</strong></p> {% endif %}
                             {% csrf_token %}
                             {% for choice in question.choicenew_set.all %}
@@ -71,15 +72,13 @@
                                     <div class="input-group-text">
                                     <!-- if forloop.parentloop.first -->
                                     {% if question.question_type.question_type == 2 %}
-                                    <textarea type="text" rows="2" cols="25"
-                                              name="choice_for_question_text_{{question.question_text}}"
-                                              id="choice{{ forloop.counter }}" value=""></textarea>
+                                    <textarea type="text" rows="2" cols="25" name="choice_for_question_text_{{question.question_text}}" id="choice{{ forloop.counter }}" value=""></textarea>
                                     {% else %}
                                     <input type="radio" name="choice_for_question_text_{{question.question_text}}" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
-                                {% endif %}
-                                <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+                                    {% endif %}
                                     </div>
                                 </div>
+                                <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
                             </div>
                             {% endfor %}
                         </li>
