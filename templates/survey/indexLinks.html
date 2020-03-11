@@ -13,13 +13,14 @@
 <!--                <p>page number : {{pageNumber}}</p>-->
 <!--start the row-->
 <div class="row card p-4 border-info mb-2 text-white bg-info mb-3">
-    <div class="row card-header bg-primary">
-        <h5>You saw the following post by {{ questionPage.link_model.author_name }}</h5>
-    </div>
+<!--    <div class="row card-header bg-primary">-->
+<!--        <h5>You saw the following post by {{ questionPage.link_model.author_name }}</h5>-->
+<!--    </div>-->
     <div class="card-body">
         <div class="row">
+            <h5 class = "card-header bg-primary">You saw the following post by {{ questionPage.link_model.author_name }}</h5>
             <div class="col-sm-12">
-                <!--                                    <h6 class="mt-3">{{ questionPage.link_model.author_name}}</h6>-->
+            <!--                                    <h6 class="mt-3">{{ questionPage.link_model.author_name}}</h6>-->
                 <!--                                    check if this questionPage.link_model was a genuine one or a fake one, show the image accordingly-->
                 {% if questionPage.link_model.link_type.id == 1 %}
                     <!--                                        a genuine line since type == 1-->
