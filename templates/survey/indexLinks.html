@@ -33,7 +33,7 @@
                     <!--                                        show the original link text-->
                     <h6 class="mt-3 text-justify">{{ questionPage.link_model.link_text_original}}</h6>
                     <!--                                        show the original link href-->
-                    <a class="mt-2 text-white" href="{{ questionPage.link_model.link_target_original}}" target="_blank"><u>Link
+                    <a class="mt-1 text-white" href="{{ questionPage.link_model.link_target_original}}" target="_blank"><u>Link
                         to the website</u></a><br>
                 {% else %}
                     <!--at this point we know that the link type is not genuine, so it must be fake                -->
@@ -47,7 +47,7 @@
                     <!--                                        show the original link text, since we are not faking any link texts anyway-->
                     <h6 class="mt-3">{{ questionPage.link_model.link_text_fake}}</h6>
                     <!--                                        show the fake link href-->
-                    <a class="mt-2 text-white" href="{{ questionPage.link_model.link_target_fake}}" target="_blank"><u>Link
+                    <a class="mt-1 text-white" href="{{ questionPage.link_model.link_target_fake}}" target="_blank"><u>Link
                         to the website</u></a><br>
 
                 {% endif %}
