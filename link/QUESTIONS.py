@@ -10,10 +10,10 @@ questions = {0: 'Did you click on this link?' # Question 1
           "c. The author doesn't usually share this kind of content in social network \n "
           "d. Other, please specify\n "
           "" + ADDITIONAL_INSTRUCTIONS_FOR_MULTIPLE_CHOICE_QUESTIONS   # Question 31 - Others
-    , 22: "Why did you not click on this link? Please select all that apply. \n "
+    , 22: "Why did you NOT click on this link? Please select all that apply. \n "
           "a. The author doesn't usually share this kind of content in social network \n "
           "b. The content/preview of the link is not relevant to my interest \n "
-          "c. I do not think, the shared link is authentic \n "
+          "c. I do not think the shared link is authentic \n "
           "d. Other\n "
           "" + ADDITIONAL_INSTRUCTIONS_FOR_MULTIPLE_CHOICE_QUESTIONS # Question 32 - Others
     , 3: 'How do you describe your relationship with this person?'  # Question 4
