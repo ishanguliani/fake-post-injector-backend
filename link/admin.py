@@ -20,7 +20,7 @@ class LinkModelResource(resources.ModelResource):
 class LinkModelAdmin(ImportExportModelAdmin):
     resource_class = LinkModelResource
     list_display = ['link_type',  'link_text_original', 'link_text_fake', 'is_clicked', 'user', 'property_link_target_original', 'property_link_target_fake', 'link_image_src_original', 'property_authored_text_original', 'author_name', 'is_seen']
-    readonly_fields = ('id', 'link_text_original', 'link_text_fake', 'link_target_original', 'link_target_fake', 'link_image_src_original', 'link_type', 'authored_text_original', 'author_name', 'is_seen', 'is_clicked', 'preview_title', 'preview_description', 'preview_image', 'preview_url', 'time_to_view', 'user')
+    readonly_fields = ('id', 'link_text_original', 'link_text_fake', 'link_target_original', 'link_target_fake', 'link_image_src_original', 'link_type', 'authored_text_original', 'authored_text_fake', 'author_name', 'is_seen', 'is_clicked', 'preview_title', 'preview_description', 'preview_image', 'preview_url', 'time_to_view', 'user')
 
 # @admin.register(LinkType)
 # class LinkTypeAdmin(admin.ModelAdmin):
