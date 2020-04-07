@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from link.QUESTIONS import questions
+from link.QUESTIONS import QUESTIONS
 from .models import LinkModel, LinkType
 from user.models import User
 import datetime

@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, get_list_or_404, render
 from django.urls import reverse
 from .models import Question, QuestionNew, ChoiceNew, QuestionPage, QuestionType
 from user.models import User
-from link.QUESTIONS import questions, CHOICE_TEXT, OTHER_OPTION_CHOICE_QUESTION_SET, INPUT_TEXT_MULTIPLE_CHOICE_QUESTION_SET, choicesByQuestion
+from link.QUESTIONS import QUESTIONS, CHOICE_TEXT_OTHER, OTHER_OPTION_CHOICE_QUESTION_SET, INPUT_TEXT_MULTIPLE_CHOICE_QUESTION_SET, choicesByQuestion
 from django.db import transaction, IntegrityError
 from collections import defaultdict
 
@@ -90,47 +90,47 @@ def showSurveyLinksWithPage(request, userId, pageNumber, showAlert = 0):
     print("XXX: showSurveyLinksWithPage: creating questions")
 
     if len(currentQuestionPage.questionnew_set.all()) <= 0:
-        newQuestion1 = QuestionNew(question_text=questions[0],
+        newQuestion1 = QuestionNew(question_text=QUESTIONS[0],
                                    question_type=QuestionType.objects.get(question_type=1),
                                    question_page=currentQuestionPage)
 
-        newQuestion2 = QuestionNew(question_text=questions[1],
+        newQuestion2 = QuestionNew(question_text=QUESTIONS[1],
                                    question_type=QuestionType.objects.get(question_type=1),
                                    question_page=currentQuestionPage)
 
-        newQuestion31 = QuestionNew(question_text=questions[21],
+        newQuestion31 = QuestionNew(question_text=QUESTIONS[21],
                                     question_type=QuestionType.objects.get(question_type=2),
                                     question_page=currentQuestionPage)
 
-        newQuestion32 = QuestionNew(question_text=questions[22],
+        newQuestion32 = QuestionNew(question_text=QUESTIONS[22],
+                                    question_type=QuestionType.objects.get(question_type=2),
+                                    question_page=currentQuestionPage)
+
+        newQuestion4 = QuestionNew(question_text=QUESTIONS[3],
+                                   question_type=QuestionType.objects.get(question_type=1),
+                                   question_page=currentQuestionPage)
+
+        newQuestion41 = QuestionNew(question_text=QUESTIONS[31],
+                                    question_type=QuestionType.objects.get(question_type=2),
+                                    question_page=currentQuestionPage)
+
+        newQuestion5 = QuestionNew(question_text=QUESTIONS[4],
+                                   question_type=QuestionType.objects.get(question_type=1),
+                                   question_page=currentQuestionPage)
+
+        newQuestion51 = QuestionNew(question_text=QUESTIONS[41],
+                                    question_type=QuestionType.objects.get(question_type=2),
+                                    question_page=currentQuestionPage)
+
+        newQuestion6 = QuestionNew(question_text=QUESTIONS[5],
+                                   question_type=QuestionType.objects.get(question_type=1),
+                                   question_page=currentQuestionPage)
+
+        newQuestion7 = QuestionNew(question_text=QUESTIONS[6],
                                    question_type=QuestionType.objects.get(question_type=2),
                                    question_page=currentQuestionPage)
 
-        newQuestion4 = QuestionNew(question_text=questions[3],
-                                   question_type=QuestionType.objects.get(question_type=1),
-                                   question_page=currentQuestionPage)
-
-        newQuestion41 = QuestionNew(question_text=questions[31],
-                                    question_type=QuestionType.objects.get(question_type=2),
-                                    question_page=currentQuestionPage)
-
-        newQuestion5 = QuestionNew(question_text=questions[4],
-                                   question_type=QuestionType.objects.get(question_type=1),
-                                   question_page=currentQuestionPage)
-
-        newQuestion51 = QuestionNew(question_text=questions[41],
-                                    question_type=QuestionType.objects.get(question_type=2),
-                                    question_page=currentQuestionPage)
-
-        newQuestion6 = QuestionNew(question_text=questions[5],
-                                   question_type=QuestionType.objects.get(question_type=1),
-                                   question_page=currentQuestionPage)
-
-        newQuestion7 = QuestionNew(question_text=questions[6],
-                                   question_type=QuestionType.objects.get(question_type=2),
-                                   question_page=currentQuestionPage)
-
-        newQuestion8 = QuestionNew(question_text=questions[7],
+        newQuestion8 = QuestionNew(question_text=QUESTIONS[7],
                                    question_type=QuestionType.objects.get(question_type=1),
                                    question_page=currentQuestionPage)
 
@@ -226,7 +226,7 @@ def showSurveyLinksWithPage(request, userId, pageNumber, showAlert = 0):
             newChoice45 = ChoiceNew(question=newQuestion4, choice_text=choicesByQuestion[3][4], votes=0, is_selected=False)
             newChoice46 = ChoiceNew(question=newQuestion4, choice_text=choicesByQuestion[3][5], votes=0, is_selected=False)
             newChoice47 = ChoiceNew(question=newQuestion4, choice_text=choicesByQuestion[3][6], votes=0, is_selected=False)
-            newChoice48 = ChoiceNew(question=newQuestion4, choice_text=CHOICE_TEXT, votes=0, is_selected=False)
+            newChoice48 = ChoiceNew(question=newQuestion4, choice_text=CHOICE_TEXT_OTHER, votes=0, is_selected=False)
 
             try:
                 with transaction.atomic():
@@ -267,7 +267,7 @@ def showSurveyLinksWithPage(request, userId, pageNumber, showAlert = 0):
             newChoice53 = ChoiceNew(question=newQuestion5, choice_text=choicesByQuestion[4][2], votes=0, is_selected=False)
             newChoice54 = ChoiceNew(question=newQuestion5, choice_text=choicesByQuestion[4][3], votes=0, is_selected=False)
             newChoice55 = ChoiceNew(question=newQuestion5, choice_text=choicesByQuestion[4][4], votes=0, is_selected=False)
-            newChoice56 = ChoiceNew(question=newQuestion5, choice_text=CHOICE_TEXT, votes=0, is_selected=False)
+            newChoice56 = ChoiceNew(question=newQuestion5, choice_text=CHOICE_TEXT_OTHER, votes=0, is_selected=False)
 
             try:
                 with transaction.atomic():
@@ -398,15 +398,15 @@ Called when the user submits answers to a question page
 def extractAndMarkAnswersFromRequest(request, questionPage, q, validChoices, otherChoicesMap):
     """
     For each question from the question page, get the choice selected by the user and log it.
-    Here we exclude questions which are answers to Others(please specify) preceding question types
+    Here we exclude questions which are answers to @link{CHOICE_TEXT_OTHER in QUESTIONS.py} preceding question types
     """
     if q in OTHER_OPTION_CHOICE_QUESTION_SET or q in list(map( lambda x: x[0], INPUT_TEXT_MULTIPLE_CHOICE_QUESTION_SET)):
         return
-    selected_question = questionPage.questionnew_set.get(question_text=questions[q])
-    selected_choice = selected_question.choicenew_set.get(pk=request.POST['choice_for_question_text_' + questions[q]])
-    if CHOICE_TEXT in selected_choice.choice_text:
+    selected_question = questionPage.questionnew_set.get(question_text=QUESTIONS[q])
+    selected_choice = selected_question.choicenew_set.get(pk=request.POST['choice_for_question_text_' + QUESTIONS[q]])
+    if CHOICE_TEXT_OTHER in selected_choice.choice_text:
         # the user selected the other option for this question
-        print("surveyVoteNew(): extractAndLogAnswers(): Found", CHOICE_TEXT, "selected for Question", str(q + 1), ": ", selected_question)
+        print("surveyVoteNew(): extractAndLogAnswers(): Found", CHOICE_TEXT_OTHER, "selected for Question", str(q + 1), ": ", selected_question)
         otherChoicesMap[q] = True
     selected_choice.is_selected = True
     selected_choice.votes += 1
@@ -415,15 +415,6 @@ def extractAndMarkAnswersFromRequest(request, questionPage, q, validChoices, oth
     print("surveyVoteNew(): extractAndLogAnswers(): Choice", str(q + 1), ": ", selected_choice)
     validChoices.append(selected_choice)
     print("surveyVoteNew(): extractAndLogAnswers(): appended as valid choice!")
-
-    if q == 0:
-        #  if the user selected YES to the question "Did you click on this link ?"
-        #  then mark the corresponding link model is_clicked field to True
-        if selected_choice.choice_text.lower().strip() == "yes".strip():
-            print("surveyVoteNew(): extractAndLogAnswers(): This is a YES")
-            questionPage.link_model.is_clicked = True
-            # save this change
-            questionPage.link_model.save()
 
 def surveyVoteNew(request, question_page_id, page_number):
     """
@@ -442,18 +433,18 @@ def surveyVoteNew(request, question_page_id, page_number):
     try:
         validChoices = []
         otherChoicesMap = defaultdict(bool)
-        for sno in questions:
+        for sno in QUESTIONS:
             extractAndMarkAnswersFromRequest(request, questionPage, sno, validChoices, otherChoicesMap)
         print("surveyVoteNew(): otherChoiceMap: " + str(otherChoicesMap))
         # extract the specified text from the input box of the following question of each question
-        # where the user selected the @{CHOICE_TEXT}(Other(please specify...)) as the answer
+        # where the user selected the @{CHOICE_TEXT}(Other) as the answer
         for questionWithOtherOptionSelected in otherChoicesMap:
             questionKeyWhichContainsTextForOtherOption = questionWithOtherOptionSelected * 10 + 1  # 2 -> 2*10 + 1 = 21, 3 -> 3*10 + 1 = 31, 6 = 6*10 + 1 = 61
-            questionObject = questionPage.questionnew_set.get(question_text=questions[questionKeyWhichContainsTextForOtherOption])
+            questionObject = questionPage.questionnew_set.get(question_text=QUESTIONS[questionKeyWhichContainsTextForOtherOption])
             selectedChoice = questionObject.choicenew_set.all()[0]
-            choiceText = request.POST['choice_for_question_text_' + questions[questionKeyWhichContainsTextForOtherOption]]
+            choiceText = request.POST['choice_for_question_text_' + QUESTIONS[questionKeyWhichContainsTextForOtherOption]]
             if not choiceText.strip():
-                raise KeyError('surveyVoteNew(): otherChoiceOption: no text specified for question: ' + str(questions[questionKeyWhichContainsTextForOtherOption]))
+                raise KeyError('surveyVoteNew(): otherChoiceOption: no text specified for question: ' + str(QUESTIONS[questionKeyWhichContainsTextForOtherOption]))
             # at this point if the above key is not found in the request then this means that the user did select the Other option
             # for the question but did not type in any text against it. This will throw a KeyError and we will not proceed with saving these choices
             print("surveyVoteNew(): otherChoiceOption: Question:", str(questionObject))
@@ -465,7 +456,7 @@ def surveyVoteNew(request, question_page_id, page_number):
             validChoices.append(selectedChoice)
 
         for questionNumberWithInputText, regexPattern in INPUT_TEXT_MULTIPLE_CHOICE_QUESTION_SET:
-            questionObject = questionPage.questionnew_set.get(question_text=questions[questionNumberWithInputText])
+            questionObject = questionPage.questionnew_set.get(question_text=QUESTIONS[questionNumberWithInputText])
             selectedChoice = questionObject.choicenew_set.all()[0]
             for key in request.POST:
                 print("looking into key: ", str(key))
@@ -488,7 +479,7 @@ def surveyVoteNew(request, question_page_id, page_number):
                     parsedChoiceText = ""
                     for choice in choiceText.strip().split(","):
                         parsedChoiceText += choice.strip() + ','
-                    print("surveyVoteNew(): questionStringWithInputText: Question:", str(questions[questionNumberWithInputText]))
+                    print("surveyVoteNew(): questionStringWithInputText: Question:", str(QUESTIONS[questionNumberWithInputText]))
                     print("surveyVoteNew(): questionStringWithInputText: SelectedChoice:", str(selectedChoice))
                     print("surveyVoteNew(): questionStringWithInputText: ChoiceText:", parsedChoiceText)
                     selectedChoice.choice_text = parsedChoiceText
@@ -500,6 +491,23 @@ def surveyVoteNew(request, question_page_id, page_number):
         for sno, selected_choice in enumerate(validChoices):
             selected_choice.save()
             print("surveyVoteNew(): success: saved choice: ", selected_choice, ': ')
+
+        # update the is_clicked field for the corresponding link model
+        try:
+            # the idea is to extract the first matching choice from the list of valid choices whose question text matches the question "Did you click on this link" i.e value of QUESTIONS[0]
+            choiceForDidYouClickOnThisLink = list(filter( lambda choiceObject: choiceObject.question.question_text == QUESTIONS[0], validChoices))[0]
+            selectedChoiceText = str(choiceForDidYouClickOnThisLink.choice_text)
+            print("surveyVoteNew(): choiceForDidYouClickOnThisLink: ", selectedChoiceText)
+            if choicesByQuestion[0][0] in selectedChoiceText:
+                print("surveyVoteNew(): choiceForDidYouClickOnThisLink: The link was clicked!")
+                questionPage.link_model.is_clicked = True
+            else:
+                print("surveyVoteNew(): choiceForDidYouClickOnThisLink: The link was NOT clicked!")
+                questionPage.link_model.is_clicked = False
+            questionPage.link_model.save()
+        except:
+            print("surveyVoteNew(): choiceForDidYouClickOnThisLink: could not be extracted. Something went wrong.")
+
 
     except (KeyError, ChoiceNew.DoesNotExist):
         # Redisplay the questionPage voting form.
