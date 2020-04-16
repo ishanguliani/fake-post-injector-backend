@@ -23,6 +23,13 @@ def getConfiguration(request):
                } 
         return JsonResponse(response, safe=False)
 
+import base64
+def convertLongLinkToShortLink(longLink):
+    longLinkAsBytes = str(longLink).encode()
+    encodedString = str(base64.b64encode(longLinkAsBytes))
+    return "https://seng-research.com/track/" + encodedString[2:11]
+
+
 
 
 
