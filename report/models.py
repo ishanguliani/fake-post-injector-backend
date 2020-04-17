@@ -10,4 +10,4 @@ class BriefSummary(models.Model):
 
 class DetailedSummary(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    linkModel = models.ForeignKey(LinkModel, on_delete=models.SET_NULL)
+    linkModel = models.ForeignKey(LinkModel, on_delete=models.SET_NULL, null=True)
