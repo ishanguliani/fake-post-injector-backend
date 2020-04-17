@@ -15,9 +15,9 @@ def getData(request):
     if request.method == 'GET':
         it = FakeLinkModel.objects.all().iterator()
         for fakelinkmodel in it:
-            # if fakelinkmodel.short_link == '' or "https://seng-research.com/track/https://seng-research.com/track" in fakelinkmodel.short_link:
-            fakelinkmodel.short_link = convertLongLinkToShortLink(fakelinkmodel.fake_link)
-            fakelinkmodel.save()
+                if fakelinkmodel.short_link == '':
+                    fakelinkmodel.short_link = convertLongLinkToShortLink(fakelinkmodel.fake_link)
+                    fakelinkmodel.save()
 
         return JsonResponse(list(FakeLinkModel.objects.values()), safe=False)
 
