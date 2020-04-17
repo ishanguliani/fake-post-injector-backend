@@ -13,15 +13,24 @@ def getData(request):
     """
 
     if request.method == 'GET':
-        allFakeLinksValues = list(FakeLinkModel.objects.values())
-        print('type of FakeLinkModel.objects.values()', type(FakeLinkModel.objects.values()))
-        print('type of FakeLinkModel.objects.values()[0]', type(FakeLinkModel.objects.values()[0]))
-        print('FakeLinkModel.objects.values()[0]', FakeLinkModel.objects.values()[0])
-        
-        for fakelinkmodel in allFakeLinksValues:
+        it = FakeLinkModel.objects.all().iterator()
+        print('got iterator')
+        for fakelinkmodel in it:
+            print('type of fakelinkmodel', type(fakelinkmodel))
+            print('fakelinkmodel: ', str(fakelinkmodel))
             if fakelinkmodel.short_link == '':
-                fakelinkmodel.short_link = "https://seng-research.com/track/" + convertLongLinkToShortLink(fakelinkmodel.fake_link)
+                fakelinkmodel.short_link = "https://seng-research.com/track/" + convertLongLinkToShortLink(
+                    fakelinkmodel.fake_link)
                 fakelinkmodel.save()
+
+        allFakeLinksValues = list(FakeLinkModel.objects.values())
+        # print('type of FakeLinkModel.objects.values()', type(FakeLinkModel.objects.values()))
+        # print('type of FakeLinkModel.objects.values()[0]', type(FakeLinkModel.objects.values()[0]))
+        # print('FakeLinkModel.objects.values()[0]', FakeLinkModel.objects.values()[0])
+        # for fakelinkmodel in allFakeLinksValues:
+        #     if fakelinkmodel["short_link"] == '':
+        #         fakelinkmodel.short_link = "https://seng-research.com/track/" + convertLongLinkToShortLink(fakelinkmodel.fake_link)
+        #         fakelinkmodel.save()
         # print('allFakeLinksValues', allFakeLinksValues )
         return JsonResponse(allFakeLinksValues, safe=False)
 
