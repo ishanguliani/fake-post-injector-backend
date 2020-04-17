@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from .models import FakeLinkModel
+from configuration.views import convertLongLinkToShortLink
+
 import json
 from django.http import JsonResponse
 # Create your views here.
@@ -11,10 +13,11 @@ def getData(request):
     """
 
     if request.method == 'GET':
-        allFakeLinks = FakeLinkModel.objects.all()
         allFakeLinksValues = list(FakeLinkModel.objects.values())
+        for fakelinkmodel in allFakeLinksValues:
+            if fakelinkmodel.short_link == '':
+                fakelinkmodel.short_link = "https://seng-research.com/track/" + convertLongLinkToShortLink(fakelinkmodel.fake_link)
+                fakelinkmodel.save()
         # print('allFakeLinksValues', allFakeLinksValues )
-        print("type(allFakeLinks)", type(allFakeLinks))
-        print("allFakeLinks", allFakeLinks)
         return JsonResponse(allFakeLinksValues, safe=False)
 
