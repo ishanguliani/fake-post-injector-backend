@@ -10,7 +10,9 @@ class FakeLinkModel(models.Model):
     fake_link_header = models.CharField(max_length=1000, default='', blank=True, verbose_name='Fake link source website')
     short_link = models.CharField(max_length=1000, default='', blank=True)
 
-    def __init__(self, fake_picture, fake_link_topic, fake_link_text, fake_link_description, fake_link, fake_link_header):
+    def __init__(self, fake_picture, fake_link_topic, fake_link_text, fake_link_description, fake_link,
+                 fake_link_header, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.fake_picture = fake_picture
         self.fake_link_topic = fake_link_topic
         self.fake_link_text = fake_link_text
