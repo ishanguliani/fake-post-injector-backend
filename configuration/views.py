@@ -29,9 +29,8 @@ def convertLongLinkToShortLink(longLink):
     encodedString = str(base64.b64encode(longLinkAsBytes))
     withoutLastCharacter = encodedString[:-1]
     withoutEqualToSign = withoutLastCharacter.replace("=", '')
-    withLast10Characters = encodedString[-10:]
-    return "https://seng-research.com/track/" + [-10]
-
+    withLast10Characters = withoutEqualToSign[-10:]
+    return "https://seng-research.com/track/" + withLast10Characters
 
 
 
