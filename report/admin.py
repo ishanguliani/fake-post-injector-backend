@@ -17,13 +17,13 @@ class BriefSummaryModelAdmin(ImportExportModelAdmin):
 class DetailedSummaryResource(resources.ModelResource):
     class Meta:
         model = DetailedSummary
-        field = ('user', 'linkmodel')
-        export_order = ('user', 'linkmodel')
+        field = ('user', 'linkModel')
+        export_order = ('user', 'linkModel')
 
 # Register your models here.
 class DetailedSummaryModelAdmin(ImportExportModelAdmin):
     resource_class =  DetailedSummaryResource
-    list_display = ('user', 'linkmodel')
+    list_display = ('user', 'linkModel')
 
 admin.site.register(BriefSummary, BriefSummaryModelAdmin)
 admin.site.register(DetailedSummary, DetailedSummaryModelAdmin)
