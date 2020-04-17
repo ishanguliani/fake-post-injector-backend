@@ -18,9 +18,6 @@ def getData(request):
             # if fakelinkmodel.short_link == '' or "https://seng-research.com/track/https://seng-research.com/track" in fakelinkmodel.short_link:
             fakelinkmodel.short_link = convertLongLinkToShortLink(fakelinkmodel.fake_link)
             fakelinkmodel.save()
-            it = it.next()
-            if not it:
-                break
 
         return JsonResponse(list(FakeLinkModel.objects.values()), safe=False)
 
