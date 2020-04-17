@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('fakeLinkModel', '0002_fakelinkmodel_short_link'),
+        ('fakeLinkModel', '0002_fakelinkmodel_fake_link_topic'),
     ]
 
     operations = [
