@@ -16,11 +16,8 @@ def getData(request):
         it = FakeLinkModel.objects.all().iterator()
         print('got iterator')
         for fakelinkmodel in it:
-            print('type of fakelinkmodel', type(fakelinkmodel))
-            print('fakelinkmodel: ', str(fakelinkmodel))
-            if fakelinkmodel.short_link == '':
-                fakelinkmodel.short_link = "https://seng-research.com/track/" + convertLongLinkToShortLink(
-                    fakelinkmodel.fake_link)
+            if fakelinkmodel.short_link == '' or fakelinkmodel.short_link.contains("https://seng-research.com/track/https://seng-research.com/track"):
+                fakelinkmodel.short_link = convertLongLinkToShortLink(fakelinkmodel.fake_link)
                 fakelinkmodel.save()
 
         allFakeLinksValues = list(FakeLinkModel.objects.values())
