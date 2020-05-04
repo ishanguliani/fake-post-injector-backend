@@ -30,6 +30,7 @@ from survey.views import showSurveyLinksWithPage
 from link.views import saveOriginalLink
 from fakeLinkModel.views import getFakeLinksData
 from configuration.views import getConfiguration
+from report.views import trackLink
 
 admin.site.site_header = "Center For Cybersecurity"
 admin.site.site_title = "Center For Cybersecurity"
@@ -72,6 +73,7 @@ urlpatterns = [
     # get fake links data
     path('getFakeLinks/', getFakeLinksData, name="getFakeLinks"),
     path('getConfiguration/', getConfiguration, name="getConfiguration"),
+    path('track/<short_link>/', trackLink, name="trackLink")
 ]
 
 if settings.DEBUG:
