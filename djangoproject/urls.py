@@ -28,7 +28,7 @@ from django.views.generic.base import RedirectView
 from survey.views import showSurveyLinks, surveyResults,surveyResultsNew, surveyVote, surveyVoteNew, surveyVoteNewBypass
 from survey.views import showSurveyLinksWithPage
 from link.views import saveOriginalLink
-from fakeLinkModel.views import getData
+from fakeLinkModel.views import getFakeLinksData
 from configuration.views import getConfiguration
 
 admin.site.site_header = "Center For Cybersecurity"
@@ -70,7 +70,7 @@ urlpatterns = [
          RedirectView.as_view(url='https://facebook.com/')),
     path('link/saveOriginal/', saveOriginalLink, name="saveOriginalLink"),
     # get fake links data
-    path('getFakeLinks/', getData, name="getFakeLinks"),
+    path('getFakeLinks/', getFakeLinksData, name="getFakeLinks"),
     path('getConfiguration/', getConfiguration, name="getConfiguration"),
 ]
 
