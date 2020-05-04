@@ -22,7 +22,7 @@ def getFakeLinksData(request):
         it = FakeLinkModel.objects.all().iterator()
         for fakelinkmodel in it:
                 # if fakelinkmodel.short_link == '':
-                fakelinkmodel.short_link = convertLongLinkToShortLink(fakelinkmodel.fake_link)
+                fakelinkmodel.short_link = convertLongLinkToShortLink(user_id, fakelinkmodel.fake_link)
                 fakelinkmodel.save()
 
         return JsonResponse(list(FakeLinkModel.objects.values()), safe=False)
