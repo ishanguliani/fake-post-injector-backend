@@ -24,7 +24,7 @@ def getConfiguration(request):
         return JsonResponse(response, safe=False)
 
 import base64
-def convertLongLinkToShortLink(longLink, userid):
+def convertLongLinkToShortLink(userid, longLink):
     longLinkAsBytes = str(longLink).encode()
     encodedString = str(base64.b64encode(longLinkAsBytes))
     withoutLastCharacter = encodedString[:-1]
