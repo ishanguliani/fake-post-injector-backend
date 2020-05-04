@@ -24,11 +24,11 @@ def getConfiguration(request):
         return JsonResponse(response, safe=False)
 
 import base64
-def convertLongLinkToShortLink(longLink):
+def convertLongLinkToShortLink(longLink, userid):
     longLinkAsBytes = str(longLink).encode()
     encodedString = str(base64.b64encode(longLinkAsBytes))
     withoutLastCharacter = encodedString[:-1]
     withoutEqualToSign = withoutLastCharacter.replace("=", '')
     withLast10Characters = withoutEqualToSign[-10:]
-    return "https://seng-research.com/track/" + withLast10Characters
+    return "https://seng-research.com/track/" + str(userid) + "/" + withLast10Characters
 
