@@ -27,6 +27,8 @@ class LinkModel(models.Model):
     author_name = models.CharField(max_length=1000, blank=True)
     is_seen = models.BooleanField(default=False)
     is_clicked = models.BooleanField(default=False)
+    is_clicked_event_from_ground_data = models.BooleanField(default=False)
+    is_clicked_event_from_ground_data_time = models.TimeField(blank = True)
     time_to_view = models.TimeField(blank = True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     preview_title = models.CharField(max_length=1000, blank=True, default='')
