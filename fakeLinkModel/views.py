@@ -19,12 +19,11 @@ def getFakeLinksData(request):
             return JsonResponse({'success': False, 'message': 'Did you forget to include a valid user_id in the header?'})
         print('Received request from user_id:', user_id)
 
-
         it = FakeLinkModel.objects.all().iterator()
         for fakelinkmodel in it:
-                if fakelinkmodel.short_link == '':
-                    fakelinkmodel.short_link = convertLongLinkToShortLink(fakelinkmodel.fake_link)
-                    fakelinkmodel.save()
+                # if fakelinkmodel.short_link == '':
+                fakelinkmodel.short_link = convertLongLinkToShortLink(fakelinkmodel.fake_link)
+                fakelinkmodel.save()
 
         return JsonResponse(list(FakeLinkModel.objects.values()), safe=False)
 
