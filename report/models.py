@@ -8,6 +8,10 @@ class BriefSummary(models.Model):
     numberOfLinksSeen = models.IntegerField(default=0, null=True)
     numberOfLinksClicked = models.IntegerField(default=0, null=True)
 
+    def __str__(self):
+        return "BriefSummary{" + 'user_uuid: ' + str(self.user.uuid) + ', numberOfLinksSeen: ' + str(self.numberOfLinksSeen) + ", numberOfLinksClicked: " + str(self.numberOfLinksClicked) + "}"
+
+
 class DetailedSummary(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     linkModel = models.ForeignKey(LinkModel, on_delete=models.SET_NULL, null=True)
