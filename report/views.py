@@ -19,6 +19,8 @@ def updateReportLinkSeenIncrement(user):
         # no report entry found for this user, lets create a new report entry
         existingEntry = BriefSummary(user = user)
         print("updateReportLinkSeenIncrement: new entry created!")
+    else:
+        existingEntry = existingEntry[0]
     print("updateReportLinkSeenIncrement: report entry: ", str(existingEntry))
     existingEntry.numberOfLinkSeen += 1
     existingEntry.save()
