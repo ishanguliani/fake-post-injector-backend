@@ -8,6 +8,8 @@ from django.views.decorators.csrf import csrf_exempt
 from linkPreview.models import LinkPreviewModel, ParentLink
 from survey.models import QuestionPage, QuestionNew, QuestionType, ChoiceNew
 import requests, json
+from report.views import updateReportLinkSeenIncrement
+
 from django.db import transaction, IntegrityError
 
 # Create your views here.
@@ -117,6 +119,7 @@ def saveOriginalLink(request):
         newQuestionPage = QuestionPage(user=mUser, link_model=origLinkModel)
         # save this question page
         newQuestionPage.save()
+        updateReportLinkSeenIncrement(mUser)
         print("XXX: created and saved new page: " + str(newQuestionPage))
         print("XXX: added new empty questionPage successfully!")
         # We now create a second link model that is then used to create a second question page for link models
@@ -144,6 +147,7 @@ def saveOriginalLink(request):
             # save a new question page
             newQuestionPage = QuestionPage(user=mUser, link_model=linkModelForOriginalLinkOfFakedPosts)
             newQuestionPage.save()
+            updateReportLinkSeenIncrement(mUser)
             print("XXX2: created and saved new page: " + str(newQuestionPage))
 
         return JsonResponse({'success': True, 'message': 'Link saved successfully'})
