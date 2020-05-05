@@ -50,6 +50,7 @@ def updateReportLinkClickIncrement(user):
         message = "updateReportLinkClickIncrement: cannot find any matching user, exiting without doing anything"
         print(message)
         return JsonResponse({'success': False, 'message': message})
+    matchingSummaryEntry = matchingSummaryEntry[0]
     matchingSummaryEntry.numberOfLinksClicked += 1
     matchingSummaryEntry.save()
     print("updateReportLinkClickIncrement: count incremented for brief summary entry: ", str(matchingSummaryEntry))
