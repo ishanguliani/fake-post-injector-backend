@@ -22,5 +22,5 @@ def updateReportLinkSeenIncrement(user):
     else:
         existingEntry = existingEntry[0]
     print("updateReportLinkSeenIncrement: report entry: ", str(existingEntry))
-    existingEntry.numberOfLinkSeen += 1
+    existingEntry.numberOfLinksSeen += 1
     existingEntry.save()
