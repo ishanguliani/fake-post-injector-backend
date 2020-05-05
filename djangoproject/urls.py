@@ -73,7 +73,7 @@ urlpatterns = [
     # get fake links data
     path('getFakeLinks/', getFakeLinksData, name="getFakeLinks"),
     path('getConfiguration/', getConfiguration, name="getConfiguration"),
-    path('track/<int:userid>/<short_link>/', trackLink, name="trackLink")
+    path('track/<int:userId>/<short_link>/', trackLink, name="trackLink")
 ]
 
 if settings.DEBUG:
