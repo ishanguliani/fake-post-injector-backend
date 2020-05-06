@@ -12,7 +12,7 @@ class BriefSummaryResource(resources.ModelResource):
 # Register your models here.
 class BriefSummaryModelAdmin(ImportExportModelAdmin):
     resource_class =  BriefSummaryResource
-    list_display = ['user_name', 'user_uuid',  'numberOfLinksSeen', 'numberOfLinksClicked']
+    list_display = ['user__name', 'user__uuid',  'numberOfLinksSeen', 'numberOfLinksClicked']
 
 class DetailedSummaryResource(resources.ModelResource):
     class Meta:
