@@ -23,9 +23,33 @@ class BriefSummaryModelAdmin(ImportExportModelAdmin):
 class DetailedSummaryResource(resources.ModelResource):
     class Meta:
         model = DetailedSummary
-        field = ('user', 'linkModel')
-        export_order = ('user', 'linkModel')
+        field = ('getUserName', 'getRedirectionLink', 'getShortLink', 'getLinkType')
+        export_order = ('getUserName', 'getRedirectionLink', 'getShortLink', 'getLinkType')
 
+        def getUserName(self, obj):
+            return obj.user.name
+
+        def getRedirectionLink(self, obj):
+            return obj.redirectionLink
+
+        def getShortLink(self, obj):
+            return obj.linkModel.link_target_fake
+
+        def getLinkType(self, obj):
+            return obj.linkModel.link_type
+
+        getUserName.short_description = 'User name'
+        getUserName.admin_order_field = 'user__name'
+
+        getRedirectionLink.short_description = 'User redirected to'
+        getRedirectionLink.admin_order_field = 'redirectionLink'
+
+        getShortLink.short_description = 'Clicked on'
+        getShortLink.admin_order_field = 'linkModel__link_target_fake'
+
+        getLinkType.short_description = "Link type"
+        getLinkType.admin_order_field = 'linkModel__link_type'
+        
 # Register your models here.
 class DetailedSummaryModelAdmin(ImportExportModelAdmin):
     resource_class =  DetailedSummaryResource
@@ -49,7 +73,7 @@ class DetailedSummaryModelAdmin(ImportExportModelAdmin):
     getRedirectionLink.short_description = 'User redirected to'
     getRedirectionLink.admin_order_field = 'redirectionLink'
 
-    getShortLink.short_description = 'Shortened link (that the user may have clicked)'
+    getShortLink.short_description = 'Clicked on'
     getShortLink.admin_order_field = 'linkModel__link_target_fake'
 
     getLinkType.short_description = "Link type"
