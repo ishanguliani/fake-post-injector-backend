@@ -17,6 +17,16 @@ def getUser(userId):
             return JsonResponse({'success': False, 'message': 'cannot find a user with that userId'})
     return matchingUsers[0]
 
+from datetime import datetime
+def registerLinkClick(linkModel):
+    """
+    mark the link click status and the time on this link model
+    """
+    linkModel.is_clicked_event_from_ground_data = True
+    linkModel.is_clicked_event_from_ground_data_time = datetime.now()
+    linkModel.save()
+    print("registerLinkClick: link model update: is_clicked_event_from_ground_data" + linkModel.is_clicked_event_from_ground_data, ", is_clicked_event_from_ground_data_time: ", linkModel.is_clicked_event_from_ground_data_time)
+
 def trackLink(request, userId, stringHash):
     """
     count this link click and route the user to the appropriate link
@@ -27,6 +37,7 @@ def trackLink(request, userId, stringHash):
         if not linkModel:
             return JsonResponse({'success': False, 'message': 'could not find a valid link model matching that request url'})
         print("trackLink: LinkModel found: ", str(linkModel))
+        registerLinkClick(linkModel)
         mUser = getUser(userId)
         updateReportForLinkClickIncrement(mUser)
         updateDetailedSummaryReport(mUser, linkModel)
