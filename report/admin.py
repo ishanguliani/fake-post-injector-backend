@@ -23,13 +23,13 @@ class BriefSummaryModelAdmin(ImportExportModelAdmin):
 class DetailedSummaryResource(resources.ModelResource):
     class Meta:
         model = DetailedSummary
-        field = ('user', 'redirectionLink', 'linkModel__id')
-        export_order = ('user', 'redirectionLink', 'linkModel__id')
+        field = ('user', 'redirectionLink', 'linkModel')
+        export_order = ('user', 'redirectionLink', 'linkModel')
 
 # Register your models here.
 class DetailedSummaryModelAdmin(ImportExportModelAdmin):
     resource_class =  DetailedSummaryResource
-    list_display = ('user', 'redirectionLink', 'linkModel__id')
+    list_display = ('getUserName', 'getRedirectionLink', 'getShortLink', 'getLinkType')
 
     def getUserName(self, obj):
         return obj.user.name
