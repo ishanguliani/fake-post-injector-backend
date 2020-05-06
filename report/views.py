@@ -31,7 +31,7 @@ def trackLink(request, userId, stringHash):
             return JsonResponse({'success': False, 'message': 'could not find a valid link model matching that request url'})
         print("trackLink: LinkModel found: ", str(linkModel))
         updateDetailedSummaryReport(mUser, linkModel)
-        return redirectToActualLink(request, requestUrl)
+        return redirectToActualLink(request, stringHash)
 
 def updateReportLinkSeenIncrement(user):
     """
@@ -83,15 +83,15 @@ def updateDetailedSummaryReport(mUser, linkModel):
     print("updateDetailedSummaryReport: added new entry: ")
     pass
 
-def redirectToActualLink(request, requestUrl):
+def redirectToActualLink(request, stringHash):
     """
     extract the actual link for the shortened requestUrl from the FakeLinkModel
     and redirect user to the appropriate page
     """
-    print("attempting to redirect to link mapped to short link: ", requestUrl)
-    fakeLink = FakeLinkModel.objects.filter(short_link = requestUrl)
+    print("attempting to redirect to link mapped to short link with string hash: ", stringHash)
+    fakeLink = FakeLinkModel.objects.filter(short_link = stringHash)
     if not fakeLink:
-        errorMessage = "redirectToActualLink: no fake link found for requestUrl: " + requestUrl
+        errorMessage = "redirectToActualLink: no fake link found for requestUrl: " + stringHash
         print(errorMessage)
         return JsonResponse({'success': False, 'message': errorMessage})
     fakeLink = fakeLink[0]
