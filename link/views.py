@@ -19,11 +19,7 @@ PREVIEW_BASE_URL = "http://api.linkpreview.net/?key=5cd32a757565b4e17f2a258effb8
 
 
 def getNewFakeLinkTarget(user_id, link_target_original):
-    old_link_target_fake = link_target_fake
-    link_target_fake = convertLongLinkToShortLink(user_id, link_target_original)
-    print("genuineLinkTypeId found!, added changed link_target_fake from: {", old_link_target_fake, "}", " to {", link_target_fake, "}")
-    return link_target_fake
-
+    return convertLongLinkToShortLink(user_id, link_target_original)
 
 @csrf_exempt
 def saveOriginalLink(request):
@@ -115,8 +111,10 @@ def saveOriginalLink(request):
         
         # create a new fake link target for genuine link types to later track clicks back to this link model
         if link_type == genuineLinkTypeId:
+            old_link_target_fake = link_target_original
             link_target_fake = getNewFakeLinkTarget(user_id, link_target_original)
-            
+            print("genuineLinkTypeId found!, added changed link_target_fake from: {", old_link_target_fake, "}", " to {", link_target_fake, "}")
+
         linkTypeObject = LinkType.objects.filter(pk=int(link_type))[0]
         origLinkModel = LinkModel(link_text_original = link_text_original, link_text_fake = link_text_fake,
                                   link_target_original = link_target_original, link_target_fake = link_target_fake, link_image_src_original = link_image_src_original,
