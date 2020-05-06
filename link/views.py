@@ -40,6 +40,10 @@ def saveOriginalLink(request):
         author_name = request.POST.get('author_name', 'XXX')
         is_clicked = request.POST.get('is_clicked', 'False')
         is_seen = bool(request.POST.get('is_seen', 'XXX'))
+        # this field is used to maintain the state of the front end hyperfeed (simply specific facebook post) that is being currently stored
+        # we simply return this id back to the requesting service without doing anything with it
+        hyperfeed_post_id = request.POST.get('hyperfeed_post_id', 'XXX')
+
         print('received: ',
               'link_text_original:', str(link_text_original), ", ",
               'link_text_fake:', str(link_text_fake), ", ",
@@ -166,7 +170,7 @@ def saveOriginalLink(request):
             updateReportLinkSeenIncrement(mUser)
             print("XXX2: created and saved new page: " + str(newQuestionPage))
 
-        return JsonResponse({'success': True, 'message': 'Link saved successfully', 'link_type': link_type, 'link_target_fake': link_target_fake})
+        return JsonResponse({'success': True, 'message': 'Link saved successfully', 'link_type': link_type, 'link_target_fake': link_target_fake, 'hyperfeed_post_id': hyperfeed_post_id})
 
     # otherwise return False
     return JsonResponse({'success': False, 'message': 'Invalid request'})
