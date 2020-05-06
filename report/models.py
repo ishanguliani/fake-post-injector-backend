@@ -15,6 +15,7 @@ class BriefSummary(models.Model):
 class DetailedSummary(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     linkModel = models.ForeignKey(LinkModel, on_delete=models.SET_NULL, null=True)
+    redirectionLink = models.CharField(max_length=1000, blank=True, default='')
 
     def __str__(self):
-        return "DetailedSummary{" + 'user_uuid: ' + str(self.user.uuid) + ', linkModel{' + str(self.linkModel) + "'" + "}" + " }"
+        return "DetailedSummary{" + 'user_uuid: ' + str(self.user.uuid) + ", redirectionLink: " + str(self.redirectionLink) + ', linkModel{' + str(self.linkModel) + "'" + "}" + " }"
