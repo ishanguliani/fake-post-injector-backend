@@ -29,7 +29,32 @@ class DetailedSummaryResource(resources.ModelResource):
 # Register your models here.
 class DetailedSummaryModelAdmin(ImportExportModelAdmin):
     resource_class =  DetailedSummaryResource
-    list_display = ('user', 'linkModel')
+    list_display = ('getUserName', 'getRedirectionLink', 'getShortLink', 'getLinkType')
+
+    def getUserName(self, obj):
+        return obj.user.name
+
+    def getRedirectionLink(self, obj):
+        return obj.redirectionLink
+
+    def getShortLink(self, obj):
+        return obj.linkModel.link_target_fake
+
+    def getLinkType(self, obj):
+        return obj.linkModel.link_type
+
+    getUserName.short_description = 'User name'
+    getUserName.admin_order_field = 'user__name'
+
+    getRedirectionLink.short_description = 'User redirected to'
+    getRedirectionLink.admin_order_field = 'redirectionLink'
+
+    getShortLink.short_description = 'Shortened link (that the user may have clicked)'
+    getShortLink.admin_order_field = 'linkModel__link_target_fake'
+
+    getLinkType.short_description = "Link type"
+    getLinkType.admin_order_field = 'linkModel__link_type'
+
 
 admin.site.register(BriefSummary, BriefSummaryModelAdmin)
 admin.site.register(DetailedSummary, DetailedSummaryModelAdmin)
