@@ -25,7 +25,7 @@ def registerLinkClick(linkModel):
     linkModel.is_clicked_event_from_ground_data = True
     linkModel.is_clicked_event_from_ground_data_time = datetime.now()
     linkModel.save()
-    print("registerLinkClick: link model update: is_clicked_event_from_ground_data" + linkModel.is_clicked_event_from_ground_data, ", is_clicked_event_from_ground_data_time: ", linkModel.is_clicked_event_from_ground_data_time)
+    print("registerLinkClick: link model update: is_clicked_event_from_ground_data" + str(linkModel.is_clicked_event_from_ground_data), ", is_clicked_event_from_ground_data_time: ", str(linkModel.is_clicked_event_from_ground_data_time))
 
 def trackLink(request, userId, stringHash):
     """
