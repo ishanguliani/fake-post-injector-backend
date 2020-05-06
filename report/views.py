@@ -31,7 +31,7 @@ def trackLink(request, userId, short_link):
             return JsonResponse({'success': False, 'message': 'could not find a valid link model matching that request url'})
         print("trackLink: LinkModel found: ", str(linkModel))
         updateDetailedSummaryReport(mUser, linkModel)
-        return redirectToActualLink(requestUrl)
+        return redirectToActualLink(request, requestUrl)
 
 def updateReportLinkSeenIncrement(user):
     """
@@ -83,7 +83,7 @@ def updateDetailedSummaryReport(mUser, linkModel):
     print("updateDetailedSummaryReport: added new entry: ")
     pass
 
-def redirectToActualLink(requestUrl):
+def redirectToActualLink(request, requestUrl):
     """
     extract the actual link for the shortened requestUrl from the FakeLinkModel
     and redirect user to the appropriate page
@@ -96,4 +96,4 @@ def redirectToActualLink(requestUrl):
         return JsonResponse({'success': False, 'message': errorMessage})
     fakeLink = fakeLink[0]
     print("redirectToActualLink: ", 'attempting to redirect to fakeLink: ', fakeLink.fake_link )
-    return RedirectView.as_view(url = fakeLink.fake_link)
+    return RedirectView.as_view(url = fakeLink.fake_link)(request)
