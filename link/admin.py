@@ -37,6 +37,7 @@ class LinkTypeModelResource(resources.ModelResource):
 
 class LinkTypeAdmin(ImportExportModelAdmin):
     resource_class = LinkTypeModelResource
+    readonly_fields = ['id', 'type']
 
 admin.site.register(LinkModel, LinkModelAdmin)
 admin.site.register(LinkType, LinkTypeAdmin)
