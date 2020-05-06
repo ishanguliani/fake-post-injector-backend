@@ -1,7 +1,11 @@
 from django.shortcuts import render
-from .models import BriefSummary
+from .models import BriefSummary, DetailedSummary
 from user.models import User
 from django.http import JsonResponse
+from configuration.views import createShortLink
+from link.models import LinkModel
+from fakeLinkModel.models import FakeLinkModel
+from django.views.generic.base import RedirectView
 
 
 def getUser(userId):
@@ -13,8 +17,6 @@ def getUser(userId):
             return JsonResponse({'success': False, 'message': 'cannot find a user with that userId'})
     return matchingUsers[0]
 
-
-# Create your views here.
 def trackLink(request, userId, short_link):
     """
     count this link click and route the user to the appropriate link
@@ -22,7 +24,14 @@ def trackLink(request, userId, short_link):
     if request.method == 'GET':
         mUser = getUser(userId)
         updateReportLinkClickIncrement(mUser)
-        pass
+        requestUrl = createShortLink(userId, short_link)
+        print("attempting to fetch fake link model for requestUrl: ", requestUrl)
+        linkModel = getLinkModelFromUrl(requestUrl)
+        if not linkModel:
+            return JsonResponse({'success': False, 'message': 'could not find a valid link model matching that request url'})
+        print("trackLink: LinkModel found: ", str(linkModel))
+        updateDetailedSummaryReport(mUser, linkModel)
+        return redirectToActualLink(requestUrl)
 
 def updateReportLinkSeenIncrement(user):
     """
@@ -54,3 +63,37 @@ def updateReportLinkClickIncrement(user):
     matchingSummaryEntry.numberOfLinksClicked += 1
     matchingSummaryEntry.save()
     print("updateReportLinkClickIncrement: count incremented for brief summary entry: ", str(matchingSummaryEntry))
+
+def getLinkModelFromUrl(requestUrl):
+    linkModel = LinkModel.objects.filter(link_target_fake=requestUrl)
+    if not linkModel:
+        return
+    return linkModel[0]
+
+
+def updateDetailedSummaryReport(mUser, linkModel):
+    """
+    Here we add a new entry into the detailed report. This is a mapping as follows -
+    {
+        user : link model
+    }
+    """
+    newEntry = DetailedSummary(user = mUser, linkModel = linkModel)
+    newEntry.save()
+    print("updateDetailedSummaryReport: added new entry: ")
+    pass
+
+def redirectToActualLink(requestUrl):
+    """
+    extract the actual link for the shortened requestUrl from the FakeLinkModel
+    and redirect user to the appropriate page
+    """
+    print("attempting to redirect to link mapped to short link: ", requestUrl)
+    fakeLink = FakeLinkModel.objects.filter(short_link = requestUrl)
+    if not fakeLink:
+        errorMessage = "redirectToActualLink: no fake link found for requestUrl: " + requestUrl
+        print(errorMessage)
+        return JsonResponse({'success': False, 'message': errorMessage})
+    fakeLink = fakeLink[0]
+    print("redirectToActualLink: ", 'attempting to redirect to fakeLink: ', fakeLink.fake_link )
+    return RedirectView.as_view(url = fakeLink.fake_link)
