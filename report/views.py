@@ -83,7 +83,7 @@ def updateDetailedSummaryReport(mUser, linkModel):
     pass
 
 def isFakeLink(linkModel):
-    value = linkModel.link_type.type == '3'
+    value = linkModel.link_type.id == 3
     print("isFakeLink: ", str(value))
     return value
 
