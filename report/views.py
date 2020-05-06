@@ -89,7 +89,7 @@ def updateDetailedSummaryReport(mUser, linkModel, stringHash):
     }
     """
     redirectTo = getRedirectionLink(stringHash, linkModel)
-    newEntry = DetailedSummary(user = mUser, redirectionLink = redirectTo, linkModel = linkModel)
+    newEntry = DetailedSummary(user = mUser, redirectionLink = redirectTo, linkModel = linkModel, originalLinkThatWasFaked = linkModel.link_target_original)
     newEntry.save()
     print("updateDetailedSummaryReport: added new entry: ")
     pass

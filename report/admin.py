@@ -25,7 +25,7 @@ class BriefSummaryModelAdmin(ImportExportModelAdmin):
 
     getUserName.short_description = 'User name'
     getUserName.admin_order_field = 'user__name'
-    
+
     getNumberOfLinksSeen.short_description = "Total # of links seen so far"
     getNumberOfLinksSeen.admin_order_field = "numberOfLinksSeen"
 
@@ -41,7 +41,7 @@ class DetailedSummaryResource(resources.ModelResource):
 # Register your models here.
 class DetailedSummaryModelAdmin(ImportExportModelAdmin):
     resource_class =  DetailedSummaryResource
-    list_display = ('getUserName', 'getRedirectionLink', 'getShortLink', 'getLinkType')
+    list_display = ('getUserName', 'getRedirectionLink', 'getShortLink', 'getLinkType', 'getOriginalLink')
 
     def getUserName(self, obj):
         return obj.user.name
@@ -55,6 +55,9 @@ class DetailedSummaryModelAdmin(ImportExportModelAdmin):
     def getLinkType(self, obj):
         return obj.linkModel.link_type
 
+    def getOriginalLink(self, obj):
+        return obj.originalLinkThatWasFaked
+
     getUserName.short_description = 'User name'
     getUserName.admin_order_field = 'user__name'
 
@@ -66,6 +69,9 @@ class DetailedSummaryModelAdmin(ImportExportModelAdmin):
 
     getLinkType.short_description = "Link type"
     getLinkType.admin_order_field = 'linkModel__link_type'
+
+    getOriginalLink.short_description = "Original link that was faked"
+    getOriginalLink.admin_order_field = "originalLinkThatWasFaked"
 
 
 admin.site.register(BriefSummary, BriefSummaryModelAdmin)
