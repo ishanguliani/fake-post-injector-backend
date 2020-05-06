@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import BriefSummary, DetailedSummary
 from user.models import User
 from django.http import JsonResponse
-from configuration.views import createShortLink
+from configuration.views import createShortLinkUrl
 from link.models import LinkModel
 from fakeLinkModel.models import FakeLinkModel
 from django.views.generic.base import RedirectView
@@ -17,14 +17,14 @@ def getUser(userId):
             return JsonResponse({'success': False, 'message': 'cannot find a user with that userId'})
     return matchingUsers[0]
 
-def trackLink(request, userId, short_link):
+def trackLink(request, userId, stringHash):
     """
     count this link click and route the user to the appropriate link
     """
     if request.method == 'GET':
         mUser = getUser(userId)
         updateReportLinkClickIncrement(mUser)
-        requestUrl = createShortLink(userId, short_link)
+        requestUrl = createShortLinkUrl(userId, stringHash)
         print("attempting to fetch fake link model for requestUrl: ", requestUrl)
         linkModel = getLinkModelFromUrl(requestUrl)
         if not linkModel:
