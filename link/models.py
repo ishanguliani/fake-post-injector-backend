@@ -53,5 +53,5 @@ class LinkModel(models.Model):
         return truncatechars(self.link_image_src_original, 1000)
 
     def __str__(self):
-        return "LinkModel{ " + str(self.link_text_original[:25]) + '..' + ' by ' + str(self.user.name) + " }"
+        return "LinkModel{ " + str(self.link_text_original[:25]) + 'link_type' + str(self.link_type) + '..' + ' by ' + str(self.user.name) + " }"
         # return str(self.link_text_original[:25]) + '..' + ' by ' + str(self.user)
