@@ -6,8 +6,8 @@ from report.models import BriefSummary, DetailedSummary
 class BriefSummaryResource(resources.ModelResource):
     class Meta:
         model = BriefSummary
-        field = ('user', 'numberOfLinksSeen', 'numberOfLinksClicked')
-        export_order = ('user', 'numberOfLinksSeen', 'numberOfLinksClicked')
+        field = ('user__name', 'numberOfLinksSeen', 'numberOfLinksClicked')
+        export_order = ('user__name', 'numberOfLinksSeen', 'numberOfLinksClicked')
 
 # Register your models here.
 class BriefSummaryModelAdmin(ImportExportModelAdmin):
