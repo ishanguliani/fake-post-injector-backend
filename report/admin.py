@@ -29,7 +29,7 @@ class DetailedSummaryResource(resources.ModelResource):
 # Register your models here.
 class DetailedSummaryModelAdmin(ImportExportModelAdmin):
     resource_class =  DetailedSummaryResource
-    list_display = ('getUserName', 'getRedirectionLink', 'getShortLink', 'getLinkType')
+    list_display = ('user', 'redirectionLink', 'linkModel__id')
 
     def getUserName(self, obj):
         return obj.user.name
