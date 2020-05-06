@@ -23,8 +23,8 @@ class BriefSummaryModelAdmin(ImportExportModelAdmin):
 class DetailedSummaryResource(resources.ModelResource):
     class Meta:
         model = DetailedSummary
-        field = ('user', 'redirectionLink', 'linkModel__link_type')
-        export_order = ('user', 'redirectionLink', 'linkModel__link_type')
+        field = ('user', 'redirectionLink', 'linkModel_link_type')
+        export_order = ('user', 'redirectionLink', 'linkModel_link_type')
 
 # Register your models here.
 class DetailedSummaryModelAdmin(ImportExportModelAdmin):
