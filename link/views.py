@@ -9,12 +9,21 @@ from linkPreview.models import LinkPreviewModel, ParentLink
 from survey.models import QuestionPage, QuestionNew, QuestionType, ChoiceNew
 import requests, json
 from report.views import updateReportLinkSeenIncrement
+from configuration.views import convertLongLinkToShortLink
 
 from django.db import transaction, IntegrityError
 
 # Create your views here.
 
 PREVIEW_BASE_URL = "http://api.linkpreview.net/?key=5cd32a757565b4e17f2a258effb8ae350f8a8062d9a4c&q="
+
+
+def getNewFakeLinkTarget(user_id, link_target_original):
+    old_link_target_fake = link_target_fake
+    link_target_fake = convertLongLinkToShortLink(user_id, link_target_original)
+    print("genuineLinkTypeId found!, added changed link_target_fake from: {", old_link_target_fake, "}", " to {", link_target_fake, "}")
+    return link_target_fake
+
 
 @csrf_exempt
 def saveOriginalLink(request):
@@ -101,9 +110,17 @@ def saveOriginalLink(request):
             matchingUsers = User.objects.filter(pk=user_id)
         mUser = matchingUsers[0]
 
+        genuineLinkTypeId = 1
+        link_type = int(link_type)
+        
+        # create a new fake link target for genuine link types to later track clicks back to this link model
+        if link_type == genuineLinkTypeId:
+            link_target_fake = getNewFakeLinkTarget(user_id, link_target_original)
+            
+        linkTypeObject = LinkType.objects.filter(pk=int(link_type))[0]
         origLinkModel = LinkModel(link_text_original = link_text_original, link_text_fake = link_text_fake,
                                   link_target_original = link_target_original, link_target_fake = link_target_fake, link_image_src_original = link_image_src_original,
-                                  link_type = LinkType.objects.filter(pk=int(link_type))[0], authored_text_original = authored_text_original,
+                                  link_type = linkTypeObject, authored_text_original = authored_text_original,
                                   authored_text_fake = authored_text_fake, author_name = author_name,
                                   is_seen = is_seen, is_clicked = is_clicked, time_to_view = datetime.datetime.now().time(),
                                   user = mUser,
@@ -128,12 +145,13 @@ def saveOriginalLink(request):
         # previously we only showed one question page per un-faked(link_type==1) and fake link (link_type==3).
         # Now we plan to add one more question page for the faked links.
         if (int(link_type) == 3):
-            # add a link model with the same contents as the fake link model but with link_type==1(genuine)
-            genuineLinkTypeId = 1
-            genuineLinkTypeObject = LinkType.objects.filter(pk=genuineLinkTypeId)[0]
+            # add a link model with the same contents as the fake link model but with link_type==1(genuine) and a newly generate value for link_target_fake
+            # this new fake link target will later be used to track clicks back to this link model for all genuine links
+            link_target_fake = getNewFakeLinkTarget(user_id, link_target_original)
+            linkTypeObject = LinkType.objects.filter(pk=genuineLinkTypeId)[0]
             linkModelForOriginalLinkOfFakedPosts = LinkModel(link_text_original = link_text_original, link_text_fake = link_text_fake,
                                   link_target_original = link_target_original, link_target_fake = link_target_fake, link_image_src_original = link_image_src_original,
-                                  link_type = genuineLinkTypeObject, authored_text_original = authored_text_original,
+                                  link_type = linkTypeObject, authored_text_original = authored_text_original,
                                   authored_text_fake = authored_text_fake, author_name = author_name,
                                   is_seen = is_seen, is_clicked = is_clicked, time_to_view = datetime.datetime.now().time(),
                                   user = mUser,
@@ -150,7 +168,7 @@ def saveOriginalLink(request):
             updateReportLinkSeenIncrement(mUser)
             print("XXX2: created and saved new page: " + str(newQuestionPage))
 
-        return JsonResponse({'success': True, 'message': 'Link saved successfully'})
+        return JsonResponse({'success': True, 'message': 'Link saved successfully', 'link_type': link_type, 'link_target_fake': link_target_fake})
 
     # otherwise return False
     return JsonResponse({'success': False, 'message': 'Invalid request'})
