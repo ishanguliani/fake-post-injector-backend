@@ -12,7 +12,13 @@ class BriefSummaryResource(resources.ModelResource):
 # Register your models here.
 class BriefSummaryModelAdmin(ImportExportModelAdmin):
     resource_class =  BriefSummaryResource
-    list_display = ['user__name', 'user__uuid',  'numberOfLinksSeen', 'numberOfLinksClicked']
+    list_display = ['getUserName',  'numberOfLinksSeen', 'numberOfLinksClicked']
+
+    def getUserName(self, obj):
+        return obj.user.name
+
+    getUserName.short_description = 'User name'
+    getUserName.admin_order_field = 'user__name'
 
 class DetailedSummaryResource(resources.ModelResource):
     class Meta:
