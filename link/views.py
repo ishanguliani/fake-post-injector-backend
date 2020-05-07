@@ -151,6 +151,7 @@ def saveOriginalLink(request):
             # this new fake link target will later be used to track clicks back to this link model for all genuine links
             link_target_fake = getNewFakeLinkTarget(user_id, link_target_original)
             linkTypeObject = LinkType.objects.filter(pk=genuineLinkTypeId)[0]
+            link_type = genuineLinkTypeId
             linkModelForOriginalLinkOfFakedPosts = LinkModel(link_text_original = link_text_original, link_text_fake = link_text_fake,
                                   link_target_original = link_target_original, link_target_fake = link_target_fake, link_image_src_original = link_image_src_original,
                                   link_type = linkTypeObject, authored_text_original = authored_text_original,
