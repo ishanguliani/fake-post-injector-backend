@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import FakeLinkModel
-from configuration.views import createStringHash
+from configuration.views import convertLongLinkToShortLink
 
 import json
 from django.http import JsonResponse
@@ -22,7 +22,8 @@ def getFakeLinksData(request):
         it = FakeLinkModel.objects.all().iterator()
         for fakelinkmodel in it:
                 if fakelinkmodel.short_link == '':
-                    fakelinkmodel.short_link = createStringHash(fakelinkmodel.fake_link)
+                    # fakelinkmodel.short_link = createStringHash(fakelinkmodel.fake_link)
+                    fakelinkmodel.short_link = convertLongLinkToShortLink(user_id, fakelinkmodel.fake_link)
                     fakelinkmodel.save()
 
         return JsonResponse(list(FakeLinkModel.objects.values()), safe=False)
