@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import BriefSummary, DetailedSummary
 from user.models import User
 from django.http import JsonResponse
-from configuration.views import createShortLinkUrl
+from configuration.views import createShortLinkUrl, convertLongLinkToShortLink
 from link.models import LinkModel
 from fakeLinkModel.models import FakeLinkModel
 from django.views.generic.base import RedirectView
@@ -41,7 +41,7 @@ def trackLink(request, userId, stringHash):
         registerLinkClick(linkModel)
         mUser = getUser(userId)
         updateReportForLinkClickIncrement(mUser)
-        updateDetailedSummaryReport(mUser, linkModel, stringHash)
+        updateDetailedSummaryReport(mUser, linkModel, stringHash, fullUrl)
         return redirectToActualLink(request, stringHash, linkModel, fullUrl)
 
 def updateReportLinkSeenIncrement(user):
@@ -82,14 +82,14 @@ def getLinkModelFromUrl(requestUrl):
     return linkModel[0]
 
 
-def updateDetailedSummaryReport(mUser, linkModel, stringHash):
+def updateDetailedSummaryReport(mUser, linkModel, stringHash, fullUrl = ''):
     """
     Here we add a new entry into the detailed report. This is a mapping as follows -
     {
         user : link model
     }
     """
-    redirectTo = getRedirectionLink(stringHash, linkModel)
+    redirectTo = getRedirectionLink(stringHash, linkModel, fullUrl)
     newEntry = DetailedSummary(user = mUser, redirectionLink = redirectTo, linkModel = linkModel, originalLinkThatWasFaked = linkModel.link_target_original)
     newEntry.save()
     print("updateDetailedSummaryReport: added new entry: ")
