@@ -33,7 +33,8 @@ def trackLink(request, userId, stringHash):
     """
     if request.method == 'GET':
         # be sure to increment counters only if a valid link model exists for the string hash
-        linkModel = getLinkModelFromUrl(createShortLinkUrl(userId, stringHash))
+        fullUrl = createShortLinkUrl(userId, stringHash)
+        linkModel = getLinkModelFromUrl(fullUrl)
         if not linkModel:
             return JsonResponse({'success': False, 'message': 'could not find a valid link model matching that request url'})
         print("trackLink: LinkModel found: ", str(linkModel))
@@ -41,7 +42,7 @@ def trackLink(request, userId, stringHash):
         mUser = getUser(userId)
         updateReportForLinkClickIncrement(mUser)
         updateDetailedSummaryReport(mUser, linkModel, stringHash)
-        return redirectToActualLink(request, stringHash, linkModel)
+        return redirectToActualLink(request, stringHash, linkModel, fullUrl)
 
 def updateReportLinkSeenIncrement(user):
     """
@@ -100,25 +101,28 @@ def isFakeLink(linkModel):
     return value
 
 
-def getRedirectionLink(stringHash, linkModel):
+def getRedirectionLink(stringHash, linkModel, fullUrl = ''):
     if (isFakeLink(linkModel)):
         fakeLink = FakeLinkModel.objects.filter(short_link=stringHash)
         if not fakeLink:
-            errorMessage = "redirectToActualLink: no fake link found for requestUrl: " + stringHash
-            print(errorMessage)
-            return JsonResponse({'success': False, 'message': errorMessage})
+            # also try to fetch by fullUrl
+            fakeLink = FakeLinkModel.objects.filter(short_link=fullUrl)
+            if not fakeLink:
+                errorMessage = "redirectToActualLink: no fake link found for requestUrl: " + stringHash
+                print(errorMessage)
+                return JsonResponse({'success': False, 'message': errorMessage})
         redirectTo = fakeLink[0].fake_link
     else:
         redirectTo = linkModel.link_target_original
     return redirectTo
 
 
-def redirectToActualLink(request, stringHash, linkModel):
+def redirectToActualLink(request, stringHash, linkModel, fullUrl = ''):
     """
     extract the actual link for the shortened requestUrl from the FakeLinkModel
     and redirect user to the appropriate page
     """
     print("attempting to redirect to link mapped to short link with string hash: ", stringHash)
-    redirectTo = getRedirectionLink(stringHash, linkModel)
+    redirectTo = getRedirectionLink(stringHash, linkModel, fullUrl)
     print("redirectToActualLink: ", 'attempting to redirect to fakeLink: ', redirectTo)
     return RedirectView.as_view(url = redirectTo)(request)
