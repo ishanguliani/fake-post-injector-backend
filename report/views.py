@@ -103,10 +103,10 @@ def isFakeLink(linkModel):
 
 def getRedirectionLink(stringHash, linkModel, fullUrl = ''):
     if (isFakeLink(linkModel)):
-        fakeLink = FakeLinkModel.objects.filter(short_link=stringHash)
+        fakeLink = FakeLinkModel.objects.filter(string_hash=stringHash)
         if not fakeLink:
             # also try to fetch by fullUrl
-            fakeLink = FakeLinkModel.objects.filter(short_link=fullUrl)
+            fakeLink = FakeLinkModel.objects.filter(string_hash=fullUrl)
             if not fakeLink:
                 errorMessage = "redirectToActualLink: no fake link found for requestUrl: " + stringHash
                 print(errorMessage)
