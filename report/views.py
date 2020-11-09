@@ -15,6 +15,7 @@ def getUser(userId):
         matchingUsers = User.objects.filter(pk=userId)
         if not matchingUsers:
             return JsonResponse({'success': False, 'message': 'cannot find a user with that userId'})
+    print('getUser(): from userId: ', str(userId), ' got user: ', str(matchingUsers[0]))
     return matchingUsers[0]
 
 from datetime import datetime
@@ -92,8 +93,7 @@ def updateDetailedSummaryReport(mUser, linkModel, stringHash, fullUrl = ''):
     redirectTo = getRedirectionLink(stringHash, linkModel, fullUrl)
     newEntry = DetailedSummary(user = mUser, redirectionLink = redirectTo, linkModel = linkModel, originalLinkThatWasFaked = linkModel.link_target_original)
     newEntry.save()
-    print("updateDetailedSummaryReport: added new entry: ")
-    pass
+    print("updateDetailedSummaryReport: added new entry: ", str(newEntry))
 
 def isFakeLink(linkModel):
     value = linkModel.link_type.id == 3
