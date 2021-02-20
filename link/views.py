@@ -63,9 +63,10 @@ def saveOriginalLink(request):
             print("is_clicked is true")
             is_clicked = True
 
-        facebookLinkTrackingPrependedUrl = "https://l.facebook.com/l.php?u="
-        # getrid of the prepended https://l.facebook.com/l.php?u= from the origin link
-        link_target_original = str(link_target_original).replace(facebookLinkTrackingPrependedUrl, "")
+        facebookLinkTrackingPrependedUrl = "l.facebook.com/l.php?u="
+        # getrid of the prepended https/http://l.facebook.com/l.php?u= from the origin link
+        link_target_original = str(link_target_original).replace('http://' + facebookLinkTrackingPrependedUrl, "")
+        link_target_original = str(link_target_original).replace('https://' + facebookLinkTrackingPrependedUrl, "")
         # a LinkPreviewModel is the model data for the post related to only fake posts
         # this model data (title, image, link) will be shown to the user during the study
         # to help them recollect what fake post they saw
