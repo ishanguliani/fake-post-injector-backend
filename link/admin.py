@@ -14,13 +14,13 @@ class LinkModelResource(resources.ModelResource):
     """
     class Meta:
         model = LinkModel
-        fields = ('id', 'link_text_original', 'link_text_fake', 'link_target_original', 'link_target_fake', 'link_image_src_original', 'link_type', 'authored_text_original', 'author_name', 'is_seen', 'is_clicked', 'is_clicked_event_from_ground_data', 'is_clicked_event_from_ground_data_time', 'user', 'preview_title', 'preview_description', 'preview_image', 'preview_url', 'time_to_view')
-        export_order = ('link_type', 'link_text_original', 'link_text_fake', 'is_clicked', 'is_clicked_event_from_ground_data', 'is_clicked_event_from_ground_data_time', 'user', 'id', 'link_target_original', 'link_target_fake', 'link_image_src_original', 'authored_text_original', 'author_name', 'is_seen', 'preview_title', 'preview_description', 'preview_image', 'preview_url', 'time_to_view')
+        fields = ('id', 'link_text_original', 'link_text_fake', 'link_target_original', 'link_target_fake', 'link_image_src_original', 'link_type', 'authored_text_original', 'author_name', 'is_seen', 'is_clicked', 'is_clicked_event_from_ground_data', 'is_clicked_event_from_ground_data_time', 'user', 'preview_title', 'preview_description', 'preview_image', 'preview_url', 'shown_date_and_time')
+        export_order = ('link_type', 'link_text_original', 'link_text_fake', 'is_clicked', 'is_clicked_event_from_ground_data', 'is_clicked_event_from_ground_data_time', 'user', 'id', 'link_target_original', 'link_target_fake', 'link_image_src_original', 'authored_text_original', 'author_name', 'is_seen', 'preview_title', 'preview_description', 'preview_image', 'preview_url', 'shown_date_and_time')
 
 class LinkModelAdmin(ImportExportModelAdmin):
     resource_class = LinkModelResource
     list_display = ['link_type',  'link_text_original', 'link_text_fake', 'is_clicked', 'is_clicked_event_from_ground_data', 'is_clicked_event_from_ground_data_time', 'user', 'property_link_target_original', 'property_link_target_fake', 'link_image_src_original', 'property_authored_text_original', 'author_name', 'is_seen']
-    readonly_fields = ('id', 'link_text_original', 'link_text_fake', 'link_target_original', 'link_target_fake', 'link_image_src_original', 'link_type', 'authored_text_original', 'authored_text_fake', 'author_name', 'is_seen', 'is_clicked', 'is_clicked_event_from_ground_data', 'is_clicked_event_from_ground_data_time', 'preview_title', 'preview_description', 'preview_image', 'preview_url', 'time_to_view', 'user')
+    readonly_fields = ('id', 'link_text_original', 'link_text_fake', 'link_target_original', 'link_target_fake', 'link_image_src_original', 'link_type', 'authored_text_original', 'authored_text_fake', 'author_name', 'is_seen', 'is_clicked', 'is_clicked_event_from_ground_data', 'is_clicked_event_from_ground_data_time', 'preview_title', 'preview_description', 'preview_image', 'preview_url', 'shown_date_and_time', 'user')
 
 # @admin.register(LinkType)
 # class LinkTypeAdmin(admin.ModelAdmin):

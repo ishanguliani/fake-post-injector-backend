@@ -30,6 +30,7 @@ class LinkModel(models.Model):
     is_clicked_event_from_ground_data = models.BooleanField(default=False)
     is_clicked_event_from_ground_data_time = models.DateTimeField('Click date and time (ground data)', auto_now_add=False, blank=True, null=True)
     time_to_view = models.TimeField(blank = True)
+    shown_date_and_time = models.DateTimeField(blank = True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     preview_title = models.CharField(max_length=1000, blank=True, default='')
     preview_description = models.CharField(max_length=2000, blank=True, default='')
