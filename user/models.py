@@ -4,9 +4,9 @@ from django.db import models
 class User(models.Model):
 
     name = models.CharField(max_length=50, blank=True)
-    alias = models.CharField(max_length=80, blank=False, default='NOT_SET')
+    alias = models.CharField(max_length=80, blank=False, default='')
     email = models.EmailField(blank=True)
-    mturk_id = models.CharField(max_length=100, blank=False, default='NOT_SET')
+    mturk_id = models.CharField(max_length=100, blank=False, default='')
     attendance_id = models.CharField(max_length=50, blank=True, null=True)
     uuid = models.CharField(max_length=100, blank=True, null=True)
 
