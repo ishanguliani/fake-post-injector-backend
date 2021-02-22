@@ -6,7 +6,7 @@ class User(models.Model):
     name = models.CharField(max_length=50, blank=True)
     alias = models.CharField(max_length=80, blank=False, default='NOT_SET')
     email = models.EmailField(blank=True)
-    mturk_id = models.CharField(max_length=100, blank=False)
+    mturk_id = models.CharField(max_length=100, blank=False, default='NOT_SET')
     attendance_id = models.CharField(max_length=50, blank=True, null=True)
     uuid = models.CharField(max_length=100, blank=True, null=True)
 
