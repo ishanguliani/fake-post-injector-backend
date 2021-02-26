@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime
 
 # Create your models here.
 class User(models.Model):
@@ -9,7 +10,7 @@ class User(models.Model):
     mturk_id = models.CharField(max_length=100, blank=False, default='')
     attendance_id = models.CharField(max_length=50, blank=True, null=True)
     uuid = models.CharField(max_length=100, blank=True, null=True)
-    date_of_registration = models.DateTimeField(verbose_name='date of registration', auto_now_add=True)
+    date_of_registration = models.DateTimeField(verbose_name='date of registration', auto_now_add=True, blank=True)
 
     def setUuid(self):
         newUuid = str(abs(hash(str(self.name) + str(self.alias) + str(self.email) + str(self.mturk_id) + str(self.attendance_id)))%100000000)
