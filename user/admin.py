@@ -14,11 +14,11 @@ class UserResource(resources.ModelResource):
     """
     class Meta:
         model = User
-        export_order = ('id', 'uuid', 'name', 'alias', 'email', 'mturk_id', 'attendance_id')
-        fields = ('id', 'uuid', 'name', 'alias', 'email', 'mturk_id', 'attendance_id')
+        export_order = ('id', 'uuid', 'name', 'alias', 'email', 'mturk_id', 'attendance_id', 'date_of_registration')
+        fields = ('id', 'uuid', 'name', 'alias', 'email', 'mturk_id', 'attendance_id', 'date_of_registration')
 
 class UserAdmin(ImportExportModelAdmin):
     resource_class = UserResource
-    readonly_fields = ('id', 'uuid', 'name', 'alias', 'email', 'mturk_id', 'attendance_id')
-    list_display = ['id', 'uuid', 'name', 'alias', 'email', 'mturk_id', 'attendance_id']
+    readonly_fields = ('id', 'uuid', 'name', 'alias', 'email', 'mturk_id', 'attendance_id', 'date_of_registration')
+    list_display = ['id', 'uuid', 'name', 'alias', 'email', 'mturk_id', 'attendance_id', 'date_of_registration']
 admin.site.register(User, UserAdmin)
