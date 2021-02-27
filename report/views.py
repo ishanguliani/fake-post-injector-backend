@@ -115,7 +115,7 @@ def isFakeLink(linkModel):
     return value
 
 def isFakeLinkType(link_type):
-    value = link_type.id == 3
+    value = link_type == 3
     print("isFakeLinkType: ", str(value))
     return value
 
