@@ -7,7 +7,7 @@ class UserModelForm(forms.ModelForm):
         fields = ['alias', 'mturk_id', 'attendance_id']
 
         labels = {
-            'alias': 'Enter your alias or username',
+            'alias': 'Enter your alias',
             'mturk_id': 'Enter your mturk id',
             'attendance_id': 'Enter the attendance id provided to you today',
         }
