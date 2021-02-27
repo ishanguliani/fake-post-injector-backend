@@ -33,7 +33,7 @@ class BriefSummaryModelAdmin(ImportExportModelAdmin):
         return obj.numberOfGenuineLinksClicked
 
     def getUserName(self, obj):
-        return obj.user.name
+        return obj.user.alias
 
     getUserName.short_description = 'User name'
     getUserName.admin_order_field = 'user__name'
