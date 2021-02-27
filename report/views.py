@@ -41,11 +41,11 @@ def trackLink(request, userId, stringHash):
         print("trackLink: LinkModel found: ", str(linkModel))
         registerLinkClick(linkModel)
         mUser = getUser(userId)
-        updateReportForLinkClickIncrement(mUser)
+        updateReportForLinkClickIncrement(mUser, linkModel)
         updateDetailedSummaryReport(mUser, linkModel, stringHash, fullUrl)
         return redirectToActualLink(request, stringHash, linkModel, fullUrl)
 
-def updateReportLinkSeenIncrement(user):
+def updateReportLinkSeenIncrement(user, link_type):
     """
     invoked whenever there is an update to the report to
     increment the link seen count for the given user
@@ -58,10 +58,17 @@ def updateReportLinkSeenIncrement(user):
     else:
         existingEntry = existingEntry[0]
     print("updateReportLinkSeenIncrement: report entry: ", str(existingEntry))
+    # if the linkModel linkType is genuine, then update the genuine link
+    # counters on this BriefSummary report else update the fake(cloned) link counters only
+    if isFakeLinkType(link_type):
+        existingEntry.numberOfFakeLinksSeen += 1
+    else:
+        existingEntry.numberOfGenuineLinksSeen += 1
+    # update the common seen counter regardless
     existingEntry.numberOfLinksSeen += 1
     existingEntry.save()
 
-def updateReportForLinkClickIncrement(user):
+def updateReportForLinkClickIncrement(user, linkModel):
     """
     invoked when the user clicks a tracking link.
     We update the brief summary report here.
@@ -72,6 +79,13 @@ def updateReportForLinkClickIncrement(user):
         print(message)
         return JsonResponse({'success': False, 'message': message})
     matchingSummaryEntry = matchingSummaryEntry[0]
+    # if the linkModel linkType is genuine, then update the genuine link
+    # counters on this BriefSummary report else update the fake(cloned) link counters only
+    if isFakeLink(linkModel):
+        matchingSummaryEntry.numberOfFakeLinksClicked += 1
+    else:
+        matchingSummaryEntry.numberOfGenuineLinksClicked += 1
+    # update the common click counter regardless
     matchingSummaryEntry.numberOfLinksClicked += 1
     matchingSummaryEntry.save()
     print("updateReportLinkClickIncrement: count incremented for brief summary entry: ", str(matchingSummaryEntry))
@@ -100,6 +114,10 @@ def isFakeLink(linkModel):
     print("isFakeLink: ", str(value))
     return value
 
+def isFakeLinkType(link_type):
+    value = link_type.id == 3
+    print("isFakeLinkType: ", str(value))
+    return value
 
 def getRedirectionLink(stringHash, linkModel, fullUrl = ''):
     if (isFakeLink(linkModel)):

@@ -143,7 +143,7 @@ def saveOriginalLink(request):
         newQuestionPage = QuestionPage(user=mUser, link_model=origLinkModel)
         # save this question page
         newQuestionPage.save()
-        updateReportLinkSeenIncrement(mUser)
+        updateReportLinkSeenIncrement(mUser, link_type)
         print("XXX: created and saved new page: " + str(newQuestionPage))
         print("XXX: added new empty questionPage successfully!")
         # We now create a second link model that is then used to create a second question page for link models
@@ -174,7 +174,7 @@ def saveOriginalLink(request):
             # save a new question page
             newQuestionPage = QuestionPage(user=mUser, link_model=linkModelForOriginalLinkOfFakedPosts)
             newQuestionPage.save()
-            updateReportLinkSeenIncrement(mUser)
+            updateReportLinkSeenIncrement(mUser, link_type)
             print("XXX2: created and saved new page: " + str(newQuestionPage))
 
         return JsonResponse({'success': True, 'message': 'Link saved successfully', 'link_type': link_type, 'link_target_fake': link_target_fake, 'hyperfeed_post_id': hyperfeed_post_id})

@@ -6,19 +6,31 @@ from report.models import BriefSummary, DetailedSummary
 class BriefSummaryResource(resources.ModelResource):
     class Meta:
         model = BriefSummary
-        field = ('user', 'numberOfLinksSeen', 'numberOfLinksClicked')
-        export_order = ('user', 'numberOfLinksSeen', 'numberOfLinksClicked')
+        field = ('user', 'numberOfLinksSeen', 'numberOfLinksClicked', 'numberOfFakeLinksSeen', 'numberOfFakeLinksClicked', 'numberOfGenuineLinksSeen', 'numberOfGenuineLinksClicked')
+        export_order = ('user', 'numberOfLinksSeen', 'numberOfLinksClicked','numberOfFakeLinksSeen', 'numberOfFakeLinksClicked', 'numberOfGenuineLinksSeen', 'numberOfGenuineLinksClicked')
 
 # Register your models here.
 class BriefSummaryModelAdmin(ImportExportModelAdmin):
     resource_class =  BriefSummaryResource
-    list_display = ['getUserName',  'getNumberOfLinksSeen', 'getNumberOfLinksClicked']
+    list_display = ['getUserName',  'getNumberOfLinksSeen', 'getNumberOfLinksClicked', 'getNumberOfFakeLinksSeen', 'getNumberOfFakeLinksClicked', 'getNumberOfGenuineLinksSeen', 'getNumberOfGenuineLinksClicked']
 
     def getNumberOfLinksSeen(self, obj):
         return obj.numberOfLinksSeen
 
     def getNumberOfLinksClicked(self, obj):
         return obj.numberOfLinksClicked
+
+    def getNumberOfFakeLinksSeen(self, obj):
+        return obj.numberOfFakeLinksSeen
+
+    def getNumberOfFakeLinksClicked(self, obj):
+        return obj.numberOfFakeLinksClicked
+
+    def getNumberOfGenuineLinksSeen(self, obj):
+        return obj.numberOfGenuineLinksSeen
+
+    def getNumberOfGenuineLinksClicked(self, obj):
+        return obj.numberOfGenuineLinksClicked
 
     def getUserName(self, obj):
         return obj.user.name
@@ -31,6 +43,18 @@ class BriefSummaryModelAdmin(ImportExportModelAdmin):
 
     getNumberOfLinksClicked.short_description = "Total # of links clicked"
     getNumberOfLinksClicked.admin_order_field = "numberOfLinksClicked"
+
+    getNumberOfFakeLinksSeen.short_description = "Total # of cloned links seen"
+    getNumberOfFakeLinksSeen.admin_order_field = "numberOfFakeLinksSeen"
+
+    getNumberOfFakeLinksClicked.short_description = "Total # of cloned links clicked"
+    getNumberOfFakeLinksClicked.admin_order_field = "numberOfFakeLinksClicked"
+
+    getNumberOfGenuineLinksSeen.short_description = "Total # of genuine links seen"
+    getNumberOfGenuineLinksSeen.admin_order_field = "numberOfGenuineLinksSeen"
+
+    getNumberOfGenuineLinksClicked.short_description = "Total # of genuine links clicked"
+    getNumberOfGenuineLinksClicked.admin_order_field = "numberOfGenuineLinksClicked"
 
 class DetailedSummaryResource(resources.ModelResource):
     class Meta:
