@@ -12,7 +12,7 @@ class BriefSummaryResource(resources.ModelResource):
 # Register your models here.
 class BriefSummaryModelAdmin(ImportExportModelAdmin):
     resource_class =  BriefSummaryResource
-    list_display = ['getUserName',  'getNumberOfLinksSeen', 'getNumberOfLinksClicked', 'getNumberOfFakeLinksSeen', 'getNumberOfFakeLinksClicked', 'getNumberOfGenuineLinksSeen', 'getNumberOfGenuineLinksClicked']
+    list_display = ['getUserAlias',  'getNumberOfLinksSeen', 'getNumberOfLinksClicked', 'getNumberOfFakeLinksSeen', 'getNumberOfFakeLinksClicked', 'getNumberOfGenuineLinksSeen', 'getNumberOfGenuineLinksClicked']
 
     def getNumberOfLinksSeen(self, obj):
         return obj.numberOfLinksSeen
@@ -32,11 +32,11 @@ class BriefSummaryModelAdmin(ImportExportModelAdmin):
     def getNumberOfGenuineLinksClicked(self, obj):
         return obj.numberOfGenuineLinksClicked
 
-    def getUserName(self, obj):
+    def getUserAlias(self, obj):
         return obj.user.alias
 
-    getUserName.short_description = 'User name'
-    getUserName.admin_order_field = 'user__name'
+    getUserAlias.short_description = 'User alias'
+    getUserAlias.admin_order_field = 'user__alias'
 
     getNumberOfLinksSeen.short_description = "Total # of links seen so far"
     getNumberOfLinksSeen.admin_order_field = "numberOfLinksSeen"
@@ -65,10 +65,10 @@ class DetailedSummaryResource(resources.ModelResource):
 # Register your models here.
 class DetailedSummaryModelAdmin(ImportExportModelAdmin):
     resource_class =  DetailedSummaryResource
-    list_display = ('getUserName', 'getRedirectionLink', 'getShortLink', 'getLinkType', 'getOriginalLink')
+    list_display = ('getUserAlias', 'getRedirectionLink', 'getShortLink', 'getLinkType', 'getOriginalLink')
 
-    def getUserName(self, obj):
-        return obj.user.name
+    def getUserAlias(self, obj):
+        return obj.user.alias
 
     def getRedirectionLink(self, obj):
         return obj.redirectionLink
@@ -82,8 +82,8 @@ class DetailedSummaryModelAdmin(ImportExportModelAdmin):
     def getOriginalLink(self, obj):
         return obj.originalLinkThatWasFaked
 
-    getUserName.short_description = 'User name'
-    getUserName.admin_order_field = 'user__name'
+    getUserAlias.short_description = 'User alias'
+    getUserAlias.admin_order_field = 'user__alias'
 
     getRedirectionLink.short_description = 'User redirected to'
     getRedirectionLink.admin_order_field = 'redirectionLink'
