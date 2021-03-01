@@ -11,9 +11,10 @@ class BriefSummary(models.Model):
     numberOfFakeLinksClicked = models.IntegerField(default=0, null=True)
     numberOfGenuineLinksSeen = models.IntegerField(default=0, null=True)
     numberOfGenuineLinksClicked = models.IntegerField(default=0, null=True)
+    mostRecentInteraction = models.DateTimeField(blank=True, auto_now_add=False)
 
     def __str__(self):
-        return "BriefSummary{" + 'user_uuid: ' + str(self.user.uuid) + ', numberOfLinksSeen: ' + str(self.numberOfLinksSeen) + ", numberOfLinksClicked: " + str(self.numberOfLinksClicked) + ", numberOfFakeLinksSeen: " + str(self.numberOfFakeLinksSeen) + ", numberOfFakeLinksClicked: " + str(self.numberOfFakeLinksClicked) + ", numberOfGenuineLinksSeen: " + str(self.numberOfGenuineLinksSeen) + ", numberOfGenuineLinksClicked: " + str(self.numberOfGenuineLinksClicked) + "}"
+        return "BriefSummary{" + 'user_uuid: ' + str(self.user.uuid) + ', numberOfLinksSeen: ' + str(self.numberOfLinksSeen) + ", numberOfLinksClicked: " + str(self.numberOfLinksClicked) + ", numberOfFakeLinksSeen: " + str(self.numberOfFakeLinksSeen) + ", numberOfFakeLinksClicked: " + str(self.numberOfFakeLinksClicked) + ", numberOfGenuineLinksSeen: " + str(self.numberOfGenuineLinksSeen) + ", numberOfGenuineLinksClicked: " + str(self.numberOfGenuineLinksClicked) + ', mostRecentInteraction: ' + str(self.mostRecentInteraction) + "}"
 
 
 class DetailedSummary(models.Model):

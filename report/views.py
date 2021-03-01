@@ -66,7 +66,11 @@ def updateReportLinkSeenIncrement(user, link_type):
         existingEntry.numberOfGenuineLinksSeen += 1
     # update the common seen counter regardless
     existingEntry.numberOfLinksSeen += 1
+    updateMostRecentInteractionTime(existingEntry)
     existingEntry.save()
+
+def updateMostRecentInteractionTime(briefSummaryModel):
+    briefSummaryModel.mostRecentInteraction = datetime.now()
 
 def updateReportForLinkClickIncrement(user, linkModel):
     """
@@ -87,6 +91,7 @@ def updateReportForLinkClickIncrement(user, linkModel):
         matchingSummaryEntry.numberOfGenuineLinksClicked += 1
     # update the common click counter regardless
     matchingSummaryEntry.numberOfLinksClicked += 1
+    updateMostRecentInteractionTime(matchingSummaryEntry)
     matchingSummaryEntry.save()
     print("updateReportLinkClickIncrement: count incremented for brief summary entry: ", str(matchingSummaryEntry))
 

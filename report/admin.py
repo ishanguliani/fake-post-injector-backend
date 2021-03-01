@@ -6,13 +6,13 @@ from report.models import BriefSummary, DetailedSummary
 class BriefSummaryResource(resources.ModelResource):
     class Meta:
         model = BriefSummary
-        field = ('user', 'numberOfLinksSeen', 'numberOfLinksClicked', 'numberOfFakeLinksSeen', 'numberOfFakeLinksClicked', 'numberOfGenuineLinksSeen', 'numberOfGenuineLinksClicked')
-        export_order = ('user', 'numberOfLinksSeen', 'numberOfLinksClicked','numberOfFakeLinksSeen', 'numberOfFakeLinksClicked', 'numberOfGenuineLinksSeen', 'numberOfGenuineLinksClicked')
+        field = ('user', 'mostRecentInteraction', 'numberOfLinksSeen', 'numberOfLinksClicked', 'numberOfFakeLinksSeen', 'numberOfFakeLinksClicked', 'numberOfGenuineLinksSeen', 'numberOfGenuineLinksClicked')
+        export_order = ('user', 'mostRecentInteraction', 'numberOfLinksSeen', 'numberOfLinksClicked','numberOfFakeLinksSeen', 'numberOfFakeLinksClicked', 'numberOfGenuineLinksSeen', 'numberOfGenuineLinksClicked')
 
 # Register your models here.
 class BriefSummaryModelAdmin(ImportExportModelAdmin):
     resource_class =  BriefSummaryResource
-    list_display = ['getUserAlias',  'getNumberOfLinksSeen', 'getNumberOfLinksClicked', 'getNumberOfFakeLinksSeen', 'getNumberOfFakeLinksClicked', 'getNumberOfGenuineLinksSeen', 'getNumberOfGenuineLinksClicked']
+    list_display = ['getUserAlias', 'getMostRecentInteraction',  'getNumberOfLinksSeen', 'getNumberOfLinksClicked', 'getNumberOfFakeLinksSeen', 'getNumberOfFakeLinksClicked', 'getNumberOfGenuineLinksSeen', 'getNumberOfGenuineLinksClicked']
 
     def getNumberOfLinksSeen(self, obj):
         return obj.numberOfLinksSeen
@@ -35,6 +35,9 @@ class BriefSummaryModelAdmin(ImportExportModelAdmin):
     def getUserAlias(self, obj):
         return obj.user.alias
 
+    def getMostRecentInteraction(self, obj):
+        return obj.mostRecentInteraction
+
     getUserAlias.short_description = 'User alias'
     getUserAlias.admin_order_field = 'user__alias'
 
@@ -55,6 +58,9 @@ class BriefSummaryModelAdmin(ImportExportModelAdmin):
 
     getNumberOfGenuineLinksClicked.short_description = "Total # of genuine links clicked"
     getNumberOfGenuineLinksClicked.admin_order_field = "numberOfGenuineLinksClicked"
+
+    getMostRecentInteraction.short_description = "Most recent interaction time"
+    getMostRecentInteraction.admin_order_field = "mostRecentInteraction"
 
 class DetailedSummaryResource(resources.ModelResource):
     class Meta:
