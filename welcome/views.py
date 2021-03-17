@@ -24,7 +24,7 @@ def checkUserUid(request, uuid):
         matchingUsers = User.objects.filter(pk=uuid)
         if not matchingUsers:
             return JsonResponse({'success': False, 'message': 'No matching user found with the given uuid'})
-    return True
+    return JsonResponse({'success': True})
 
 
 
