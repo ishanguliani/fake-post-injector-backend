@@ -21,7 +21,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 from welcome.views import signupSuccess, signupFailed, showWelcomePage
 from form.views import showForm
-from welcome.views import showWelcomePage
+from welcome.views import showWelcomePage, checkUserUid
 from user.views import createUser
 from django.views.generic.base import RedirectView
 # from survey.views import showSurveyView, surveyDetailView, surveyResultsView, surveyVote
@@ -37,6 +37,7 @@ admin.site.site_title = "Center For Cybersecurity"
 admin.site.index_title = "You are viewing live data..."
 
 urlpatterns = [
+    path('checkUserUid/<int:uuid>', checkUserUid, name='checkUserUid'),
     path('welcome/', showWelcomePage, name="showWelcomePage"),
     path('', showWelcomePage, name="showWelcomePage"),
     path('admin/', admin.site.urls),
