@@ -20,7 +20,6 @@ def checkUserUid(request, uuid):
     print('checkUserUuid(): with uuid', str(uuid))
     response = False
     message = ''
-    uuid = 'nothing'
     matchingUsers = User.objects.filter(uuid=uuid)
     if not matchingUsers:
         print('checkUserUuid(): matchinguser not found against uuid, checking with uuid')
@@ -33,7 +32,6 @@ def checkUserUid(request, uuid):
     else:
         print('checkUserUid(): matchingUser found: ' + str(matchingUsers[0]))
         message = "found user with uuid" + str(matchingUsers[0].uuid)
-        uuid = matchingUsers[0].uuid
         response = True
     print('checkUserUuid(): returning response', str(response), ', message:', message, ',uuid:', str(uuid))
     return JsonResponse({'success': response, "message": message, "uuid": uuid})
