@@ -18,13 +18,24 @@ def signupFailed(request):
 
 def checkUserUid(request, uuid):
     print('checkUserUuid(): with uuid', str(uuid))
+    response = True
+    message = ''
+    uuid = None
     matchingUsers = User.objects.filter(uuid=uuid)
     if not matchingUsers:
+        print('checkUserUuid(): matchinguser not found against uuid, checking with uuid')
         # backwards compatibility check: new system only compares users based on uuid while older system used pk(id)
         matchingUsers = User.objects.filter(pk=uuid)
         if not matchingUsers:
-            return JsonResponse({'success': False, 'message': 'No matching user found with the given uuid'})
-    return JsonResponse({'success': True})
+            message = 'No matching user found with the given uuid'
+            uuid = None
+            response = False
+    else:
+        message = "found user with uuid" + str(matchingUsers[0].uuid)
+        uuid = matchingUsers[0].uuid
+        response = True
+    print('checkUserUuid(): returning response, uuid: ', str(response), str(uuid))
+    return JsonResponse({'success': response, "message": message, "uuid": uuid})
 
 
 
