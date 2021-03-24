@@ -18,7 +18,7 @@ def signupFailed(request):
 
 def checkUserUid(request, uuid):
     print('checkUserUuid(): with uuid', str(uuid))
-    response = True
+    response = False
     message = ''
     uuid = None
     matchingUsers = User.objects.filter(uuid=uuid)
@@ -30,6 +30,8 @@ def checkUserUid(request, uuid):
             message = 'No matching user found with the given uuid'
             uuid = None
             response = False
+        else:
+            pass
     else:
         message = "found user with uuid" + str(matchingUsers[0].uuid)
         uuid = matchingUsers[0].uuid
