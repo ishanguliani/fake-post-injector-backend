@@ -7,7 +7,6 @@ verify_ssl = true
 
 [packages]
 django = ">=2.1.5"
-tweepy = {editable = true,git = "https://github.com/tweepy/tweepy.git",ref = "2efe385fc69385b57733f747ee62e6be12a1338b"}
 django-crispy-forms = "*"
 djangorestframework = "*"
 django-cors-headers = "*"
