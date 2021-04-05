@@ -31,19 +31,26 @@ class LinkModelAdmin(ImportExportModelAdmin):
 
 class LinkModelListFilterAdmin(LinkModelAdmin):
     list_filter = (
-        ('created_at', DateRangeFilter),
-        ('updated_at', DateTimeRangeFilter)
+        ('shown_date_and_time', DateRangeFilter),
+        ('is_clicked_event_from_ground_data_time', DateTimeRangeFilter)
     )
 
     # If you would like to add a default range filter
     # method pattern "get_rangefilter_{field_name}_default"
-    def get_rangefilter_created_at_default(self, request):
+    def get_rangefilter_shown_date_and_time_default(self, request):
+        return (datetime.date.today, datetime.date.today)
+
+    def get_rangefilter_is_clicked_event_from_ground_data_time_default(self, request):
         return (datetime.date.today, datetime.date.today)
 
     # If you would like to change a title range filter
     # method pattern "get_rangefilter_{field_name}_title"
-    def get_rangefilter_created_at_title(self, request, field_path):
-        return 'Link created at'
+    def get_rangefilter_shown_date_and_time_title(self, request, field_path):
+        return 'Last shown date'
+
+    def get_rangefilter_is_clicked_event_from_ground_data_time_title(self, request, field_path):
+        return 'Last clicked date'
+
 
 
 class LinkTypeModelResource(resources.ModelResource):
