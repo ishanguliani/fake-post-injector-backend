@@ -38,10 +38,10 @@ class LinkModelListFilterAdmin(LinkModelAdmin):
     # If you would like to add a default range filter
     # method pattern "get_rangefilter_{field_name}_default"
     def get_rangefilter_shown_date_and_time_default(self, request):
-        return (datetime.date.today, datetime.date.today)
+        return (datetime.now(), datetime.now())
 
     def get_rangefilter_is_clicked_event_from_ground_data_time_default(self, request):
-        return (datetime.date.today, datetime.date.today)
+        return (datetime.now(), datetime.now())
 
     # If you would like to change a title range filter
     # method pattern "get_rangefilter_{field_name}_title"
