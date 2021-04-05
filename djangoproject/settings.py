@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'twitter',
     'person',
     'form',
+    'rangefilter',
     'survey',
     'link',
     'linkPreview',

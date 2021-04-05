@@ -1,7 +1,10 @@
+from datetime import datetime
+
 from django.contrib import admin
 from link.models import LinkModel, LinkType
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
+from rangefilter.filter import DateRangeFilter, DateTimeRangeFilter
 
 # Register your models here.
 # @admin.register(LinkModel)
@@ -26,6 +29,23 @@ class LinkModelAdmin(ImportExportModelAdmin):
 # class LinkTypeAdmin(admin.ModelAdmin):
 #     list_display = ['id', 'type']
 
+class LinkModelListFilterAdmin(LinkModelAdmin):
+    list_filter = (
+        ('created_at', DateRangeFilter),
+        ('updated_at', DateTimeRangeFilter)
+    )
+
+    # If you would like to add a default range filter
+    # method pattern "get_rangefilter_{field_name}_default"
+    def get_rangefilter_created_at_default(self, request):
+        return (datetime.date.today, datetime.date.today)
+
+    # If you would like to change a title range filter
+    # method pattern "get_rangefilter_{field_name}_title"
+    def get_rangefilter_created_at_title(self, request, field_path):
+        return 'Link created at'
+
+
 class LinkTypeModelResource(resources.ModelResource):
     """
     Add import export feature to LinkType model
@@ -39,5 +59,5 @@ class LinkTypeAdmin(ImportExportModelAdmin):
     resource_class = LinkTypeModelResource
     readonly_fields = ['id', 'type']
 
-admin.site.register(LinkModel, LinkModelAdmin)
+admin.site.register(LinkModel, LinkModelListFilterAdmin)
 admin.site.register(LinkType, LinkTypeAdmin)
