@@ -7,6 +7,7 @@ def getConfiguration(request):
     """
     Return the configuration including chances of cloning
     """
+    print("Configuration Test Print Out")
     if request.method == 'GET':
         chancesOfCloning = Configuration.objects.values('chances_of_cloning')
         shouldShowRedBanner =  Configuration.objects.values('should_show_red_banner_for_injected_posts')
