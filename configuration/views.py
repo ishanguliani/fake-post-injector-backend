@@ -20,7 +20,7 @@ def getConfiguration(request):
         key2, value2 = next(iter(shouldShowRedBanner[len(shouldShowRedBanner)-1])), next(iter(shouldShowRedBanner[len(shouldShowRedBanner)-1].values()))
         response = {
                key1:value1,
-               key2:False
+               key2:value2
                } 
         return JsonResponse(response, safe=False)
 
