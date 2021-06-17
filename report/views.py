@@ -7,6 +7,7 @@ from configuration.views import createShortLinkUrl, convertLongLinkToShortLink
 from link.models import LinkModel
 from fakeLinkModel.models import FakeLinkModel
 from django.views.generic.base import RedirectView
+from urllib.parse import urljoin
 
 
 def getUser(userId):
@@ -36,14 +37,12 @@ def trackLink(request, userId, stringHash):
     """
     count this link click and route the user to the appropriate link
     """
-    print("Testing link track")
     if request.method == 'GET':
         # be sure to increment counters only if a valid link model exists for the string hash
         fullUrl = createShortLinkUrl(userId, stringHash)
         linkModel = getLinkModelFromUrl(fullUrl)
         if not linkModel:
             return JsonResponse({'success': False, 'message': 'could not find a valid link model matching that request url'})
-        print("trackLink: LinkModel found: ", str(linkModel))
         registerLinkClick(linkModel)
         mUser = getUser(userId)
         updateReportForLinkClickIncrement(mUser, linkModel)
@@ -151,6 +150,7 @@ def getRedirectionLink(stringHash, linkModel, fullUrl=''):
         redirectTo = fakeLink[0].fake_link
     else:
         redirectTo = linkModel.link_target_original
+    redirectTo = urljoin('http://', redirectTo)
     return redirectTo
 
 
