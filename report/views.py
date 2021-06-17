@@ -150,7 +150,6 @@ def getRedirectionLink(stringHash, linkModel, fullUrl=''):
         redirectTo = fakeLink[0].fake_link
     else:
         redirectTo = linkModel.link_target_original
-    redirectTo = urljoin('http://', redirectTo)
     return redirectTo
 
 
@@ -161,6 +160,7 @@ def redirectToActualLink(request, stringHash, linkModel, fullUrl=''):
     """
     print("attempting to redirect to link mapped to short link with string hash: ", stringHash)
     redirectTo = getRedirectionLink(stringHash, linkModel, fullUrl)
+    redirectTo = urljoin('http://', redirectTo)
     print("redirectToActualLink: ",
           'attempting to redirect to fakeLink: ', redirectTo)
     return RedirectView.as_view(url=redirectTo)(request)
