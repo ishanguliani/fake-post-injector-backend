@@ -8,11 +8,18 @@ from django.views.decorators.csrf import csrf_exempt
 from linkPreview.models import LinkPreviewModel, ParentLink
 from survey.models import QuestionPage, QuestionNew, QuestionType, ChoiceNew
 import requests, json
+from report.views import updateReportLinkSeenIncrement
+from configuration.views import convertLongLinkToShortLink
+
 from django.db import transaction, IntegrityError
 
 # Create your views here.
 
 PREVIEW_BASE_URL = "http://api.linkpreview.net/?key=5cd32a757565b4e17f2a258effb8ae350f8a8062d9a4c&q="
+
+
+def getNewFakeLinkTarget(user_id, link_target_original):
+    return convertLongLinkToShortLink(user_id, link_target_original)
 
 @csrf_exempt
 def saveOriginalLink(request):
@@ -33,6 +40,10 @@ def saveOriginalLink(request):
         author_name = request.POST.get('author_name', 'XXX')
         is_clicked = request.POST.get('is_clicked', 'False')
         is_seen = bool(request.POST.get('is_seen', 'XXX'))
+        # this field is used to maintain the state of the front end hyperfeed (simply specific facebook post) that is being currently stored
+        # we simply return this id back to the requesting service without doing anything with it
+        hyperfeed_post_id = request.POST.get('hyperfeed_post_id', 'XXX')
+
         print('received: ',
               'link_text_original:', str(link_text_original), ", ",
               'link_text_fake:', str(link_text_fake), ", ",
@@ -52,6 +63,10 @@ def saveOriginalLink(request):
             print("is_clicked is true")
             is_clicked = True
 
+        facebookLinkTrackingPrependedUrl = "l.facebook.com/l.php?u="
+        # getrid of the prepended https/http://l.facebook.com/l.php?u= from the origin link
+        link_target_original = str(link_target_original).replace('http://' + facebookLinkTrackingPrependedUrl, "")
+        link_target_original = str(link_target_original).replace('https://' + facebookLinkTrackingPrependedUrl, "")
         # a LinkPreviewModel is the model data for the post related to only fake posts
         # this model data (title, image, link) will be shown to the user during the study
         # to help them recollect what fake post they saw
@@ -99,11 +114,22 @@ def saveOriginalLink(request):
             matchingUsers = User.objects.filter(pk=user_id)
         mUser = matchingUsers[0]
 
+        genuineLinkTypeId = 1
+        link_type = int(link_type)
+        
+        # create a new fake link target for genuine link types to later track clicks back to this link model
+        if link_type == genuineLinkTypeId:
+            old_link_target_fake = link_target_original
+            link_target_fake = getNewFakeLinkTarget(user_id, link_target_original)
+            print("genuineLinkTypeId found!, added changed link_target_fake from: {", old_link_target_fake, "}", " to {", link_target_fake, "}")
+
+        linkTypeObject = LinkType.objects.filter(pk=int(link_type))[0]
         origLinkModel = LinkModel(link_text_original = link_text_original, link_text_fake = link_text_fake,
                                   link_target_original = link_target_original, link_target_fake = link_target_fake, link_image_src_original = link_image_src_original,
-                                  link_type = LinkType.objects.filter(pk=int(link_type))[0], authored_text_original = authored_text_original,
+                                  link_type = linkTypeObject, authored_text_original = authored_text_original,
                                   authored_text_fake = authored_text_fake, author_name = author_name,
                                   is_seen = is_seen, is_clicked = is_clicked, time_to_view = datetime.datetime.now().time(),
+                                  shown_date_and_time = datetime.datetime.now(),
                                   user = mUser,
                                   preview_title  = newLinkPreviewModel.title,
                                   preview_description = newLinkPreviewModel.description,
@@ -117,6 +143,7 @@ def saveOriginalLink(request):
         newQuestionPage = QuestionPage(user=mUser, link_model=origLinkModel)
         # save this question page
         newQuestionPage.save()
+        updateReportLinkSeenIncrement(mUser, link_type)
         print("XXX: created and saved new page: " + str(newQuestionPage))
         print("XXX: added new empty questionPage successfully!")
         # We now create a second link model that is then used to create a second question page for link models
@@ -125,14 +152,17 @@ def saveOriginalLink(request):
         # previously we only showed one question page per un-faked(link_type==1) and fake link (link_type==3).
         # Now we plan to add one more question page for the faked links.
         if (int(link_type) == 3):
-            # add a link model with the same contents as the fake link model but with link_type==1(genuine)
-            genuineLinkTypeId = 1
-            genuineLinkTypeObject = LinkType.objects.filter(pk=genuineLinkTypeId)[0]
+            # add a link model with the same contents as the fake link model but with link_type==1(genuine) and a newly generate value for link_target_fake
+            # this new fake link target will later be used to track clicks back to this link model for all genuine links
+            link_target_fake = getNewFakeLinkTarget(user_id, link_target_original)
+            linkTypeObject = LinkType.objects.filter(pk=genuineLinkTypeId)[0]
+            link_type = genuineLinkTypeId
             linkModelForOriginalLinkOfFakedPosts = LinkModel(link_text_original = link_text_original, link_text_fake = link_text_fake,
                                   link_target_original = link_target_original, link_target_fake = link_target_fake, link_image_src_original = link_image_src_original,
-                                  link_type = genuineLinkTypeObject, authored_text_original = authored_text_original,
+                                  link_type = linkTypeObject, authored_text_original = authored_text_original,
                                   authored_text_fake = authored_text_fake, author_name = author_name,
                                   is_seen = is_seen, is_clicked = is_clicked, time_to_view = datetime.datetime.now().time(),
+                                  shown_date_and_time = datetime.datetime.now(),
                                   user = mUser,
                                   preview_title  = newLinkPreviewModel.title,
                                   preview_description = newLinkPreviewModel.description,
@@ -144,9 +174,10 @@ def saveOriginalLink(request):
             # save a new question page
             newQuestionPage = QuestionPage(user=mUser, link_model=linkModelForOriginalLinkOfFakedPosts)
             newQuestionPage.save()
+            updateReportLinkSeenIncrement(mUser, link_type)
             print("XXX2: created and saved new page: " + str(newQuestionPage))
 
-        return JsonResponse({'success': True, 'message': 'Link saved successfully'})
+        return JsonResponse({'success': True, 'message': 'Link saved successfully', 'link_type': link_type, 'link_target_fake': link_target_fake, 'hyperfeed_post_id': hyperfeed_post_id})
 
     # otherwise return False
     return JsonResponse({'success': False, 'message': 'Invalid request'})

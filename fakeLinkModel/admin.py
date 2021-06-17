@@ -13,11 +13,12 @@ class FakeLinkModelResource(resources.ModelResource):
     """
     class Meta:
         model = FakeLinkModel
-        fields = ('id', 'fake_picture', 'fake_link_topic', 'fake_link_text', 'fake_link_description', 'fake_link', 'fake_link_header')
-        export_order = ('id', 'fake_picture', 'fake_link_topic', 'fake_link_text', 'fake_link_description', 'fake_link', 'fake_link_header')
+        fields = ('id', 'fake_picture', 'fake_link_topic', 'fake_link_text', 'fake_link_description', 'fake_link', 'fake_link_header',  'string_hash')
+        export_order = ('id', 'fake_picture', 'fake_link_topic', 'fake_link_text', 'fake_link_description', 'fake_link', 'fake_link_header',  'string_hash')
 
 class FakeLinkModelAdmin(ImportExportModelAdmin):
     resource_class = FakeLinkModelResource
-    list_display = ['id', 'fake_picture', 'fake_link_topic', 'fake_link_text', 'fake_link_description', 'fake_link', 'fake_link_header']
+    list_display = ['id', 'fake_picture', 'fake_link_topic', 'fake_link_text', 'fake_link_description', 'fake_link', 'fake_link_header', 'string_hash']
+    readonly_fields = ['id', 'string_hash']
 
 admin.site.register(FakeLinkModel, FakeLinkModelAdmin)

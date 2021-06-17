@@ -8,7 +8,6 @@
 var UNIQUE_USER_ID = "uniqueUserIdentifier";
 
 function copyStringToClipboard (str) {
-    str = "userid:" + str;
     showButton(false);
     console.log("copyStringToClipboard : ready to copy: " + str);
     document.getElementById("okButton").addEventListener("click", function(){

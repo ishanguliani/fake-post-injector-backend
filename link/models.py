@@ -27,7 +27,10 @@ class LinkModel(models.Model):
     author_name = models.CharField(max_length=1000, blank=True)
     is_seen = models.BooleanField(default=False)
     is_clicked = models.BooleanField(default=False)
+    is_clicked_event_from_ground_data = models.BooleanField(default=False)
+    is_clicked_event_from_ground_data_time = models.DateTimeField('Click date and time (ground data)', auto_now_add=False, blank=True, null=True)
     time_to_view = models.TimeField(blank = True)
+    shown_date_and_time = models.DateTimeField(blank = True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     preview_title = models.CharField(max_length=1000, blank=True, default='')
     preview_description = models.CharField(max_length=2000, blank=True, default='')
@@ -51,5 +54,5 @@ class LinkModel(models.Model):
         return truncatechars(self.link_image_src_original, 1000)
 
     def __str__(self):
-        return "LinkModel{ " + str(self.link_text_original[:25]) + '..' + ' by ' + str(self.user.name) + " }"
+        return "LinkModel{ " + str(self.link_text_original[:25]) + ', link_type' + str(self.link_type) + '..' + ' by ' + str(self.user.name) + " }"
         # return str(self.link_text_original[:25]) + '..' + ' by ' + str(self.user)

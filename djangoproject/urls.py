@@ -21,21 +21,23 @@ from django.conf.urls.static import static
 from django.conf import settings
 from welcome.views import signupSuccess, signupFailed, showWelcomePage
 from form.views import showForm
-from welcome.views import showWelcomePage
+from welcome.views import showWelcomePage, checkUserUid
 from user.views import createUser
 from django.views.generic.base import RedirectView
 # from survey.views import showSurveyView, surveyDetailView, surveyResultsView, surveyVote
 from survey.views import showSurveyLinks, surveyResults,surveyResultsNew, surveyVote, surveyVoteNew, surveyVoteNewBypass
 from survey.views import showSurveyLinksWithPage
 from link.views import saveOriginalLink
-from fakeLinkModel.views import getData
+from fakeLinkModel.views import getFakeLinksData
 from configuration.views import getConfiguration
+from report.views import trackLink
 
 admin.site.site_header = "Center For Cybersecurity"
 admin.site.site_title = "Center For Cybersecurity"
 admin.site.index_title = "You are viewing live data..."
 
 urlpatterns = [
+    path('checkUserUid/<int:uuid>', checkUserUid, name='checkUserUid'),
     path('welcome/', showWelcomePage, name="showWelcomePage"),
     path('', showWelcomePage, name="showWelcomePage"),
     path('admin/', admin.site.urls),
@@ -70,8 +72,9 @@ urlpatterns = [
          RedirectView.as_view(url='https://facebook.com/')),
     path('link/saveOriginal/', saveOriginalLink, name="saveOriginalLink"),
     # get fake links data
-    path('getFakeLinks/', getData, name="getFakeLinks"),
+    path('getFakeLinks/', getFakeLinksData, name="getFakeLinks"),
     path('getConfiguration/', getConfiguration, name="getConfiguration"),
+    path('track/<int:userId>/<stringHash>/', trackLink, name="trackLink")
 ]
 
 if settings.DEBUG:

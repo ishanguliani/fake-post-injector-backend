@@ -45,12 +45,14 @@ INSTALLED_APPS = [
     'twitter',
     'person',
     'form',
+    'rangefilter',
     'survey',
     'link',
     'linkPreview',
     'fakeLinkModel',
     'import_export',
     'configuration',
+    'report',
 ]
 
 MIDDLEWARE = [
